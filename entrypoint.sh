@@ -1,6 +1,5 @@
+#!/bin/sh
 
-
-#!/bin/bash
 
 # Функция для ожидания доступности порта
 wait_for_port() {
@@ -28,5 +27,5 @@ wait_for_port() {
 # Ожидание доступности порта PostgreSQL
 wait_for_port "postgres" 5432
 
-# Запуск приложения
-python manage.py runserver 0.0.0.0:8000
+# Запуск приложения напрямую
+python /app/manage.py runserver 0.0.0.0:8000

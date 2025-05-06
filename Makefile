@@ -6,6 +6,7 @@ LOGS = docker logs
 ENV = --env-file .env
 APP_FILE = docker_compose/app.yaml
 APP_CONTAINER = main-app
+MANAGEPY = python manage.py
 
 
 .PHONY: storages
@@ -31,3 +32,15 @@ app:
 .PHONY: app-logs
 app-logs:
 	${LOGS} ${APP_CONTAINER} -f
+
+.PHONY: app-down
+app-down:
+	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} down
+
+.PHONY: app-shell
+app-shell:
+	${EXEC} ${APP_CONTAINER} ash
+
+.PHONY: migrate
+migrate:
+	${EXEC} ${APP_CONTAINER} ${MANAGEPY} migrate

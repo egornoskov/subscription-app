@@ -1,26 +1,22 @@
 FROM python:3.12.1-alpine
 
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONOPTIMIZE 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONOPTIMIZE=1
 
 WORKDIR /app
 
 RUN apk update && \
-    apk add --no-cache python3-dev \
-    gcc \
-    musl-dev \
-    libpq-dev \
-    nmap
+    apk add --no-cache python3-dev gcc musl-dev libpq-dev nmap
 
-ADD pyproject.toml /app
+COPY pyproject.toml poetry.lock /app/
 
-RUN pip install --upgrade pip
-RUN pip install poetry
+RUN pip install --upgrade pip && \
+    pip install poetry
 
-RUN poetry config virtualenv.create false
-RUN poetry install --no-root --no-interaction --no-ansi
+RUN poetry config virtualenvs.create false && \
+    poetry install --no-root --no-interaction --no-ansi
 
 COPY . /app/
-COPY ./docker_compose/entrypoint.sh /entrypoint.sh
+COPY ./entrypoint.sh /app/entrypoint.sh
 
-RUN chmod +x /entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
