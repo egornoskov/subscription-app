@@ -20,7 +20,7 @@ RUN pip install poetry
 RUN poetry config virtualenv.create false
 RUN poetry install --no-root --no-interaction --no-ansi
 
-COPY ./app/
+COPY . /app/
 COPY ./docker_compose/entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
