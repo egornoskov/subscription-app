@@ -1,5 +1,5 @@
 DC = docker compose
-STORAGES_FILE = docker-compose/storages.yaml
+STORAGES_FILE = docker_compose/storages.yaml
 EXEC = docker exec -it
 DB_CONTAINER = example_db
 LOGS = docker logs
