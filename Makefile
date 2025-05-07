@@ -44,3 +44,17 @@ app-shell:
 .PHONY: migrate
 migrate:
 	${EXEC} ${APP_CONTAINER} ${MANAGEPY} migrate
+
+.PHONY: migrations
+migrations:
+	${EXEC} ${APP_CONTAINER} ${MANAGEPY} makemigrations
+
+.PHONY: superuser
+superuser:
+	${EXEC} ${APP_CONTAINER} ${MANAGEPY} createsuperuser
+
+.PHONY: collectstatic
+collectstatic:
+	${EXEC} ${APP_CONTAINER} ${MANAGEPY} collectstatic
+
+

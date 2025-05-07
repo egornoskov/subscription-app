@@ -13,3 +13,4 @@ wheels/
 .git
 core/project/settings/local.py
 .flake8
+static/.gitkeep
