@@ -1,16 +1,20 @@
-Django Boilerplate
+# Django Boilerplate
+
 A lightweight Django boilerplate with PostgreSQL, Docker Compose, and Makefile for streamlined development.
 
-Features
+---
 
-Django 5.2
-PostgreSQL database
-Docker Compose for containerized setup
-Makefile for common tasks
-Environment variable configuration via .env
+## Features
+- Django 5.2
+- PostgreSQL database
+- Docker Compose for containerized setup
+- Makefile for common tasks
+- Environment variable configuration via `.env`
 
+---
 
-Project Structure
+## Project Structure
+```
 django-example-py3.13/
 ├── core/                   # Django project files
 │   ├── project/
@@ -27,118 +31,132 @@ django-example-py3.13/
 ├── manage.py               # Django management
 ├── Makefile                # Task automation
 └── README.md
+```
 
+---
 
-Prerequisites
+## Prerequisites
+- Docker and Docker Compose
+- Make (available on Linux/macOS; use WSL/MinGW on Windows)
 
-Docker and Docker Compose
-Make (available on Linux/macOS; use WSL/MinGW on Windows)
+---
 
-
-Setup and Startup
+## Setup and Startup
 Follow these steps to start the application:
 
-Clone the repository:
-git clone <repository-url>
-cd django-example-py3.13
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd django-example-py3.13
+   ```
 
+2. **Configure `.env`**:
+   Copy `.env.example` to `.env` and update:
+   ```
+   DJANGO_SECRET_KEY=your-secret-key
+   DJANGO_PORT=8000
+   POSTGRES_DB=mydatabase
+   POSTGRES_USER=postgres
+   POSTGRES_PASSWORD=yourpassword
+   POSTGRES_HOST=postgres
+   POSTGRES_PORT=5432
+   ```
 
-Configure .env:Copy .env.example to .env and update:
-DJANGO_SECRET_KEY=your-secret-key
-DJANGO_PORT=8000
-POSTGRES_DB=mydatabase
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=yourpassword
-POSTGRES_HOST=postgres
-POSTGRES_PORT=5432
+3. **Create `local.py`**:
+   In `core/project/settings/`, create `local.py` to override `main.py` settings for local development:
+   ```python
+   from .main import *
 
+   DEBUG = True
+   ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+   ```
+   This enables debug mode and allows local access.
 
-Create local.py:In core/project/settings/, create local.py to override main.py settings for local development:
-from .main import *
+4. **Build and start containers**:
+   ```bash
+   make app
+   ```
+   This starts:
+   - Django app (`http://localhost:8000`)
+   - PostgreSQL database (`localhost:5432`)
 
-DEBUG = True
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+5. **Apply database migrations**:
+   ```bash
+   make migrate
+   ```
 
-This enables debug mode and allows local access.
+6. **Collect static files**:
+   ```bash
+   make collectstatic
+   ```
 
-Build and start containers:
-make app
+7. **Create superuser** (optional, for admin access):
+   ```bash
+   make superuser
+   ```
+   Access the admin panel at `http://localhost:8000/admin/`.
 
-This starts:
+---
 
-Django app (http://localhost:8000)
-PostgreSQL database (localhost:5432)
+## Makefile Commands
+The `Makefile` provides commands for managing the project:
+- `make storages`: Starts the PostgreSQL container.
+- `make storages-logs`: Shows PostgreSQL logs.
+- `make storages-down`: Stops and removes the PostgreSQL container.
+- `make database`: Opens a PostgreSQL CLI (`psql`).
+- `make app`: Starts Django and PostgreSQL containers.
+- `make app-logs`: Shows Django logs.
+- `make app-down`: Stops and removes all containers.
+- `make app-shell`: Opens a shell in the Django container.
+- `make migrate`: Applies Django migrations.
+- `make migrations`: Creates new Django migration files.
+- `make superuser`: Creates a Django admin superuser.
+- `make collectstatic`: Collects static files to `static/`.
 
+---
 
-Apply database migrations:
-make migrate
+## PostgreSQL Access
+- **Host**: `localhost`
+- **Port**: `5432`
+- **Database**: `mydatabase` (or `POSTGRES_DB`)
+- **User**: `postgres` (or `POSTGRES_USER`)
+- **Password**: `yourpassword` (or `POSTGRES_PASSWORD`)
 
+**VS Code**:
+1. Install **PostgreSQL** extension (`ckolkman.vscode-postgres`).
+2. Add connection in **PostgreSQL Explorer** using the above credentials.
 
-Collect static files:
-make collectstatic
+---
 
+## Troubleshooting
+- **Container issues**: Check logs (`make app-logs`, `make storages-logs`).
+- **Database errors**: Verify `.env` and test connection (`make database`).
+- **Static files**: Ensure `make collectstatic` ran and `STATIC_ROOT` is set.
 
-Create superuser (optional, for admin access):
-make superuser
+---
 
-Access the admin panel at http://localhost:8000/admin/.
+## License
+MIT License. See `LICENSE` for details.
 
+---
 
+# Django Boilerplate (Русский)
 
-Makefile Commands
-The Makefile provides commands for managing the project:
-
-make storages: Starts the PostgreSQL container.
-make storages-logs: Shows PostgreSQL logs.
-make storages-down: Stops and removes the PostgreSQL container.
-make database: Opens a PostgreSQL CLI (psql).
-make app: Starts Django and PostgreSQL containers.
-make app-logs: Shows Django logs.
-make app-down: Stops and removes all containers.
-make app-shell: Opens a shell in the Django container.
-make migrate: Applies Django migrations.
-make migrations: Creates new Django migration files.
-make superuser: Creates a Django admin superuser.
-make collectstatic: Collects static files to static/.
-
-
-PostgreSQL Access
-
-Host: localhost
-Port: 5432
-Database: mydatabase (or POSTGRES_DB)
-User: postgres (or POSTGRES_USER)
-Password: yourpassword (or POSTGRES_PASSWORD)
-
-VS Code:
-
-Install PostgreSQL extension (ckolkman.vscode-postgres).
-Add connection in PostgreSQL Explorer using the above credentials.
-
-
-Troubleshooting
-
-Container issues: Check logs (make app-logs, make storages-logs).
-Database errors: Verify .env and test connection (make database).
-Static files: Ensure make collectstatic ran and STATIC_ROOT is set.
-
-
-License
-MIT License. See LICENSE for details.
-
-Django Boilerplate (Русский)
 Лёгкий шаблон для Django с PostgreSQL, Docker Compose и Makefile для упрощения разработки.
 
-Возможности
+---
 
-Django 5.2
-База данных PostgreSQL
-Docker Compose для контейнеризации
-Makefile для типовых задач
-Настройка через переменные окружения в .env
+## Возможности
+- Django 5.2
+- База данных PostgreSQL
+- Docker Compose для контейнеризации
+- Makefile для типовых задач
+- Настройка через переменные окружения в `.env`
 
+---
 
-Структура проекта
+## Структура проекта
+```
 django-example-py3.13/
 ├── core/                   # Файлы Django проекта
 │   ├── project/
@@ -155,101 +173,109 @@ django-example-py3.13/
 ├── manage.py               # Управление Django
 ├── Makefile                # Автоматизация задач
 └── README.md
+```
 
+---
 
-Требования
+## Требования
+- Docker и Docker Compose
+- Make (доступен на Linux/macOS; используйте WSL/MinGW на Windows)
 
-Docker и Docker Compose
-Make (доступен на Linux/macOS; используйте WSL/MinGW на Windows)
+---
 
-
-Установка и запуск
+## Установка и запуск
 Для запуска приложения выполните шаги:
 
-Клонируйте репозиторий:
-git clone <repository-url>
-cd django-example-py3.13
+1. **Клонируйте репозиторий**:
+   ```bash
+   git clone <repository-url>
+   cd django-example-py3.13
+   ```
 
+2. **Настройте `.env`**:
+   Скопируйте `.env.example` в `.env` и обновите:
+   ```
+   DJANGO_SECRET_KEY=your-secret-key
+   DJANGO_PORT=8000
+   POSTGRES_DB=mydatabase
+   POSTGRES_USER=postgres
+   POSTGRES_PASSWORD=yourpassword
+   POSTGRES_HOST=postgres
+   POSTGRES_PORT=5432
+   ```
 
-Настройте .env:Скопируйте .env.example в .env и обновите:
-DJANGO_SECRET_KEY=your-secret-key
-DJANGO_PORT=8000
-POSTGRES_DB=mydatabase
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=yourpassword
-POSTGRES_HOST=postgres
-POSTGRES_PORT=5432
+3. **Создайте `local.py`**:
+   В папке `core/project/settings/` создайте `local.py` для переопределения настроек из `main.py`:
+   ```python
+   from .main import *
 
+   DEBUG = True
+   ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+   ```
+   Это включает режим отладки и разрешает локальный доступ.
 
-Создайте local.py:В папке core/project/settings/ создайте local.py для переопределения настроек из main.py:
-from .main import *
+4. **Соберите и запустите контейнеры**:
+   ```bash
+   make app
+   ```
+   Запускает:
+   - Приложение Django (`http://localhost:8000`)
+   - Базу данных PostgreSQL (`localhost:5432`)
 
-DEBUG = True
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+5. **Примените миграции базы данных**:
+   ```bash
+   make migrate
+   ```
 
-Это включает режим отладки и разрешает локальный доступ.
+6. **Соберите статические файлы**:
+   ```bash
+   make collectstatic
+   ```
 
-Соберите и запустите контейнеры:
-make app
+7. **Создайте суперпользователя** (опционально, для доступа к админке):
+   ```bash
+   make superuser
+   ```
+   Админка доступна по адресу `http://localhost:8000/admin/`.
 
-Запускает:
+---
 
-Приложение Django (http://localhost:8000)
-Базу данных PostgreSQL (localhost:5432)
+## Команды Makefile
+`Makefile` предоставляет команды для управления проектом:
+- `make storages`: Запускает контейнер PostgreSQL.
+- `make storages-logs`: Показывает логи PostgreSQL.
+- `make storages-down`: Останавливает и удаляет контейнер PostgreSQL.
+- `make database`: Открывает CLI PostgreSQL (`psql`).
+- `make app`: Запускает контейнеры Django и PostgreSQL.
+- `make app-logs`: Показывает логи Django.
+- `make app-down`: Останавливает и удаляет все контейнеры.
+- `make app-shell`: Открывает shell в контейнере Django.
+- `make migrate`: Применяет миграции Django.
+- `make migrations`: Создаёт новые файлы миграций Django.
+- `make superuser`: Создаёт суперпользователя Django.
+- `make collectstatic`: Собирает статические файлы в `static/`.
 
+---
 
-Примените миграции базы данных:
-make migrate
+## Доступ к PostgreSQL
+- **Хост**: `localhost`
+- **Порт**: `5432`
+- **База данных**: `mydatabase` (или `POSTGRES_DB`)
+- **Пользователь**: `postgres` (или `POSTGRES_USER`)
+- **Пароль**: `yourpassword` (или `POSTGRES_PASSWORD`)
 
+**VS Code**:
+1. Установите расширение **PostgreSQL** (`ckolkman.vscode-postgres`).
+2. Добавьте подключение в **PostgreSQL Explorer** с указанными данными.
 
-Соберите статические файлы:
-make collectstatic
+---
 
+## Устранение неполадок
+- **Проблемы с контейнерами**: Проверьте логи (`make app-logs`, `make storages-logs`).
+- **Ошибки базы данных**: Проверьте `.env` и протестируйте подключение (`make database`).
+- **Статические файлы**: Убедитесь, что `make collectstatic` выполнен и `STATIC_ROOT` настроен.
 
-Создайте суперпользователя (опционально, для доступа к админке):
-make superuser
+---
 
-Админка доступна по адресу http://localhost:8000/admin/.
-
-
-
-Команды Makefile
-Makefile предоставляет команды для управления проектом:
-
-make storages: Запускает контейнер PostgreSQL.
-make storages-logs: Показывает логи PostgreSQL.
-make storages-down: Останавливает и удаляет контейнер PostgreSQL.
-make database: Открывает CLI PostgreSQL (psql).
-make app: Запускает контейнеры Django и PostgreSQL.
-make app-logs: Показывает логи Django.
-make app-down: Останавливает и удаляет все контейнеры.
-make app-shell: Открывает shell в контейнере Django.
-make migrate: Применяет миграции Django.
-make migrations: Создаёт новые файлы миграций Django.
-make superuser: Создаёт суперпользователя Django.
-make collectstatic: Собирает статические файлы в static/.
-
-
-Доступ к PostgreSQL
-
-Хост: localhost
-Порт: 5432
-База данных: mydatabase (или POSTGRES_DB)
-Пользователь: postgres (или POSTGRES_USER)
-Пароль: yourpassword (или POSTGRES_PASSWORD)
-
-VS Code:
-
-Установите расширение PostgreSQL (ckolkman.vscode-postgres).
-Добавьте подключение в PostgreSQL Explorer с указанными данными.
-
-
-Устранение неполадок
-
-Проблемы с контейнерами: Проверьте логи (make app-logs, make storages-logs).
-Ошибки базы данных: Проверьте .env и протестируйте подключение (make database).
-Статические файлы: Убедитесь, что make collectstatic выполнен и STATIC_ROOT настроен.
-
-
-Лицензия
-Лицензия MIT. См. файл LICENSE для деталей.
+## Лицензия
+Лицензия MIT. См. файл `LICENSE` для деталей.
