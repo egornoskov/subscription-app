@@ -3,13 +3,13 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
-    container_name: main-app
+    container_name: subscriptions_main_app
     ports:
       - "${DJANGO_PORT}:8000"
-    entrypoint: ["/app/entrypoint.sh"]
+    entrypoint: ["/project/entrypoint.sh"]
     env_file:
       - ../.env
     depends_on:
       - postgres
     volumes:
-      - ..:/app/
+      - ..:/project/

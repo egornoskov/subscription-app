@@ -3,12 +3,13 @@ FROM python:3.12.1-alpine
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONOPTIMIZE=1
 
-WORKDIR /app
+WORKDIR /project
 
 RUN apk update && \
     apk add --no-cache python3-dev gcc musl-dev libpq-dev nmap
 
-COPY pyproject.toml poetry.lock /app/
+COPY pyproject.toml poetry.lock ./
+
 
 RUN pip install --upgrade pip && \
     pip install poetry

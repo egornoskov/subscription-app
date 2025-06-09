@@ -1,11 +1,11 @@
 DC = docker compose
 STORAGES_FILE = docker_compose/storages.yaml
 EXEC = docker exec -it
-DB_CONTAINER = example_db
+DB_CONTAINER = subscriptions_db
 LOGS = docker logs
 ENV = --env-file .env
 APP_FILE = docker_compose/app.yaml
-APP_CONTAINER = main-app
+APP_CONTAINER = subscriptions_main_app
 MANAGEPY = python manage.py
 
 
@@ -58,3 +58,8 @@ collectstatic:
 	${EXEC} ${APP_CONTAINER} ${MANAGEPY} collectstatic
 
 
+.PHONY: linters
+linters:
+	@isort .
+	@flake8 .
+	@black .

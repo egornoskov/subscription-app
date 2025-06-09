@@ -1,14 +1,13 @@
-
 services:
   postgres:
     image: postgres:latest
-    container_name: example_db
+    container_name: subscriptions_db
     ports:
       - "${POSTGRES_PORT}:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - subscriptions_postgres_data:/var/lib/postgresql/data
     env_file:
       - ../.env
 
 volumes:
-  postgres_data:
+  subscriptions_postgres_data:

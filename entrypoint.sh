@@ -25,7 +25,8 @@ wait_for_port() {
 }
 
 # Ожидание доступности порта PostgreSQL
-wait_for_port "postgres" 5432
+wait_for_port "${POSTGRES_HOST:-postgres}" "${POSTGRES_PORT:-5432}"
+
 
 # Запуск приложения напрямую
-python /app/manage.py runserver 0.0.0.0:8000
+python /project/manage.py runserver 0.0.0.0:8000
