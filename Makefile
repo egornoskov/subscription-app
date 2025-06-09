@@ -57,6 +57,9 @@ superuser:
 collectstatic:
 	${EXEC} ${APP_CONTAINER} ${MANAGEPY} collectstatic
 
+.PHONY: show
+show:
+	${EXEC} ${APP_CONTAINER} ${MANAGEPY} showmigrations
 
 .PHONY: linters
 linters:

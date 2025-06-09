@@ -25,8 +25,7 @@ wait_for_port() {
 }
 
 # Ожидание доступности порта PostgreSQL
-wait_for_port "${POSTGRES_HOST:-postgres}" "${POSTGRES_PORT:-5432}"
-
-
+wait_for_port "postgres" 5432
+# В entrypoint.sh перед runserver
 # Запуск приложения напрямую
 python /project/manage.py runserver 0.0.0.0:8000
