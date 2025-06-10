@@ -21,7 +21,6 @@ class UserSubscriptionSerializer(serializers.ModelSerializer):
         model = UserSubscription
         fields = (
             "id",
-            "user",
             "tariff",
             "start_date",
             "end_date",
@@ -29,7 +28,6 @@ class UserSubscriptionSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             "id",
-            "user",
             "is_active",
             "start_date",
             "end_date",

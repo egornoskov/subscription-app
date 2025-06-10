@@ -66,3 +66,9 @@ linters:
 	@isort .
 	@flake8 .
 	@black .
+
+
+.PHONY: reload
+reload:
+	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} down
+	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} ${ENV} up --build -d

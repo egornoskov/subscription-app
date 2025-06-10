@@ -1,11 +1,9 @@
-from django.http import HttpResponse
-from django.urls import path
-
-
-def dummy_view(request):
-    return HttpResponse("Hello, this is a dummy view.")
+from django.urls import (
+    include,
+    path,
+)
 
 
 urlpatterns = [
-    path("", dummy_view, name="dummy"),
+    path("v1/", include("core.api.v1.urls")),
 ]
