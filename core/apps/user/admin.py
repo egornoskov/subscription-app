@@ -1,11 +1,38 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.forms import UserCreationForm
+
+from core.apps.subscription.models import UserSubscription
 
 from .models import User
 
 
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ("email", "first_name", "last_name", "phone")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Делаем email, first_name, last_name обязательными
+        self.fields["email"].required = True
+        self.fields["first_name"].required = True
+        self.fields["last_name"].required = True
+        self.fields["phone"].required = False  # Если phone обязательное, установи True
+
+
+class UserSubscriptionInline(admin.TabularInline):
+    model = UserSubscription
+    extra = 1  # Количество пустых строк для добавления подписок
+    fields = ("tariff", "start_date", "end_date")  # Поля для отображения
+    verbose_name = "Подписка"
+    verbose_name_plural = "Подписки"
+
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
+    inlines = (UserSubscriptionInline,)
+    add_form = CustomUserCreationForm  # Кастомная форма для создания
     list_display = ("email", "first_name", "last_name", "phone", "is_staff", "is_superuser", "subscriptions_overview")
     list_filter = ("is_staff", "is_superuser", "is_active", "groups")
 
@@ -20,7 +47,7 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "first_name", "last_name", "password"),
+                "fields": ("email", "first_name", "last_name", "phone", "password1", "password2"),
             },
         ),
     )
@@ -35,7 +62,10 @@ class UserAdmin(BaseUserAdmin):
 
     subscriptions_overview.short_description = "Подписки"
 
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        qs = qs.prefetch_related("subscriptions")
-        return qs
+
+class UserSubscriptionInline(admin.TabularInline):
+    model = UserSubscription
+    extra = 1  # Количество пустых строк для добавления подписок
+    fields = ("tariff", "start_date", "end_date")  # Поля для отображения
+    verbose_name = "Подписка"
+    verbose_name_plural = "Подписки"

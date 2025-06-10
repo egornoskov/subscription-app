@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
     Group,
     Permission,
 )
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -45,7 +46,13 @@ class User(AbstractUser, TimedBaseModel):
         verbose_name="Активен",
     )
 
+    phone_regex = RegexValidator(
+        regex=r"^\+?1?\d{9,15}$",
+        message="Номер телефона должен быть в формате: '+999999999'. До 15 цифр.",
+    )
+
     phone = models.CharField(
+        validators=[phone_regex],
         max_length=20,
         verbose_name="Телефон",
         blank=True,

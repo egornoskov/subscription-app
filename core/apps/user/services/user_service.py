@@ -10,7 +10,7 @@ from core.apps.user.services.base_user_service import BaseUserService
 
 class UserService(BaseUserService):
     def _build_user_query(self, filters: UserFilter) -> Q:
-        query = Q()
+        query = Q(is_superuser=False)
 
         if filters.search is not None:
             query &= (
