@@ -13,10 +13,12 @@ class UserSubscription(models.Model):
     user = models.ForeignKey(
         "user.User",
         on_delete=models.CASCADE,
+        related_name="user_subscription",
     )
     tariff = models.ForeignKey(
         "subscription.Tariff",
         on_delete=models.CASCADE,
+        related_name="tariff_subscription",
     )
 
     start_date = models.DateField()

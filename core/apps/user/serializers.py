@@ -5,7 +5,9 @@ from core.apps.user.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    subscription = UserSubscriptionSerializer(
+    subscriptions_details = UserSubscriptionSerializer(
+        source="user_subscription",
+        many=True,
         read_only=True,
     )
 
@@ -17,9 +19,10 @@ class UserSerializer(serializers.ModelSerializer):
             "email",
             "phone",
             "is_active",
-            "subscription",
+            "subscriptions_details",
         )
         read_only_fields = (
             "id",
-            "subscription",
+            "full_name",
+            "subscriptions_details",
         )
