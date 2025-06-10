@@ -1,3 +1,4 @@
+import uuid
 from abc import (
     ABC,
     abstractmethod,
@@ -5,6 +6,7 @@ from abc import (
 from typing import (
     Iterable,
     Iterator,
+    Optional,
 )
 
 from core.api.pagination import PaginationIn
@@ -33,31 +35,31 @@ class BaseUserService(ABC):
     #     """
     #     pass
 
-    # @abstractmethod
-    # def get_user_by_id(self, user_id: uuid.UUID) -> Optional[User]:
-    #     """
-    #     Получает пользователя по его уникальному ID.
+    @abstractmethod
+    def get_user_by_id(self, user_id: uuid.UUID) -> Optional[User]:
+        """
+        Получает пользователя по его уникальному ID.
 
-    #     Args:
-    #         user_id (uuid.UUID): Уникальный идентификатор пользователя.
+        Args:
+            user_id (uuid.UUID): Уникальный идентификатор пользователя.
 
-    #     Returns:
-    #         Optional[User]: Объект пользователя или None, если пользователь не найден.
-    #     """
-    #     pass
+        Returns:
+            Optional[User]: Объект пользователя или None, если пользователь не найден.
+        """
+        pass
 
-    # @abstractmethod
-    # def get_user_by_email(self, email: str) -> Optional[User]:
-    #     """
-    #     Получает пользователя по его адресу электронной почты.
+    @abstractmethod
+    def get_user_by_email(self, user_email: str) -> Optional[User]:
+        """
+        Получает пользователя по его адресу электронной почты.
 
-    #     Args:
-    #         email (str): Адрес электронной почты пользователя.
+        Args:
+            email (str): Адрес электронной почты пользователя.
 
-    #     Returns:
-    #         Optional[User]: Объект пользователя или None, если пользователь не найден.
-    #     """
-    #     pass
+        Returns:
+            Optional[User]: Объект пользователя или None, если пользователь не найден.
+        """
+        pass
 
     # @abstractmethod
     # def soft_delete_user(self, user_id: uuid.UUID) -> None:

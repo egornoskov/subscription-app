@@ -24,7 +24,7 @@ class ListResponsePayload(BaseModel, Generic[TListItem]):
     Представляет структуру 'data' для пагинированного списка в итоговом ответе.
     """
 
-    items: List[TListItem]
+    items: List[TData] = None
     pagination: PaginationOut
 
 
@@ -35,7 +35,7 @@ class ApiResponse(BaseModel, Generic[TData]):
     """
 
     message: str = "OK"
-    data: Optional[TData] = None
+    data: Optional[TListItem] = None
     meta: Dict[str, Any] = Field(default_factory=dict)
     errors: List[Any] = Field(default_factory=list)
 

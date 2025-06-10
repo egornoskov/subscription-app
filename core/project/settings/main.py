@@ -134,14 +134,18 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
     ],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ],
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Subscriptions API",
-    "DESCRIPTION": "API for managing subscriptions",
+    "TITLE": "Your API Project",
+    "DESCRIPTION": "Описание вашего API",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
-    "EXCLUDE_VIEWS": [
-        "schema",
-    ],
+    "POSTPROCESSING_HOOKS": [],
+    "COMPONENT_SPLIT_REQUEST": True,  # Обычно полезно
+    "COMPONENT_SPLIT_RESPONSE": True,  # Обычно полезно
 }
