@@ -29,7 +29,7 @@ from core.api.v1.users.schemas.user_schemas import (
     UserCreateIn,
     UserUpdateIn,
 )
-from core.apps.common.exceptions.user_custom_exceptions.base_exception import ServiceException
+from core.apps.common.exceptions.base_exception import ServiceException
 from core.apps.common.exceptions.user_custom_exceptions.user_exc import UserNotFoundException
 from core.apps.user.models import User
 from core.apps.user.serializers import UserSerializer
@@ -316,12 +316,6 @@ class UserUpdateView(APIView):
                 message="Ошибка валидации входящих данных",
                 status_code=status.HTTP_400_BAD_REQUEST,
                 errors=e.errors(),
-            )
-        except ValueError as e:
-            return build_api_response(
-                message=str(e),
-                status_code=status.HTTP_400_BAD_REQUEST,
-                errors=[{"detail": str(e)}],
             )
         except UserNotFoundException as e:
             return build_api_response(

@@ -1,11 +1,10 @@
-from decimal import Decimal
 import uuid
 from abc import (
     ABC,
     abstractmethod,
 )
-from typing import (
-    Iterable,
+from decimal import Decimal
+from typing import (  # Iterable,
     Iterator,
     Optional,
 )
@@ -17,18 +16,17 @@ from core.apps.subscription.models import Tariff
 
 class TariffBaseService(ABC):
 
-    # @abstractmethod
-    # def create_tariff(
-    #     self,
-    #     id: uuid.UUID,
-    #     name: str,
-    #     price: Decimal,
-    # ) -> "Tariff":
-    #     pass
+    @abstractmethod
+    def create_tariff(
+        self,
+        name: str,
+        price: Decimal,
+    ) -> "Tariff":
+        pass
 
-    # @abstractmethod
-    # def get_tariff_by_id(self, tariff_uuid: uuid.UUID) -> Optional[Tariff]:
-    #     pass
+    @abstractmethod
+    def get_tariff_by_id(self, tariff_uuid: uuid.UUID) -> Optional[Tariff]:
+        pass
 
     # @abstractmethod
     # def soft_delete_tariff(self, tariff_uuid: uuid.UUID) -> Tariff:

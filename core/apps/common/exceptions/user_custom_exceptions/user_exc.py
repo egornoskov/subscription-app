@@ -2,7 +2,7 @@ import uuid
 
 from rest_framework import status
 
-from core.apps.common.exceptions.user_custom_exceptions.base_exception import ServiceException
+from core.apps.common.exceptions.base_exception import ServiceException
 
 
 class UserNotFoundException(ServiceException):
@@ -48,7 +48,7 @@ class UserCreationError(ServiceException):
         super().__init__(detail=detail or self.default_detail, code=code)
 
 
-class EmpryUpdateDataError(ServiceException):
+class EmptyUpdateDataError(ServiceException):
     status_code = status.HTTP_400_BAD_REQUEST
     default_detail = "Нет данных для обновления."
 
@@ -70,3 +70,11 @@ class UserActiveDeleteError(ServiceException):
 
     def __init__(self, user_id: uuid.UUID):
         super().__init__(detail=self.detail or self.default_detail, code=self.code)
+
+
+class UserUpdateError(ServiceException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = "Произошла ошибка при обновлении пользователя."
+
+    def __init__(self, detail=None, code=None):
+        super().__init__(detail=detail or self.default_detail, code=code)

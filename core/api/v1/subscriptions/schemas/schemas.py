@@ -1,4 +1,6 @@
 from datetime import datetime
+from decimal import Decimal
+from typing import Optional
 from uuid import UUID
 
 from pydantic import (
@@ -7,18 +9,29 @@ from pydantic import (
 )
 
 
-class TariffOut(BaseModel):
-    id: UUID = Field(
-        ...,
-        description="Уникальный идентификатор тарифа",
-    )
+class TariffCreateSchema(BaseModel):
     name: str = Field(
         ...,
         max_length=255,
         description="Название тарифа",
     )
-    price: float = Field(
+    price: Decimal = Field(
         ...,
+        description="Цена тарифа",
+    )
+
+    class Config:
+        from_attributes = True
+
+
+class TariffUpdateSchema(BaseModel):
+    name: Optional[str] = Field(
+        None,
+        max_length=255,
+        description="Название тарифа",
+    )
+    price: Optional[Decimal] = Field(
+        None,
         description="Цена тарифа",
     )
 
@@ -31,7 +44,7 @@ class UserSubscriptionOut(BaseModel):
         ...,
         description="Уникальный идентификатор подписки",
     )
-    tariff: TariffOut = (Field(..., description="Информация о тарифе подписки"),)
+    tariff: TariffCreateSchema = (Field(..., description="Информация о тарифе подписки"),)
     start_date: datetime = Field(
         ...,
         description="Дата начала подписки",

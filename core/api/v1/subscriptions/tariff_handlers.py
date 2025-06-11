@@ -1,3 +1,5 @@
+import uuid
+
 from drf_spectacular.utils import (
     extend_schema,
     OpenApiParameter,
@@ -20,10 +22,13 @@ from core.api.schemas.response_schemas import (
     ApiResponse,
     ListResponsePayload,
 )
-from core.apps.subscription.serializers import TariffSerializer
-from core.apps.subscription.services.tariff_base_service import TariffBaseService
 from core.api.utils.response_builder import build_api_response
 from core.api.v1.subscriptions.schemas.filters import TariffFilter
+from core.api.v1.subscriptions.schemas.schemas import TariffCreateSchema, TariffUpdateSchema
+from core.apps.common.exceptions.base_exception import ServiceException
+from core.apps.common.exceptions.tariff_custom_exceptions.tariff_exc import TariffNotFoundException
+from core.apps.subscription.serializers import TariffSerializer
+from core.apps.subscription.services.tariff_base_service import TariffBaseService
 from core.project.containers import get_container
 
 
@@ -109,3 +114,369 @@ class TariffListView(APIView):
             ),
             status_code=status.HTTP_200_OK,
         )
+
+
+class TariffCreationView(APIView):
+    @extend_schema(
+        summary="Создать новый тариф",
+        description="Создаёт новый тариф с предоставленными данными.",
+        request=TariffCreateSchema,
+        responses={
+            201: ApiResponse[TariffSerializer],
+            400: ApiResponse[None],
+            500: ApiResponse[None],
+        },
+        tags=["Tariffs"],
+        operation_id="create_tariff",
+    )
+    def post(
+        self,
+        request: Request,
+    ) -> Response:
+        container = get_container()
+        service = container.resolve(TariffBaseService)
+
+        try:
+            tariff_data = TariffCreateSchema.model_validate(request.data)
+            new_tariff = service.create_tariff(
+                name=tariff_data.name,
+                price=tariff_data.price,
+            )
+            new_tariff_data = TariffSerializer(new_tariff).data
+            return build_api_response(
+                data=new_tariff_data,
+                status_code=status.HTTP_201_CREATED,
+            )
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
+
+
+class TariffDetailActionsView(APIView):
+    @extend_schema(
+        summary="Получить тариф по UUID",
+        description="Получает детальную информацию о тарифе, используя его UUID.",
+        parameters=[
+            OpenApiParameter(
+                name="tariff_uuid",
+                type=OpenApiTypes.UUID,
+                location=OpenApiParameter.PATH,
+                description="UUID Тарифа.",
+                required=True,
+            ),
+        ],
+        responses={
+            200: ApiResponse[TariffSerializer],
+            404: ApiResponse[None],
+            500: ApiResponse[None],
+        },
+        tags=["Tariffs"],
+        operation_id="retrieve_tariff_by_id",
+    )
+    def get(
+        self,
+        request: Request,
+        tariff_uuid: uuid.UUID,
+    ) -> Response:
+        container = get_container()
+        service = container.resolve(TariffBaseService)
+
+        try:
+            tariff = service.get_tariff_by_id(tariff_uuid=tariff_uuid)
+            tariff_data = TariffSerializer(tariff).data
+            return build_api_response(
+                data=tariff_data,
+                status_code=status.HTTP_200_OK,
+            )
+        except TariffNotFoundException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
+
+    @extend_schema(
+        summary="Обновить данные тарифа (полное обновление)",
+        description="Полностью обновляет данные тарифа по его UUID. Все поля в теле запроса обязательны.",
+        request=TariffUpdateSchema,
+        responses={
+            200: ApiResponse[TariffSerializer],
+            400: ApiResponse[None],
+            404: ApiResponse[None],
+            500: ApiResponse[None],
+        },
+        tags=["Tariffs"],
+        operation_id="update_tariff",
+    )
+    def put(self, request: Request, tariff_uuid: uuid.UUID) -> Response:
+        container = get_container()
+        service = container.resolve(TariffBaseService)
+
+        try:
+            updated_data = TariffUpdateSchema.model_validate(request.data)
+
+            updated_tariff = service.update_tariff(
+                tariff_uuid=tariff_uuid,
+                data_to_update=updated_data,
+            )
+
+            updated_tariff_data = TariffSerializer(updated_tariff).data
+
+            return build_api_response(
+                data=updated_tariff_data,
+                status_code=status.HTTP_200_OK,
+            )
+        except ValidationError as e:
+            return build_api_response(
+                message="Ошибка валидации данных запроса",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                errors=e.errors(),
+            )
+        except TariffNotFoundException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
+
+    @extend_schema(
+        summary="Частичное обновление данных тарифа",
+        description=(
+            "Частично обновляет данные тарифа по его UUID. "
+            "Позволяет отправлять только те поля, которые необходимо изменить."
+        ),
+        request=TariffUpdateSchema,
+        responses={
+            200: ApiResponse[TariffSerializer],
+            400: ApiResponse[None],
+            404: ApiResponse[None],
+            500: ApiResponse[None],
+        },
+        tags=["Tariffs"],
+        operation_id="partial_update_tariff",
+    )
+    def patch(
+        self,
+        request: Request,
+        tariff_uuid: uuid.UUID,
+    ) -> Response:
+        container = get_container()
+        service = container.resolve(TariffBaseService)
+
+        try:
+            data_to_update = TariffUpdateSchema.model_validate(
+                request.data,
+            )
+            updated_tariff = service.partial_update_tariff(
+                tariff_uuid=tariff_uuid,
+                data_to_update=data_to_update,
+            )
+            updated_tariff_data = TariffSerializer(updated_tariff).data
+
+            return build_api_response(
+                data=updated_tariff_data,
+                status_code=status.HTTP_200_OK,
+            )
+        except ValidationError as e:
+            return build_api_response(
+                message="Ошибка валидации данных запроса",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                errors=e.errors(),
+            )
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
+
+
+# class TariffUpdateView(APIView):
+#     @extend_schema(
+#         summary="Обновить данные тарифа",
+#         description="Обновляет данные тарифа по его UUID.",
+#         request=TariffCreateSchema,
+#         responses={
+#             200: ApiResponse[TariffSerializer],
+#             400: ApiResponse[None],
+#             500: ApiResponse[None],
+#         },
+#         tags=["Tariffs"],
+#         operation_id="update_tariff",
+#     )
+#     def put(self, request: Request, tariff_uuid: uuid.UUID) -> Response:
+#         container = get_container()
+#         service = container.resolve(TariffBaseService)
+
+#         try:
+#             updated_data = TariffCreateSchema.model_validate(request.data)
+#             updated_tariff = service.update_tariff(
+#                 name=updated_data.name,
+#                 price=updated_data.price,
+#             )
+
+#             updated_tariff_data = TariffSerializer(updated_tariff).data
+
+#             return build_api_response(
+#                 data=updated_tariff_data,
+#                 status_code=status.HTTP_200_OK,
+#             )
+#         except TariffNotFoundException as e:
+#             return build_api_response(
+#                 message=e.detail,
+#                 status_code=e.status_code,
+#                 errors=[{"detail": str(e)}],
+#             )
+#         except ServiceException as e:
+#             return build_api_response(
+#                 message=e.detail,
+#                 status_code=e.status_code,
+#                 errors=[{"detail": str(e)}],
+#             )
+#         except Exception as e:
+#             return build_api_response(
+#                 message=f"Непредвиденная ошибка при обработке запроса: {e}",
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 errors=[{"detail": str(e)}],
+#             )
+
+
+# class TariffPartialUpdateView(APIView):
+#     @extend_schema(
+#         summary="Частичное обновление данных тарифа",
+#         description=(
+#             "Частично обновляет данные тарифа по его UUID. "
+#             "Позволяет отправлять только те поля, которые необходимо изменить."
+#         ),
+#         request=TariffUpdateSchema,
+#         responses={
+#             200: ApiResponse[TariffSerializer],
+#             400: ApiResponse[None],
+#             404: ApiResponse[None],
+#             500: ApiResponse[None],
+#         },
+#         tags=["Tariffs"],
+#         operation_id="partial_update_tariff",
+#     )
+#     def patch(
+#         self,
+#         request: Request,
+#         tariff_uuid: uuid.UUID,
+#     ) -> Response:
+#         container = get_container()
+#         service = container.resolve(TariffBaseService)
+
+#         try:
+#             print(f"DEBUG: Type of request.data: {type(request.data)}")
+#             print(f"DEBUG: Raw request.data: {request.data}")
+#             data_to_update = TariffUpdateSchema.model_validate(
+#                 request.data,
+#             )
+#             updated_tariff = service.partial_update_tariff(
+#                 tariff_uuid=tariff_uuid,
+#                 data_to_update=data_to_update,
+#             )
+#             updated_tariff_data = TariffSerializer(updated_tariff).data
+
+#             return build_api_response(
+#                 data=updated_tariff_data,
+#                 status_code=status.HTTP_200_OK,
+#             )
+#         except ValidationError as e:
+#             return build_api_response(
+#                 message="Ошибка валидации данных запроса",
+#                 status_code=status.HTTP_400_BAD_REQUEST,
+#                 errors=e.errors(),
+#             )
+#         except ServiceException as e:
+#             return build_api_response(
+#                 message=e.detail,
+#                 status_code=e.status_code,
+#                 errors=[{"detail": str(e)}],
+#             )
+#         except Exception as e:
+#             return build_api_response(
+#                 message=f"Непредвиденная ошибка при обработке запроса: {e}",
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 errors=[{"detail": str(e)}],
+#             )
+
+# class RetriveTariffView(generics.RetrieveAPIView):
+#     @extend_schema(
+#         summary="Получить тариф по UUID",
+#         description="Получает детальную информацию о тарифе, используя его UUID.",
+#         parameters=[
+#             OpenApiParameter(
+#                 name="tariff_uuid",
+#                 type=OpenApiTypes.UUID,
+#                 location=OpenApiParameter.PATH,
+#                 description="UUID Тарифа.",
+#                 required=True,
+#             ),
+#         ],
+#         responses={
+#             200: ApiResponse[TariffSerializer],
+#         },
+#         tags=["Tariffs"],
+#         operation_id="retrieve_tariff_by_id",
+#     )
+#     def get(
+#         self,
+#         request: Request,
+#         tariff_uuid: uuid.UUID,
+#     ) -> Response:
+#         container = get_container()
+#         service = container.resolve(TariffBaseService)
+
+#         try:
+#             tariff = service.get_tariff_by_id(tariff_uuid=tariff_uuid)
+#             tariff_data = TariffSerializer(tariff).data
+#             return build_api_response(
+#                 data=tariff_data,
+#                 status_code=status.HTTP_200_OK,
+#             )
+#         except ServiceException as e:
+#             return build_api_response(
+#                 message=e.detail,
+#                 status_code=e.status_code,
+#                 errors=[{"detail": str(e)}],
+#             )
+#         except Exception as e:
+#             return build_api_response(
+#                 message=f"Непредвиденная ошибка при обработке запроса: {e}",
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 errors=[{"detail": str(e)}],
+#             )
