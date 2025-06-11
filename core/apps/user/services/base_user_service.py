@@ -59,26 +59,26 @@ class BaseUserService(ABC):
         """
         pass
 
-    # @abstractmethod
-    # def soft_delete_user(self, user_id: uuid.UUID) -> None:
-    #     """
-    #     "Мягко" удаляет пользователя, устанавливая флаг is_deleted в True.
+    @abstractmethod
+    def soft_delete_user(self, user_id: uuid.UUID) -> User:
+        """
+        "Мягко" удаляет пользователя, устанавливая флаг is_deleted в True.
 
-    #     Args:
-    #         user_id (uuid.UUID): Уникальный идентификатор пользователя.
-    #     """
-    #     pass
+        Args:
+            user_id (uuid.UUID): Уникальный идентификатор пользователя.
+        """
+        pass
 
-    # @abstractmethod
-    # def hard_delete_user(self, user_id: uuid.UUID) -> None:
-    #     """
-    #     Полностью удаляет пользователя из базы данных.
-    #     Используйте этот метод с осторожностью, так как данные будут безвозвратно утеряны.
+    @abstractmethod
+    def hard_delete_user(self, user_id: uuid.UUID) -> User:
+        """
+        Полностью удаляет пользователя из базы данных.
+        Используйте этот метод с осторожностью, так как данные будут безвозвратно утеряны.
 
-    #     Args:
-    #         user_id (uuid.UUID): Уникальный идентификатор пользователя.
-    #     """
-    #     pass
+        Args:
+            user_id (uuid.UUID): Уникальный идентификатор пользователя.
+        """
+        pass
 
     @abstractmethod
     def get_users_list(self, filters: UserFilter, pagination_in: PaginationIn) -> Iterator[User]:
@@ -110,7 +110,7 @@ class BaseUserService(ABC):
         pass
 
     @abstractmethod
-    def get_all_users_unfiltered(self, filters: UserFilter, pagination_in: PaginationIn) -> Iterable[User]:
+    def get_all_users_archive(self, filters: UserFilter, pagination_in: PaginationIn) -> Iterable[User]:
         """
         Возвращает итерируемый объект QuerySet всех пользователей,
         включая "мягко" удаленных.

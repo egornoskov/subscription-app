@@ -54,3 +54,19 @@ class EmpryUpdateDataError(ServiceException):
 
     def __init__(self, detail=None, code=None):
         super().__init__(detail=detail or self.default_detail, code=code)
+
+
+class UserDeleteError(ServiceException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = "Произошла ошибка при удалении пользователя."
+
+    def __init__(self, detail=None, code=None):
+        super().__init__(detail=detail or self.default_detail, code=code)
+
+
+class UserActiveDeleteError(ServiceException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = "Пользователь активен."
+
+    def __init__(self, user_id: uuid.UUID):
+        super().__init__(detail=self.detail or self.default_detail, code=self.code)

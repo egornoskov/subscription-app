@@ -7,9 +7,12 @@ from psycopg2 import IntegrityError
 from core.api.schemas.pagination import PaginationIn
 from core.api.v1.users.schemas.filters import UserFilter
 from core.api.v1.users.schemas.user_schemas import UserUpdateIn
+from core.apps.common.exceptions.user_custom_exceptions.base_exception import ServiceException
 from core.apps.common.exceptions.user_custom_exceptions.user_exc import (
     EmpryUpdateDataError,
+    UserActiveDeleteError,
     UserCreationError,
+    UserDeleteError,
     UserEmailNotFoundException,
     UserNotFoundException,
 )
@@ -29,16 +32,16 @@ class UserService(BaseUserService):
             )
         return query
 
-    def get_all_users_unfiltered(self, filters: UserFilter, pagination_in: PaginationIn) -> Iterable[User]:
+    def get_all_users_archive(self, filters: UserFilter, pagination_in: PaginationIn) -> Iterable[User]:
         query = self._build_user_query(filters)
-        queryset = User.objects.unfiltered().filter(query)
+        queryset = User.objects.unfiltered().filter(query, is_deleted=True, is_active=False)
         queryset = queryset.prefetch_related("user_subscription__tariff")
         users = queryset[pagination_in.offset : pagination_in.offset + pagination_in.limit]
         return users
 
-    def get_users_count_unfiltered(self, filters: UserFilter) -> int:
+    def get_users_count_archive(self, filters: UserFilter) -> int:
         query = self._build_user_query(filters)
-        return User.objects.unfiltered().filter(query).count()
+        return User.objects.unfiltered().filter(query, is_deleted=True, is_active=False).count()
 
     def get_users_list(self, filters: UserFilter, pagination_in: PaginationIn) -> Iterable[User]:
         query = self._build_user_query(filters)
@@ -137,3 +140,34 @@ class UserService(BaseUserService):
             raise UserCreationError(detail=f"Ошибка базы данных при частичном обновлении пользователя: {e}")
         except Exception as e:
             raise UserCreationError(detail=f"Неизвестная ошибка при частичном обновлении пользователя: {e}")
+
+    def soft_delete_user(self, user_id: uuid.UUID) -> User:
+        try:
+            user = self.get_user_by_id(user_id=user_id)
+
+            user.is_deleted = True
+            user.is_active = False
+
+            user.full_clean()
+            user.save()
+            return user
+        except Exception as e:
+            raise UserDeleteError(detail=f"Неизвестная ошибка при полном обновлении пользователя: {e}")
+
+    def hard_delete_user(self, user_id: uuid.UUID) -> None:
+        try:
+            query = self._build_user_query()
+            user = User.objects.unfiltered().filter(id=user_id).filter(query).first()
+
+            if not user:
+                raise UserNotFoundException(user_id=user_id)
+
+            if user.is_deleted is False:
+                raise UserActiveDeleteError()
+
+            user.hard_delete()
+            return None
+        except ServiceException as e:
+            raise ServiceException(detail=str(e))
+        except Exception as e:
+            raise UserDeleteError(detail=f"Неизвестная ошибка при полном обновлении пользователя: {e}")

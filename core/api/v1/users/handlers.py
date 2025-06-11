@@ -402,3 +402,162 @@ class UserPartialUpdateView(APIView):
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 errors=[{"detail": str(e)}],
             )
+
+
+class UserSoftDeleteView(APIView):
+    @extend_schema(
+        summary="Мягкое удаление пользователя",
+        description="Помечает пользователя как удаленного (soft delete) по его UUID, делая его неактивным.",
+        responses={
+            200: ApiResponse[None],  # No specific data returned on successful soft delete
+        },
+        tags=["Users"],
+        operation_id="soft_delete_user",
+    )
+    def delete(
+        self,
+        request: Request,
+        user_uuid: UUID,
+    ) -> Response:
+        container = get_container()
+        service = container.resolve(BaseUserService)
+
+        try:
+            service.soft_delete_user(user_id=user_uuid)
+            return build_api_response(
+                message="Пользователь успешно удален",
+                status_code=status.HTTP_200_OK,
+            )
+        except UserNotFoundException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+
+
+class UserHardDeleteView(APIView):
+    @extend_schema(
+        summary="Полное удаление пользователя",
+        description=(
+            "Полностью и безвозвратно удаляет пользователя из базы данных по его UUID. "
+            "Возможно только для пользователей, уже помеченных как удаленные (soft-deleted)."
+        ),
+        responses={
+            200: ApiResponse[None],
+        },
+        tags=["Users"],
+        operation_id="hard_delete_user",
+    )
+    def delete(self, request: Request, user_uuid: UUID) -> Response:
+        container = get_container()
+        service = container.resolve(BaseUserService)
+
+        try:
+            service.hard_delete_user(user_id=user_uuid)
+            return build_api_response(
+                message="Пользователь успешно удален",
+                status_code=status.HTTP_200_OK,
+            )
+        except UserNotFoundException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+
+
+class ArchiveUserListView(APIView):
+    @extend_schema(
+        summary="Получить всех пользователей",
+        description="Получает список всех пользователей.",
+        parameters=[
+            OpenApiParameter(
+                name="search",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                description="Поиск по имени, фамилии или email.",
+                required=False,
+            ),
+            OpenApiParameter(
+                name="offset",
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.QUERY,
+                description="Смещение для пагинации.",
+                required=False,
+                default=0,
+            ),
+            OpenApiParameter(
+                name="limit",
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.QUERY,
+                description="Лимит элементов для пагинации.",
+                required=False,
+                default=10,
+            ),
+        ],
+        responses={
+            200: ApiResponse[ListResponsePayload[UserSerializer]],
+        },
+        tags=["Users"],
+        operation_id="list_all_users",
+    )
+    def get(
+        self,
+        request: Request,
+    ) -> Response:
+        try:
+            filters = UserFilter.model_validate(request.query_params.dict())
+            pagination_in = PaginationIn.model_validate(request.query_params.dict())
+        except ValidationError as e:
+            return build_api_response(
+                message="Ошибка валидации параметров запроса",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                errors=e.errors(),
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
+
+        container = get_container()
+        service: BaseUserService = container.resolve(BaseUserService)
+
+        users: Iterable[User] = service.get_all_users_archive(
+            filters=filters,
+            pagination_in=pagination_in,
+        )
+        users_count: int = service.get_users_count_archive(
+            filters=filters,
+        )
+
+        serialized_users_data = UserSerializer(users, many=True).data
+
+        pagination_out = PaginationOut(
+            offset=pagination_in.offset,
+            limit=pagination_in.limit,
+            total=users_count,
+        )
+
+        return build_api_response(
+            data={
+                "items": serialized_users_data,
+                "pagination": pagination_out.model_dump(exclude_none=True),
+            },
+            message="Список пользователей успешно получен",
+            status_code=status.HTTP_200_OK,
+        )

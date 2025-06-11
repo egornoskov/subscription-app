@@ -1,11 +1,14 @@
 from django.urls import path
 
 from core.api.v1.users.handlers import (
+    ArchiveUserListView,
     UserCreateView,
+    UserHardDeleteView,
     UserListView,
     UserPartialUpdateView,
     UserRetriveByEmailView,
     UserRetriveByIdView,
+    UserSoftDeleteView,
     UserUpdateView,
 )
 
@@ -42,5 +45,20 @@ urlpatterns = [
         "partial_update/<uuid:user_uuid>/",
         UserPartialUpdateView.as_view(),
         name="partial-update-user",
+    ),
+    path(
+        "soft_delete/<uuid:user_uuid>/",
+        UserSoftDeleteView.as_view(),
+        name="soft-delete-user",
+    ),
+    path(
+        "hard_delete/<uuid:user_uuid>/",
+        UserHardDeleteView.as_view(),
+        name="hard-delete-user",
+    ),
+    path(
+        "archive/",
+        ArchiveUserListView.as_view(),
+        name="archive-users",
     ),
 ]
