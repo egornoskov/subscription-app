@@ -46,3 +46,11 @@ class UserCreationError(ServiceException):
 
     def __init__(self, detail=None, code=None):
         super().__init__(detail=detail or self.default_detail, code=code)
+
+
+class EmpryUpdateDataError(ServiceException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = "Нет данных для обновления."
+
+    def __init__(self, detail=None, code=None):
+        super().__init__(detail=detail or self.default_detail, code=code)

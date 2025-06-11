@@ -3,8 +3,10 @@ from django.urls import path
 from core.api.v1.users.handlers import (
     UserCreateView,
     UserListView,
+    UserPartialUpdateView,
     UserRetriveByEmailView,
     UserRetriveByIdView,
+    UserUpdateView,
 )
 
 
@@ -30,5 +32,15 @@ urlpatterns = [
         "detail_email/<str:user_email>/",
         UserRetriveByEmailView.as_view(),
         name="user-detail-by-email",
+    ),
+    path(
+        "update/<uuid:user_uuid>/",
+        UserUpdateView.as_view(),
+        name="update-user",
+    ),
+    path(
+        "partial_update/<uuid:user_uuid>/",
+        UserPartialUpdateView.as_view(),
+        name="partial-update-user",
     ),
 ]

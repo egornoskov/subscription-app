@@ -25,8 +25,12 @@ from core.api.schemas.response_schemas import (
 )
 from core.api.utils.response_builder import build_api_response
 from core.api.v1.users.schemas.filters import UserFilter
-from core.api.v1.users.schemas.user_schemas import UserCreateIn
+from core.api.v1.users.schemas.user_schemas import (
+    UserCreateIn,
+    UserUpdateIn,
+)
 from core.apps.common.exceptions.user_custom_exceptions.base_exception import ServiceException
+from core.apps.common.exceptions.user_custom_exceptions.user_exc import UserNotFoundException
 from core.apps.user.models import User
 from core.apps.user.serializers import UserSerializer
 from core.apps.user.services.base_user_service import BaseUserService
@@ -233,7 +237,7 @@ class UserCreateView(APIView):
     def post(
         self,
         request: Request,
-    ):
+    ) -> Response:
         container = get_container()
         service = container.resolve(BaseUserService)
 
@@ -257,6 +261,134 @@ class UserCreateView(APIView):
                 message="Ошибка валидации входящих данных",
                 status_code=status.HTTP_400_BAD_REQUEST,
                 errors=e.errors(),
+            )
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
+
+
+class UserUpdateView(APIView):
+    @extend_schema(
+        summary="Обновить данные пользователя",
+        description="Обновляет данные пользователя по его UUID.",
+        request=UserUpdateIn,
+        responses={
+            200: ApiResponse[UserSerializer],
+            400: ApiResponse[None],
+            500: ApiResponse[None],
+        },
+        tags=["Users"],
+        operation_id="update_user",
+    )
+    def put(
+        self,
+        request: Request,
+        user_uuid: UUID,
+    ) -> Response:
+        container = get_container()
+        service = container.resolve(BaseUserService)
+
+        try:
+            user_data = UserUpdateIn.model_validate(request.data)
+            user_data.validate_for_put()
+            updated_user = service.user_update_full(
+                user_id=user_uuid,
+                user_data=user_data,
+            )
+            updated_user_data = UserSerializer(updated_user).data
+
+            return build_api_response(
+                data=updated_user_data,
+                message="Пользователь успешно обновлен",
+                status_code=status.HTTP_200_OK,
+            )
+        except ValidationError as e:
+            return build_api_response(
+                message="Ошибка валидации входящих данных",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                errors=e.errors(),
+            )
+        except ValueError as e:
+            return build_api_response(
+                message=str(e),
+                status_code=status.HTTP_400_BAD_REQUEST,
+                errors=[{"detail": str(e)}],
+            )
+        except UserNotFoundException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
+
+
+class UserPartialUpdateView(APIView):
+    @extend_schema(
+        summary="Частичное обновление данных пользователя",
+        description=(
+            "Частично обновляет данные пользователя по его UUID. "
+            "Позволяет отправлять только те поля, которые необходимо изменить."
+        ),
+        request=UserUpdateIn,
+        responses={
+            200: ApiResponse[UserSerializer],
+        },
+        tags=["Users"],
+        operation_id="update_user_partial",
+    )
+    def patch(
+        self,
+        request: Request,
+        user_uuid: UUID,
+    ) -> Response:
+        container = get_container()
+        service = container.resolve(BaseUserService)
+
+        try:
+            user_data = UserUpdateIn.model_validate(request.data)
+            updated_user = service.user_update_partial(
+                user_id=user_uuid,
+                user_data=user_data,
+            )
+            updated_user_data = UserSerializer(updated_user).data
+
+            return build_api_response(
+                data=updated_user_data,
+                message="Пользователь успешно обновлен",
+                status_code=status.HTTP_200_OK,
+            )
+        except ValidationError as e:
+            return build_api_response(
+                message="Ошибка валидации входящих данных",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                errors=e.errors(),
+            )
+        except UserNotFoundException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
             )
         except ServiceException as e:
             return build_api_response(

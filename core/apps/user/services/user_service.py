@@ -8,6 +8,7 @@ from core.api.schemas.pagination import PaginationIn
 from core.api.v1.users.schemas.filters import UserFilter
 from core.api.v1.users.schemas.user_schemas import UserUpdateIn
 from core.apps.common.exceptions.user_custom_exceptions.user_exc import (
+    EmpryUpdateDataError,
     UserCreationError,
     UserEmailNotFoundException,
     UserNotFoundException,
@@ -87,4 +88,52 @@ class UserService(BaseUserService):
         user_id: uuid.UUID,
         user_data: UserUpdateIn,
     ) -> User:
-        pass
+        try:
+            user = self.get_user_by_id(user_id=user_id)
+            user.email = user_data.email
+            user.first_name = user_data.first_name
+            user.last_name = user_data.last_name
+            user.phone = user_data.phone
+            user.set_password(user_data.password)
+
+            user.full_clean()
+            user.save()
+            return user
+        except IntegrityError as e:
+            if "unique constraint" in str(e).lower() and "email" in str(e).lower():
+                raise UserCreationError(detail="Пользователь с таким email уже существует.")
+            raise UserCreationError(detail=f"Ошибка базы данных при полном обновлении пользователя: {e}")
+        except Exception as e:
+            raise UserCreationError(detail=f"Неизвестная ошибка при полном обновлении пользователя: {e}")
+
+    def user_update_partial(self, user_id: uuid.UUID, user_data: UserUpdateIn) -> User:
+        update_data = user_data.model_dump(exclude_unset=True)
+
+        if not update_data:
+            raise EmpryUpdateDataError()
+
+        try:
+            user = self.get_user_by_id(user_id=user_id)
+            if "email" in update_data:
+                user.email = update_data["email"]
+            if "first_name" in update_data:
+                user.first_name = update_data["first_name"]
+            if "last_name" in update_data:
+                user.last_name = update_data["last_name"]
+            if "phone" in update_data:
+                user.phone = update_data["phone"]
+
+            if "password" in update_data:
+                user.set_password(update_data["password"])
+
+            user.full_clean()
+            user.save()
+            return user
+        except UserNotFoundException:
+            raise
+        except IntegrityError as e:
+            if "unique constraint" in str(e).lower() and "email" in str(e).lower():
+                raise UserCreationError(detail="Пользователь с таким email уже существует.")
+            raise UserCreationError(detail=f"Ошибка базы данных при частичном обновлении пользователя: {e}")
+        except Exception as e:
+            raise UserCreationError(detail=f"Неизвестная ошибка при частичном обновлении пользователя: {e}")
