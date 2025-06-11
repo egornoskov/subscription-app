@@ -7,7 +7,6 @@ from drf_spectacular.utils import (
 )
 from pydantic import ValidationError
 from rest_framework import (
-    generics,
     status,
 )
 from rest_framework.request import Request
@@ -32,7 +31,7 @@ from core.apps.subscription.services.tariff_base_service import TariffBaseServic
 from core.project.containers import get_container
 
 
-class TariffListView(APIView):
+class TariffListCreateView(APIView):
     @extend_schema(
         summary="Получить все тарифы подписок",
         description="Получает список всех тарифов подписок.",
@@ -91,13 +90,13 @@ class TariffListView(APIView):
                 errors=[{"detail": str(e)}],
             )
         container = get_container()
-        service = container.resolve(TariffBaseService)
+        service: TariffBaseService = container.resolve(TariffBaseService)
 
         tariffs = service.get_tariff_list(
             filters=filters,
             pagination_in=pagination_in,
         )
-        tariffs_count = service.get_tariff_count(
+        tariffs_count: int = service.get_tariff_count(
             filters=filters,
         )
         pagination_out = PaginationOut(
@@ -115,8 +114,6 @@ class TariffListView(APIView):
             status_code=status.HTTP_200_OK,
         )
 
-
-class TariffCreationView(APIView):
     @extend_schema(
         summary="Создать новый тариф",
         description="Создаёт новый тариф с предоставленными данными.",
@@ -134,7 +131,7 @@ class TariffCreationView(APIView):
         request: Request,
     ) -> Response:
         container = get_container()
-        service = container.resolve(TariffBaseService)
+        service: TariffBaseService = container.resolve(TariffBaseService)
 
         try:
             tariff_data = TariffCreateSchema.model_validate(request.data)
@@ -146,6 +143,12 @@ class TariffCreationView(APIView):
             return build_api_response(
                 data=new_tariff_data,
                 status_code=status.HTTP_201_CREATED,
+            )
+        except ValidationError as e:
+            return build_api_response(
+                message="Ошибка валидации входящих данных",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                errors=e.errors(),
             )
         except ServiceException as e:
             return build_api_response(

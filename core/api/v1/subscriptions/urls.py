@@ -1,8 +1,7 @@
 from django.urls import path
 
 from core.api.v1.subscriptions.tariff_handlers import (
-    TariffCreationView,
-    TariffListView,
+    TariffListCreateView,  # Объединенный класс
     TariffDetailActionsView,
 )
 
@@ -12,13 +11,8 @@ app_name = "tariff"
 urlpatterns = [
     path(
         "tariff/",
-        TariffListView.as_view(),
-        name="tariff-list",
-    ),
-    path(
-        "tariff/create/",
-        TariffCreationView.as_view(),
-        name="tariff-create",
+        TariffListCreateView.as_view(),  # Используем объединенный класс для списка и создания
+        name="tariff-list-create",
     ),
     path(
         "tariff/<uuid:tariff_uuid>/",

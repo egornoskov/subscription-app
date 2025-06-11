@@ -7,10 +7,7 @@ from drf_spectacular.utils import (
     OpenApiTypes,
 )
 from pydantic import ValidationError
-from rest_framework import (
-    generics,
-    status,
-)
+from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -37,7 +34,7 @@ from core.apps.user.services.base_user_service import BaseUserService
 from core.project.containers import get_container
 
 
-class UserListView(APIView):
+class UserListCreateView(APIView):
     @extend_schema(
         summary="Получить всех активных пользователей",
         description="Получает список всех пользователей.",
@@ -120,108 +117,6 @@ class UserListView(APIView):
             status_code=status.HTTP_200_OK,
         )
 
-
-class UserRetriveByIdView(generics.RetrieveAPIView):
-    @extend_schema(
-        summary="Получить пользователя по UUID",
-        description="Получает детальную информацию о пользователе, используя его UUID.",
-        parameters=[
-            OpenApiParameter(
-                name="user_uuid",
-                type=OpenApiTypes.UUID,
-                location=OpenApiParameter.PATH,
-                description="UUID пользователя.",
-                required=True,
-            ),
-        ],
-        responses={
-            200: ApiResponse[UserSerializer],
-        },
-        tags=["Users"],
-        operation_id="retrieve_user_by_id",
-    )
-    def get(
-        self,
-        request: Request,
-        user_uuid: UUID,
-    ) -> Response:
-        container = get_container()
-        service: BaseUserService = container.resolve(BaseUserService)
-
-        try:
-            user = service.get_user_by_id(user_id=user_uuid)
-            user_serialize_data = UserSerializer(user).data
-
-            return build_api_response(
-                data=user_serialize_data,
-                message="Пользователь успешно получен",
-                status_code=status.HTTP_200_OK,
-            )
-        except ServiceException as e:
-            return build_api_response(
-                message=e.detail,
-                status_code=e.status_code,
-                errors=[{"detail": str(e)}],
-            )
-        except Exception as e:
-            return build_api_response(
-                message=f"Непредвиденная ошибка при обработке запроса: {e}",
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                errors=[{"detail": str(e)}],
-            )
-
-
-class UserRetriveByEmailView(generics.RetrieveAPIView):
-    @extend_schema(
-        summary="Получить пользователя по Email",
-        description="Получает детальную информацию о пользователе, используя его адрес электронной почты.",
-        parameters=[
-            OpenApiParameter(
-                name="user_email",
-                type={"type": "string", "format": "email"},
-                location=OpenApiParameter.PATH,
-                description="Адрес электронной почты пользователя.",
-                required=True,
-            ),
-        ],
-        responses={
-            200: ApiResponse[UserSerializer],
-        },
-        tags=["Users"],
-        operation_id="retrieve_user_by_email",
-    )
-    def get(
-        self,
-        request: Request,
-        user_email: str,
-    ) -> Response:
-        container = get_container()
-        service: BaseUserService = container.resolve(BaseUserService)
-
-        try:
-            user = service.get_user_by_email(user_email=user_email)
-            user_serialize_data = UserSerializer(user).data
-
-            return build_api_response(
-                data=user_serialize_data,
-                message="Пользователь успешно получен",
-                status_code=status.HTTP_200_OK,
-            )
-        except ServiceException as e:
-            return build_api_response(
-                message=e.detail,
-                status_code=e.status_code,
-                errors=[{"detail": str(e)}],
-            )
-        except Exception as e:
-            return build_api_response(
-                message=f"Непредвиденная ошибка при обработке запроса: {e}",
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                errors=[{"detail": str(e)}],
-            )
-
-
-class UserCreateView(APIView):
     @extend_schema(
         summary="Создать нового пользователя",
         description="Создаёт нового пользователя с предоставленными данными.",
@@ -276,18 +171,69 @@ class UserCreateView(APIView):
             )
 
 
-class UserUpdateView(APIView):
+class UserDetailActionsView(APIView):
     @extend_schema(
-        summary="Обновить данные пользователя",
-        description="Обновляет данные пользователя по его UUID.",
+        summary="Получить пользователя по UUID",
+        description="Получает детальную информацию о пользователе, используя его UUID.",
+        parameters=[
+            OpenApiParameter(
+                name="user_uuid",
+                type=OpenApiTypes.UUID,
+                location=OpenApiParameter.PATH,
+                description="UUID пользователя.",
+                required=True,
+            ),
+        ],
+        responses={
+            200: ApiResponse[UserSerializer],
+            404: ApiResponse[None],
+            500: ApiResponse[None],
+        },
+        tags=["Users"],
+        operation_id="retrieve_user_by_id",
+    )
+    def get(
+        self,
+        request: Request,
+        user_uuid: UUID,
+    ) -> Response:
+        container = get_container()
+        service: BaseUserService = container.resolve(BaseUserService)
+
+        try:
+            user = service.get_user_by_id(user_id=user_uuid)
+            user_serialize_data = UserSerializer(user).data
+
+            return build_api_response(
+                data=user_serialize_data,
+                message="Пользователь успешно получен",
+                status_code=status.HTTP_200_OK,
+            )
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
+
+    @extend_schema(
+        summary="Обновить данные пользователя (полное обновление)",
+        description="Полностью обновляет данные пользователя по его UUID. Все поля в теле запроса обязательны.",
         request=UserUpdateIn,
         responses={
             200: ApiResponse[UserSerializer],
             400: ApiResponse[None],
+            404: ApiResponse[None],
             500: ApiResponse[None],
         },
         tags=["Users"],
-        operation_id="update_user",
+        operation_id="update_user_full",
     )
     def put(
         self,
@@ -299,7 +245,6 @@ class UserUpdateView(APIView):
 
         try:
             user_data = UserUpdateIn.model_validate(request.data)
-            user_data.validate_for_put()
             updated_user = service.user_update_full(
                 user_id=user_uuid,
                 user_data=user_data,
@@ -336,8 +281,6 @@ class UserUpdateView(APIView):
                 errors=[{"detail": str(e)}],
             )
 
-
-class UserPartialUpdateView(APIView):
     @extend_schema(
         summary="Частичное обновление данных пользователя",
         description=(
@@ -347,6 +290,9 @@ class UserPartialUpdateView(APIView):
         request=UserUpdateIn,
         responses={
             200: ApiResponse[UserSerializer],
+            400: ApiResponse[None],
+            404: ApiResponse[None],
+            500: ApiResponse[None],
         },
         tags=["Users"],
         operation_id="update_user_partial",
@@ -397,13 +343,13 @@ class UserPartialUpdateView(APIView):
                 errors=[{"detail": str(e)}],
             )
 
-
-class UserSoftDeleteView(APIView):
     @extend_schema(
         summary="Мягкое удаление пользователя",
         description="Помечает пользователя как удаленного (soft delete) по его UUID, делая его неактивным.",
         responses={
-            200: ApiResponse[None],  # No specific data returned on successful soft delete
+            204: None,
+            404: ApiResponse[None],
+            500: ApiResponse[None],
         },
         tags=["Users"],
         operation_id="soft_delete_user",
@@ -418,10 +364,7 @@ class UserSoftDeleteView(APIView):
 
         try:
             service.soft_delete_user(user_id=user_uuid)
-            return build_api_response(
-                message="Пользователь успешно удален",
-                status_code=status.HTTP_200_OK,
-            )
+            return Response(status=status.HTTP_204_NO_CONTENT)
         except UserNotFoundException as e:
             return build_api_response(
                 message=e.detail,
@@ -432,6 +375,12 @@ class UserSoftDeleteView(APIView):
             return build_api_response(
                 message=e.detail,
                 status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 errors=[{"detail": str(e)}],
             )
 
@@ -444,7 +393,9 @@ class UserHardDeleteView(APIView):
             "Возможно только для пользователей, уже помеченных как удаленные (soft-deleted)."
         ),
         responses={
-            200: ApiResponse[None],
+            204: None,  # Изменено на 204 No Content, как для удаления
+            404: ApiResponse[None],
+            500: ApiResponse[None],
         },
         tags=["Users"],
         operation_id="hard_delete_user",
@@ -455,10 +406,7 @@ class UserHardDeleteView(APIView):
 
         try:
             service.hard_delete_user(user_id=user_uuid)
-            return build_api_response(
-                message="Пользователь успешно удален",
-                status_code=status.HTTP_200_OK,
-            )
+            return Response(status=status.HTTP_204_NO_CONTENT)  # Изменено на 204 No Content
         except UserNotFoundException as e:
             return build_api_response(
                 message=e.detail,
@@ -471,12 +419,18 @@ class UserHardDeleteView(APIView):
                 status_code=e.status_code,
                 errors=[{"detail": str(e)}],
             )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
 
 
-class ArchiveUserListView(APIView):
+class ArchivedUserListView(APIView):  # Переименован класс
     @extend_schema(
-        summary="Получить всех пользователей",
-        description="Получает список всех пользователей.",
+        summary="Получить всех архивных пользователей",  # Изменено описание для ясности
+        description="Получает список всех архивных пользователей.",  # Изменено описание
         parameters=[
             OpenApiParameter(
                 name="search",
@@ -506,7 +460,7 @@ class ArchiveUserListView(APIView):
             200: ApiResponse[ListResponsePayload[UserSerializer]],
         },
         tags=["Users"],
-        operation_id="list_all_users",
+        operation_id="list_all_archived_users",  # Изменено operation_id
     )
     def get(
         self,
@@ -555,3 +509,53 @@ class ArchiveUserListView(APIView):
             message="Список пользователей успешно получен",
             status_code=status.HTTP_200_OK,
         )
+
+
+# class UserRetriveByEmailView(generics.RetrieveAPIView):
+#     @extend_schema(
+#         summary="Получить пользователя по Email",
+#         description="Получает детальную информацию о пользователе, используя его адрес электронной почты.",
+#         parameters=[
+#             OpenApiParameter(
+#                 name="user_email",
+#                 type={"type": "string", "format": "email"},
+#                 location=OpenApiParameter.PATH,
+#                 description="Адрес электронной почты пользователя.",
+#                 required=True,
+#             ),
+#         ],
+#         responses={
+#             200: ApiResponse[UserSerializer],
+#         },
+#         tags=["Users"],
+#         operation_id="retrieve_user_by_email",
+#     )
+#     def get(
+#         self,
+#         request: Request,
+#         user_email: str,
+#     ) -> Response:
+#         container = get_container()
+#         service: BaseUserService = container.resolve(BaseUserService)
+
+#         try:
+#             user = service.get_user_by_email(user_email=user_email)
+#             user_serialize_data = UserSerializer(user).data
+
+#             return build_api_response(
+#                 data=user_serialize_data,
+#                 message="Пользователь успешно получен",
+#                 status_code=status.HTTP_200_OK,
+#             )
+#         except ServiceException as e:
+#             return build_api_response(
+#                 message=e.detail,
+#                 status_code=e.status_code,
+#                 errors=[{"detail": str(e)}],
+#             )
+#         except Exception as e:
+#             return build_api_response(
+#                 message=f"Непредвиденная ошибка при обработке запроса: {e}",
+#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#                 errors=[{"detail": str(e)}],
+#             )

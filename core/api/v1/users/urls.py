@@ -1,15 +1,10 @@
 from django.urls import path
 
 from core.api.v1.users.handlers import (
-    ArchiveUserListView,
-    UserCreateView,
+    UserListCreateView,
+    UserDetailActionsView,
     UserHardDeleteView,
-    UserListView,
-    UserPartialUpdateView,
-    UserRetriveByEmailView,
-    UserRetriveByIdView,
-    UserSoftDeleteView,
-    UserUpdateView,
+    ArchivedUserListView,
 )
 
 
@@ -17,48 +12,23 @@ app_name = "users"
 
 urlpatterns = [
     path(
-        "create/",
-        UserCreateView.as_view(),
-        name="create-user",
+        "users/",
+        UserListCreateView.as_view(),
+        name="user-list-create",
     ),
     path(
-        "",
-        UserListView.as_view(),
-        name="users-list",
+        "users/<uuid:user_uuid>/",
+        UserDetailActionsView.as_view(),
+        name="user-detail-actions",
     ),
     path(
-        "detail_uuid/<uuid:user_uuid>/",
-        UserRetriveByIdView.as_view(),
-        name="user-detail-by-id",
-    ),
-    path(
-        "detail_email/<str:user_email>/",
-        UserRetriveByEmailView.as_view(),
-        name="user-detail-by-email",
-    ),
-    path(
-        "update/<uuid:user_uuid>/",
-        UserUpdateView.as_view(),
-        name="update-user",
-    ),
-    path(
-        "partial_update/<uuid:user_uuid>/",
-        UserPartialUpdateView.as_view(),
-        name="partial-update-user",
-    ),
-    path(
-        "soft_delete/<uuid:user_uuid>/",
-        UserSoftDeleteView.as_view(),
-        name="soft-delete-user",
-    ),
-    path(
-        "hard_delete/<uuid:user_uuid>/",
+        "users/<uuid:user_uuid>/hard-delete/",
         UserHardDeleteView.as_view(),
-        name="hard-delete-user",
+        name="user-hard-delete",
     ),
     path(
-        "archive/",
-        ArchiveUserListView.as_view(),
-        name="archive-users",
+        "users/archive/",
+        ArchivedUserListView.as_view(),
+        name="user-archive-list",
     ),
 ]
