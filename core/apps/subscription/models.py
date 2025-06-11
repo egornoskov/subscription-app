@@ -2,8 +2,10 @@ import uuid
 
 from django.db import models
 
+from core.apps.common.models import TimedBaseModel
 
-class UserSubscription(models.Model):
+
+class UserSubscription(TimedBaseModel):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -39,7 +41,7 @@ class UserSubscription(models.Model):
         return f"{self.user} - {self.tariff}"
 
 
-class Tariff(models.Model):
+class Tariff(TimedBaseModel):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,

@@ -13,8 +13,8 @@ class TariffSerializer(serializers.ModelSerializer):
 
 
 class UserSubscriptionSerializer(serializers.ModelSerializer):
-    tariff = TariffSerializer(
-        read_only=True,
+    tariff = serializers.PrimaryKeyRelatedField(
+        queryset=Tariff.objects.all(),
     )
 
     class Meta:

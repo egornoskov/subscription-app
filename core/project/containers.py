@@ -2,6 +2,8 @@ from functools import lru_cache
 
 import punq
 
+from core.apps.subscription.services.tarif_service import TariffService
+from core.apps.subscription.services.tariff_base_service import TariffBaseService
 from core.apps.user.services.base_user_service import BaseUserService
 from core.apps.user.services.user_service import UserService
 
@@ -14,4 +16,5 @@ def get_container() -> punq.Container:
 def _initialize_container():
     container = punq.Container()
     container.register(BaseUserService, factory=lambda: UserService())
+    container.register(TariffBaseService, factory=lambda: TariffService())
     return container
