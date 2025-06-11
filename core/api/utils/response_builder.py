@@ -10,7 +10,7 @@ from typing import (
 from rest_framework import status
 from rest_framework.response import Response
 
-from core.api.response_schemas import ApiResponse
+from core.api.schemas.response_schemas import ApiResponse
 
 
 def build_api_response(

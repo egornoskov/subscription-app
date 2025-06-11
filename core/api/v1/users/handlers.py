@@ -15,16 +15,17 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.api.pagination import (
+from core.api.schemas.pagination import (
     PaginationIn,
     PaginationOut,
 )
-from core.api.response_schemas import (
+from core.api.schemas.response_schemas import (
     ApiResponse,
     ListResponsePayload,
 )
-from core.api.utils import build_api_response
-from core.api.v1.users.filters import UserFilter
+from core.api.utils.response_builder import build_api_response
+from core.api.v1.users.schemas.filters import UserFilter
+from core.api.v1.users.schemas.user_schemas import UserCreateIn
 from core.apps.common.exceptions.user_custom_exceptions.base_exception import ServiceException
 from core.apps.user.models import User
 from core.apps.user.serializers import UserSerializer
@@ -201,6 +202,61 @@ class UserRetriveByEmailView(generics.RetrieveAPIView):
                 data=user_serialize_data,
                 message="Пользователь успешно получен",
                 status_code=status.HTTP_200_OK,
+            )
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
+
+
+class UserCreateView(APIView):
+    @extend_schema(
+        summary="Создать нового пользователя",
+        description="Создаёт нового пользователя с предоставленными данными.",
+        request=UserCreateIn,
+        responses={
+            201: ApiResponse[UserSerializer],
+            400: ApiResponse[None],
+            500: ApiResponse[None],
+        },
+        tags=["Users"],
+        operation_id="create_user",
+    )
+    def post(
+        self,
+        request: Request,
+    ):
+        container = get_container()
+        service = container.resolve(BaseUserService)
+
+        try:
+            user_data = UserCreateIn.model_validate(request.data)
+            new_user = service.create_user(
+                email=user_data.email,
+                password=user_data.password,
+                first_name=user_data.first_name,
+                last_name=user_data.last_name,
+                phone=user_data.phone,
+            )
+            new_user_data = UserSerializer(new_user).data
+            return build_api_response(
+                data=new_user_data,
+                message="Пользователь успешно создан",
+                status_code=status.HTTP_201_CREATED,
+            )
+        except ValidationError as e:
+            return build_api_response(
+                message="Ошибка валидации входящих данных",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                errors=e.errors(),
             )
         except ServiceException as e:
             return build_api_response(

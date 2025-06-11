@@ -2,10 +2,13 @@ import uuid
 from typing import Iterable
 
 from django.db.models import Q
+from psycopg2 import IntegrityError
 
-from core.api.pagination import PaginationIn
-from core.api.v1.users.filters import UserFilter
+from core.api.schemas.pagination import PaginationIn
+from core.api.v1.users.schemas.filters import UserFilter
+from core.api.v1.users.schemas.user_schemas import UserUpdateIn
 from core.apps.common.exceptions.user_custom_exceptions.user_exc import (
+    UserCreationError,
     UserEmailNotFoundException,
     UserNotFoundException,
 )
@@ -17,7 +20,7 @@ class UserService(BaseUserService):
     def _build_user_query(self, filters: UserFilter | None = None) -> Q:
         query = Q(is_superuser=False)
 
-        if filters.search is not None and filters is not None:
+        if filters and filters.search is not None:
             query &= (
                 Q(first_name__icontains=filters.search)
                 | Q(last_name__icontains=filters.search)
@@ -61,3 +64,27 @@ class UserService(BaseUserService):
         if user is None:
             raise UserEmailNotFoundException(user_email=user_email)
         return user
+
+    def create_user(self, email: str, password: str, first_name: str, last_name: str, phone: str) -> User:
+        try:
+            user = User.objects.create_user(
+                email=email,
+                first_name=first_name,
+                last_name=last_name,
+                phone=phone,
+                password=password,
+            )
+            return user
+        except IntegrityError as e:
+            if "unique constraint" in str(e).lower() and "email" in str(e).lower():
+                raise UserCreationError(detail="Пользователь с таким email уже существует.")
+            raise UserCreationError(detail=f"Ошибка базы данных при создании пользователя: {e}")
+        except Exception as e:
+            raise UserCreationError(detail=f"Неизвестная ошибка при создании пользователя: {e}")
+
+    def user_update_full(
+        self,
+        user_id: uuid.UUID,
+        user_data: UserUpdateIn,
+    ) -> User:
+        pass

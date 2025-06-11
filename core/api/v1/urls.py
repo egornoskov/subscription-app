@@ -1,27 +1,11 @@
-from django.urls import path
-
-from core.api.v1.users.handlers import (
-    UserListView,
-    UserRetriveByEmailView,
-    UserRetriveByIdView,
+from django.urls import (
+    include,
+    path,
 )
 
 
 app_name = "v1"
+
 urlpatterns = [
-    path(
-        "users/",
-        UserListView.as_view(),
-        name="users",
-    ),
-    path(
-        "<uuid:user_uuid>/",
-        UserRetriveByIdView.as_view(),
-        name="user-detail-by-id",
-    ),
-    path(
-        "<str:user_email>/",
-        UserRetriveByEmailView.as_view(),
-        name="user-detail-by-email>",
-    ),
+    path("v1/users/", include("core.api.v1.users.urls")),
 ]

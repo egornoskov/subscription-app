@@ -12,7 +12,7 @@ from pydantic import (
     Field,
 )
 
-from core.api.pagination import PaginationOut
+from core.api.schemas.pagination import PaginationOut
 
 
 TData = TypeVar("TData")

@@ -5,5 +5,5 @@ from django.urls import (
 
 
 urlpatterns = [
-    path("v1/", include("core.api.v1.urls")),
+    path("", include("core.api.v1.urls")),
 ]

@@ -9,31 +9,29 @@ from typing import (
     Optional,
 )
 
-from core.api.pagination import PaginationIn
-from core.api.v1.users.filters import UserFilter
+from core.api.schemas.pagination import PaginationIn
+from core.api.v1.users.schemas.filters import UserFilter
 from core.apps.user.models import User
 
 
 class BaseUserService(ABC):
 
-    # @abstractmethod
-    # def create_user(
-    #     self, email: str, password: str, first_name: str, last_name: str, phone: Optional[str] = None
-    # ) -> User:
-    #     """
-    #     Создает нового пользователя в системе.
+    @abstractmethod
+    def create_user(self, email: str, password: str, first_name: str, last_name: str, phone: str = None) -> User:
+        """
+        Создает нового пользователя в системе.
 
-    #     Args:
-    #         email (str): Адрес электронной почты пользователя.
-    #         password (str): Пароль пользователя.
-    #         first_name (str): Имя пользователя.
-    #         last_name (str): Фамилия пользователя.
-    #         phone (Optional[str]): Номер телефона пользователя (опционально).
+        Args:
+            email (str): Адрес электронной почты пользователя.
+            password (str): Пароль пользователя.
+            first_name (str): Имя пользователя.
+            last_name (str): Фамилия пользователя.
+            phone ([str]): Номер телефона пользователя (опционально).
 
-    #     Returns:
-    #         User: Созданный объект пользователя.
-    #     """
-    #     pass
+        Returns:
+            User: Созданный объект пользователя.
+        """
+        pass
 
     @abstractmethod
     def get_user_by_id(self, user_id: uuid.UUID) -> Optional[User]:

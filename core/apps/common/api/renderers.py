@@ -13,7 +13,7 @@ from rest_framework.utils.serializer_helpers import (
     ReturnList,
 )
 
-from core.api.response_schemas import ApiResponse
+from core.api.schemas.response_schemas import ApiResponse
 
 
 class CustomAPIRenderer(JSONRenderer):

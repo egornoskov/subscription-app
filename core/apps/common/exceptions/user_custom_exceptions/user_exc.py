@@ -38,3 +38,11 @@ class UserEmailNotFoundException(ServiceException):
         if user_email:
             detail = f"Пользователь с ID '{user_email}' не найден."
         super().__init__(detail=detail, code="user_not_found")
+
+
+class UserCreationError(ServiceException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = "Произошла ошибка при создании пользователя."
+
+    def __init__(self, detail=None, code=None):
+        super().__init__(detail=detail or self.default_detail, code=code)
