@@ -5,6 +5,7 @@ from abc import (
 )
 from decimal import Decimal
 from typing import (  # Iterable,
+    Iterable,
     Iterator,
     Optional,
 )
@@ -28,9 +29,9 @@ class TariffBaseService(ABC):
     def get_tariff_by_id(self, tariff_uuid: uuid.UUID) -> Optional[Tariff]:
         pass
 
-    # @abstractmethod
-    # def soft_delete_tariff(self, tariff_uuid: uuid.UUID) -> Tariff:
-    #     pass
+    @abstractmethod
+    def soft_delete_tariff(self, tariff_uuid: uuid.UUID) -> Tariff:
+        pass
 
     # @abstractmethod
     # def hard_delete_tariff(self, tariff_uuid: uuid.UUID) -> None:
@@ -44,6 +45,6 @@ class TariffBaseService(ABC):
     def get_tariff_count(self, filters: TariffFilter) -> int:
         pass
 
-    # @abstractmethod
-    # def get_all_tariff_archive(self, filters: TariffFilter, pagination_in: PaginationIn) -> Iterable[Tariff]:
-    #     pass
+    @abstractmethod
+    def get_tariff_list_archive(self, filters: TariffFilter, pagination_in: PaginationIn) -> Iterable[Tariff]:
+        pass

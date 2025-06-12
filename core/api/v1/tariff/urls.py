@@ -1,8 +1,9 @@
 from django.urls import path
 
 from core.api.v1.tariff.handlers import (
-    TariffListCreateView,  # Объединенный класс
+    TariffListCreateView,
     TariffDetailActionsView,
+    TariffArchiveListView,
 )
 
 
@@ -18,5 +19,10 @@ urlpatterns = [
         "<uuid:tariff_uuid>/",
         TariffDetailActionsView.as_view(),
         name="tariff-detail-actions",
+    ),
+    path(
+        "archive/",
+        TariffArchiveListView.as_view(),
+        name="tariff-archive-list",
     ),
 ]

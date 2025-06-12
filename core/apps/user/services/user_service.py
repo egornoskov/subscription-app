@@ -2,6 +2,7 @@ import uuid
 from typing import Iterable
 
 from django.db.models import Q
+from django.utils import timezone
 from psycopg2 import IntegrityError
 
 from core.api.schemas.pagination import PaginationIn
@@ -292,12 +293,13 @@ class UserService(BaseUserService):
 
             user.is_deleted = True
             user.is_active = False
+            user.deleted_at = timezone.now()
 
             user.full_clean()
             user.save()
             return user
-        except UserNotFoundException:  # Добавлено для явной обработки, если get_user_by_id поднял его
-            raise
+        except IntegrityError as e:
+            raise UserNotFoundException(detail=f"Ошибка базы данных при мягком удалении пользователя: {e}")
         except Exception as e:
             raise UserDeleteError(detail=f"Неизвестная ошибка при мягком удалении пользователя: {e}")
 

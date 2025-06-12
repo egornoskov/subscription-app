@@ -5,7 +5,7 @@ from rest_framework import status
 from core.apps.common.exceptions.base_exception import ServiceException
 
 
-class TariffNotFoundException(ServiceException):
+class TariffNotFoundError(ServiceException):
     status_code = status.HTTP_404_NOT_FOUND
     default_detail = "Тариф не найден."
 
@@ -48,7 +48,7 @@ class TariffActiveDeleteError(ServiceException):
         super().__init__(detail=self.detail or self.default_detail, code=self.code)
 
 
-class TariffUpdateException(ServiceException):
+class TariffUpdateError(ServiceException):
     status_code = status.HTTP_400_BAD_REQUEST
     default_detail = "Произошла ошибка при обновлении тарифа."
 
