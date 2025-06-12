@@ -10,8 +10,8 @@ from typing import (  # Iterable,
 )
 
 from core.api.schemas.pagination import PaginationIn
-from core.api.v1.subscriptions.schemas.filters import TariffFilter
-from core.apps.subscription.models import Tariff
+from core.api.v1.tariff.schemas.filters import TariffFilter
+from core.apps.tariff.models import Tariff
 
 
 class TariffBaseService(ABC):

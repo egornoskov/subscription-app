@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.apps.subscription.serializers import UserSubscriptionSerializer
+from core.apps.subscriptions.serializers import UserSubscriptionSerializer
 from core.apps.user.models import User
 
 

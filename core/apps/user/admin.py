@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserCreationForm
 
-from core.apps.subscription.models import UserSubscription
+from core.apps.subscriptions.models import UserSubscription
 
 from .models import User
 

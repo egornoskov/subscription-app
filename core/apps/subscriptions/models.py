@@ -18,7 +18,7 @@ class UserSubscription(TimedBaseModel):
         related_name="user_subscription",
     )
     tariff = models.ForeignKey(
-        "subscription.Tariff",
+        "tariff.Tariff",
         on_delete=models.CASCADE,
         related_name="tariff_subscription",
     )
@@ -39,21 +39,3 @@ class UserSubscription(TimedBaseModel):
 
     def __str__(self):
         return f"{self.user} - {self.tariff}"
-
-
-class Tariff(TimedBaseModel):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-    )
-    name = models.CharField(
-        max_length=100,
-    )
-    price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-    )
-
-    def __str__(self):
-        return self.name

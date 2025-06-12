@@ -1,15 +1,10 @@
 from rest_framework import serializers
 
-from core.apps.subscription.models import (
+from core.apps.tariff.models import (
     Tariff,
-    UserSubscription,
 )
 
-
-class TariffSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tariff
-        fields = ("id", "name", "price")
+from core.apps.subscriptions.models import UserSubscription
 
 
 class UserSubscriptionSerializer(serializers.ModelSerializer):

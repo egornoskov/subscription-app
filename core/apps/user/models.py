@@ -60,8 +60,8 @@ class User(AbstractUser, TimedBaseModel):
     )
 
     subscriptions = models.ManyToManyField(
-        "subscription.Tariff",
-        through="subscription.UserSubscription",
+        "tariff.Tariff",
+        through="subscriptions.UserSubscription",
         related_name="subscribed_users",
         verbose_name="Подписки",
     )

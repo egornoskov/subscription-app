@@ -1,16 +1,7 @@
 from django.contrib import admin
 
-from .models import (
-    Tariff,
-    UserSubscription,
-)
 
-
-@admin.register(Tariff)
-class TariffAdmin(admin.ModelAdmin):
-    list_display = ("name", "price")
-    search_fields = ("name",)
-    ordering = ("price",)
+from .models import UserSubscription
 
 
 @admin.register(UserSubscription)

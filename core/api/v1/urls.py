@@ -8,5 +8,5 @@ app_name = "v1"
 
 urlpatterns = [
     path("v1/users/", include("core.api.v1.users.urls")),
-    path("v1/subscriptions/", include("core.api.v1.subscriptions.urls")),
+    path("v1/tariff/", include("core.api.v1.tariff.urls")),
 ]

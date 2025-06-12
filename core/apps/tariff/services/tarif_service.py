@@ -9,16 +9,16 @@ from django.db.models import Q
 from psycopg2 import IntegrityError
 
 from core.api.schemas.pagination import PaginationIn
-from core.api.v1.subscriptions.schemas.filters import TariffFilter
-from core.api.v1.subscriptions.schemas.schemas import TariffUpdateSchema
+from core.api.v1.tariff.schemas.filters import TariffFilter
+from core.api.v1.tariff.schemas.schemas import TariffUpdateSchema
 from core.apps.common.exceptions.tariff_custom_exceptions.tariff_exc import (
     EmptyTariffDataError,
     TariffCreationError,
     TariffNotFoundException,
     TariffUpdateException,
 )
-from core.apps.subscription.models import Tariff
-from core.apps.subscription.services.tariff_base_service import TariffBaseService
+from core.apps.tariff.models import Tariff
+from core.apps.tariff.services.tariff_base_service import TariffBaseService
 
 
 class TariffService(TariffBaseService):

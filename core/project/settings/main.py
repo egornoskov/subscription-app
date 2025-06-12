@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     "drf_spectacular",
     # first party
     "core.apps.user",
-    "core.apps.subscription",
+    "core.apps.tariff",
+    "core.apps.subscriptions",
 ]
 
 MIDDLEWARE = [

@@ -22,12 +22,12 @@ from core.api.schemas.response_schemas import (
     ListResponsePayload,
 )
 from core.api.utils.response_builder import build_api_response
-from core.api.v1.subscriptions.schemas.filters import TariffFilter
-from core.api.v1.subscriptions.schemas.schemas import TariffCreateSchema, TariffUpdateSchema
+from core.api.v1.tariff.schemas.filters import TariffFilter
+from core.api.v1.tariff.schemas.schemas import TariffCreateSchema, TariffUpdateSchema
 from core.apps.common.exceptions.base_exception import ServiceException
 from core.apps.common.exceptions.tariff_custom_exceptions.tariff_exc import TariffNotFoundException
-from core.apps.subscription.serializers import TariffSerializer
-from core.apps.subscription.services.tariff_base_service import TariffBaseService
+from core.apps.tariff.serializers import TariffSerializer
+from core.apps.tariff.services.tariff_base_service import TariffBaseService
 from core.project.containers import get_container
 
 
