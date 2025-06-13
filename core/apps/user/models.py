@@ -61,7 +61,7 @@ class User(AbstractUser, TimedBaseModel):
 
     subscriptions = models.ManyToManyField(
         "tariff.Tariff",
-        through="subscriptions.UserSubscription",
+        through="subscriptions.Subscription",
         related_name="subscribed_users",
         verbose_name="Подписки",
     )
@@ -97,3 +97,4 @@ class User(AbstractUser, TimedBaseModel):
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
         ordering = ["-id"]
+        db_table = "users"

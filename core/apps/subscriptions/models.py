@@ -5,7 +5,7 @@ from django.db import models
 from core.apps.common.models import TimedBaseModel
 
 
-class UserSubscription(TimedBaseModel):
+class Subscription(TimedBaseModel):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,

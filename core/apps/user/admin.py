@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserCreationForm
 
-from core.apps.subscriptions.models import UserSubscription
+from core.apps.subscriptions.models import Subscription
 
 from .models import User
 
@@ -21,8 +21,8 @@ class CustomUserCreationForm(UserCreationForm):
         self.fields["phone"].required = False  # Если phone обязательное, установи True
 
 
-class UserSubscriptionInline(admin.TabularInline):
-    model = UserSubscription
+class SubscriptionInline(admin.TabularInline):
+    model = Subscription
     extra = 1  # Количество пустых строк для добавления подписок
     fields = ("tariff", "start_date", "end_date")  # Поля для отображения
     verbose_name = "Подписка"
@@ -31,9 +31,9 @@ class UserSubscriptionInline(admin.TabularInline):
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    inlines = (UserSubscriptionInline,)
+    inlines = (SubscriptionInline,)
     add_form = CustomUserCreationForm  # Кастомная форма для создания
-    list_display = ("email", "first_name", "last_name", "phone", "is_staff", "is_superuser", "subscriptions_overview")
+    list_display = ("email", "first_name", "last_name", "phone", "is_staff", "subscriptions_overview", "is_active")
     list_filter = ("is_staff", "is_superuser", "is_active", "groups")
 
     fieldsets = (
@@ -63,8 +63,8 @@ class UserAdmin(BaseUserAdmin):
     subscriptions_overview.short_description = "Подписки"
 
 
-class UserSubscriptionInline(admin.TabularInline):
-    model = UserSubscription
+class SubscriptionInline(admin.TabularInline):
+    model = Subscription
     extra = 1  # Количество пустых строк для добавления подписок
     fields = ("tariff", "start_date", "end_date")  # Поля для отображения
     verbose_name = "Подписка"

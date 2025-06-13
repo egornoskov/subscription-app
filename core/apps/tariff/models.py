@@ -19,5 +19,9 @@ class Tariff(TimedBaseModel):
         decimal_places=2,
     )
 
+    class Meta:
+        ordering = ["-id"]
+        db_table = "tariffs"
+
     def __str__(self):
         return self.name

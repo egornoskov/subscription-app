@@ -22,7 +22,7 @@ class TariffBaseService(ABC):
         self,
         name: str,
         price: Decimal,
-    ) -> "Tariff":
+    ) -> Tariff:
         pass
 
     @abstractmethod

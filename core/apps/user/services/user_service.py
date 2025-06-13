@@ -1,7 +1,7 @@
 import uuid
 from typing import Iterable
 
-from django.db.models import Q
+from django.db.models import Q, Prefetch
 from django.utils import timezone
 from psycopg2 import IntegrityError
 
@@ -18,6 +18,7 @@ from core.apps.common.exceptions.user_custom_exceptions.user_exc import (
     UserNotFoundException,
     UserUpdateError,
 )
+from core.apps.subscriptions.models import Subscription
 from core.apps.user.models import User
 from core.apps.user.services.base_user_service import BaseUserService
 
@@ -99,7 +100,15 @@ class UserService(BaseUserService):
         """
         query = self._build_user_query(filters)
         queryset = User.objects.filter(query)
-        queryset = queryset.prefetch_related("user_subscription__tariff")
+        queryset = queryset.prefetch_related(
+            Prefetch(
+                "user_subscription",
+                queryset=Subscription.objects.select_related("tariff").filter(is_active=True),
+                to_attr="user_subscriptions_details",
+            )
+        )
+        queryset = queryset.order_by("id")
+
         users = queryset[pagination_in.offset : pagination_in.offset + pagination_in.limit]
         return users
 

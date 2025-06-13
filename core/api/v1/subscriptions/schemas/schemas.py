@@ -1,26 +1,19 @@
-import datetime
 from uuid import UUID
 from pydantic import BaseModel, Field
-from core.api.v1.tariff.schemas.schemas import TariffCreateSchema
 
 
-class UserSubscriptionOut(BaseModel):
-    id: UUID = Field(
+class SubscriptionCreate(BaseModel):
+    user_id: UUID = Field(
         ...,
-        description="Уникальный идентификатор подписки",
+        description="Уникальный идентификатор пользователя",
     )
-    tariff: TariffCreateSchema = (Field(..., description="Информация о тарифе подписки"),)
-    start_date: datetime = Field(
+    tariff_id: UUID = Field(
         ...,
-        description="Дата начала подписки",
+        description="Уникальный идентификатор тарифа",
     )
-    end_date: datetime = Field(
+    month_duration: int = Field(
         ...,
-        description="Дата окончания подписки",
-    )
-    is_active: bool = Field(
-        ...,
-        description="Статус активности подписки",
+        description="Продолжительность подписки в месяцах",
     )
 
     class Config:

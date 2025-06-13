@@ -1,0 +1,101 @@
+from typing import Iterable, Optional
+import uuid
+from django.utils import timezone
+from dateutil.relativedelta import relativedelta
+
+from psycopg2 import IntegrityError
+from core.api.schemas.pagination import PaginationIn
+from core.api.v1.subscriptions.schemas.filters import SubscriptionFilter
+from core.apps.common.exceptions.subs_exception.subs_exc import SubscriptionCreationError, SubscriptionNotFoundException
+from core.apps.subscriptions.models import Subscription
+from core.apps.subscriptions.services.base_service import SubscriptionBaseService
+
+from django.db.models import Q
+
+
+class SubscriptionService(SubscriptionBaseService):
+
+    def _build_query_subs(self, filters: SubscriptionFilter | None = None) -> Q:
+        query = Q()
+
+        if filters and filters.search is not None:
+            query &= Q(tariff__name__icontains=filters.search)
+        return query
+
+    def get_subscription_list(self, filters: SubscriptionFilter, pagination_in: PaginationIn) -> Iterable[Subscription]:
+        query = self._build_query_subs(filters)
+
+        queryset = Subscription.objects.filter(query).select_related("user", "tariff")
+
+        subscriptions = queryset[pagination_in.offset : pagination_in.offset + pagination_in.limit]
+
+        return subscriptions
+
+    def get_subscription_count(self, filters: SubscriptionFilter) -> int:
+        query = self._build_query_subs(filters)
+        return Subscription.objects.filter(query).count()
+
+    def create_subscription(
+        self,
+        user_id: uuid.UUID,
+        tariff_id: uuid.UUID,
+        month_duration: int,
+    ) -> Subscription:
+        try:
+            current_datetime = timezone.now()
+            end_datetime = current_datetime + relativedelta(months=month_duration)
+
+            subscription = Subscription.objects.create(
+                user_id=user_id,
+                tariff_id=tariff_id,
+                start_date=current_datetime,
+                end_date=end_datetime,
+                is_active=True,
+            )
+            return subscription
+        except IntegrityError as e:
+            error_message = str(e)
+            if "violates foreign key constraint" in error_message:
+                if "user_id" in error_message:
+                    raise SubscriptionCreationError(detail=f"Пользователь с ID {user_id} не найден.")
+                elif "tariff_id" in error_message:
+                    raise SubscriptionCreationError(detail=f"Тариф с ID {tariff_id} не найден.")
+                else:
+                    raise SubscriptionCreationError(
+                        detail=f"Ошибка внешнего ключа при создании подписки: {error_message}"
+                    )
+            elif "duplicate key value violates unique constraint" in error_message:
+                raise SubscriptionCreationError(
+                    detail="Подписка с таким пользователем, тарифом и датой начала уже существует."
+                )
+            else:
+                raise SubscriptionCreationError(
+                    detail=f"Ошибка целостности данных при создании подписки: {error_message}"
+                )
+        except Exception as e:
+            raise SubscriptionCreationError(detail=f"Непредвиденная ошибка при создании подписки: {str(e)}")
+
+    def get_subscription_by_id(self, sub_id: uuid.UUID) -> Optional[Subscription]:
+
+        query = self._build_query_subs()
+
+        subscription = Subscription.objects.filter(id=sub_id).filter(query).first()
+
+        if subscription is None:
+            raise SubscriptionNotFoundException(sub_id=sub_id)
+
+        return subscription
+
+    # @abstractmethod
+    # def soft_delete_subscription(self, tariff_uuid: uuid.UUID) -> Subscription:
+    #     pass
+
+    # @abstractmethod
+    # def get_subscription_list_archive(
+    #     self, filters: SubscriptionFilter, pagination_in: PaginationIn
+    # ) -> Iterable[Subscription]:
+    #     pass
+
+    # @abstractmethod
+    # def get_subscription_count_archive(self, filters: SubscriptionFilter) -> int:
+    #     pass

@@ -1,11 +1,11 @@
 from django.contrib import admin
 
 
-from .models import UserSubscription
+from .models import Subscription
 
 
-@admin.register(UserSubscription)
-class UserSubscriptionAdmin(admin.ModelAdmin):
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ("user", "tariff", "start_date", "end_date")
     search_fields = ("user__email", "tariff__name")
     list_filter = ("tariff", "start_date", "end_date")
