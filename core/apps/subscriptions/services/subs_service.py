@@ -1,3 +1,4 @@
+import datetime
 from typing import Iterable, Optional
 import uuid
 from django.utils import timezone
@@ -6,11 +7,19 @@ from dateutil.relativedelta import relativedelta
 from psycopg2 import IntegrityError
 from core.api.schemas.pagination import PaginationIn
 from core.api.v1.subscriptions.schemas.filters import SubscriptionFilter
-from core.apps.common.exceptions.subs_exception.subs_exc import SubscriptionCreationError, SubscriptionNotFoundException
+from core.apps.common.exceptions.subs_exception.subs_exc import (
+    # SubscriptionActiveDeleteError,
+    SubscriptionCreationError,
+    SubscriptionDeleteError,
+    SubscriptionNotFoundException,
+    SubscriptionUpdateError,
+)
 from core.apps.subscriptions.models import Subscription
 from core.apps.subscriptions.services.base_service import SubscriptionBaseService
 
 from django.db.models import Q
+
+from core.apps.tariff.models import Tariff
 
 
 class SubscriptionService(SubscriptionBaseService):
@@ -86,9 +95,60 @@ class SubscriptionService(SubscriptionBaseService):
 
         return subscription
 
-    # @abstractmethod
-    # def soft_delete_subscription(self, tariff_uuid: uuid.UUID) -> Subscription:
-    #     pass
+    def update_subscription(self, sub_uuid: uuid.UUID, tariff: Tariff, end_date: datetime.date) -> Subscription:
+        try:
+            sub = self.get_subscription_by_id(sub_uuid)
+
+            sub.tariff = tariff
+            sub.end_date = end_date
+
+            sub.full_clean()
+            sub.save()
+            return sub
+
+        except IntegrityError as e:
+            raise SubscriptionUpdateError(detail=f"Ошибка базы данных при полном обновлении тарифа: {e}")
+        except Exception as e:
+            raise SubscriptionUpdateError(detail=f"Неизвестная ошибка при полном обновлении тарифа: {e}")
+
+    def partial_update_subscription(
+        self,
+        sub_uuid: uuid.UUID,
+        tariff: Optional[Tariff] = None,  # <-- Примет None
+        end_date: Optional[datetime.date] = None,
+    ) -> Subscription:
+        subscription = self.get_subscription_by_id(sub_uuid)
+
+        try:
+            if tariff is not None:
+                subscription.tariff = tariff
+            if end_date is not None:
+                subscription.end_date = end_date
+
+            subscription.full_clean()
+            subscription.save()
+            return subscription
+
+        except IntegrityError as e:
+            raise SubscriptionUpdateError(detail=f"Ошибка базы данных при полном обновлении тарифа: {e}")
+        except Exception as e:
+            raise SubscriptionUpdateError(detail=f"Неизвестная ошибка при полном обновлении тарифа: {e}")
+
+    def soft_delete_subscription(self, sub_id: uuid.UUID) -> Subscription:
+        try:
+            subscritpion: Subscription = self.get_subscription_by_id(sub_id=sub_id)
+
+            subscritpion.is_deleted = True
+            subscritpion.is_active = False
+            subscritpion.deleted_at = timezone.now()
+
+            subscritpion.full_clean()
+            subscritpion.save()
+            return subscritpion
+        except IntegrityError as e:
+            raise SubscriptionDeleteError(detail=f"Ошибка базы данных при мягком удалении тарифа: {e}")
+        except Exception as e:
+            raise SubscriptionDeleteError(detail=f"Неизвестная ошибка при мягком удалении тарифа: {e}")
 
     # @abstractmethod
     # def get_subscription_list_archive(

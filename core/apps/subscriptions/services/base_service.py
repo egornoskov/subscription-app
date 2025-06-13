@@ -6,7 +6,6 @@ from abc import (
 
 from typing import (  # Iterable,
     Iterable,
-    Iterator,
     Optional,
 )
 
@@ -27,12 +26,12 @@ class SubscriptionBaseService(ABC):
         pass
 
     @abstractmethod
-    def get_subscription_by_id(self, tariff_uuid: uuid.UUID) -> Optional[Subscription]:
+    def get_subscription_by_id(self, sub_id: uuid.UUID) -> Optional[Subscription]:
         pass
 
-    # @abstractmethod
-    # def soft_delete_subscription(self, tariff_uuid: uuid.UUID) -> Subscription:
-    #     pass
+    @abstractmethod
+    def soft_delete_subscription(self, sub_id: uuid.UUID) -> Subscription:
+        pass
 
     # @abstractmethod
     # def hard_delete_tariff(self, tariff_uuid: uuid.UUID) -> None:

@@ -207,3 +207,144 @@ class SubscriptionDetailActionsView(APIView):
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 errors=[{"detail": str(e)}],
             )
+
+    @extend_schema(
+        summary="Обновить данные подписки (полное обновление)",
+        description="Полностью обновляет данные подписки по его UUID. Все поля в теле запроса обязательны.",
+        request=SubscriptionSerializer,
+        responses={
+            200: ApiResponse[SubscriptionSerializer],
+            400: ApiResponse[None],
+            404: ApiResponse[None],
+            500: ApiResponse[None],
+        },
+        tags=["Subscriptions"],
+        operation_id="update_subscription",
+    )
+    def put(self, request: Request, subscription_uuid: uuid.UUID) -> Response:
+        container = get_container()
+        service: SubscriptionBaseService = container.resolve(SubscriptionBaseService)
+
+        try:
+            serializer = SubscriptionSerializer(
+                data=request.data,
+                partial=False,
+            )
+            serializer.is_valid(raise_exception=True)
+
+            tariff_obj = serializer.validated_data.get("tariff")
+            end_date = serializer.validated_data.get("end_date")
+
+            updated_subscription = service.update_subscription(
+                sub_uuid=subscription_uuid,
+                tariff=tariff_obj,
+                end_date=end_date,
+            )
+
+            updated_subscription_data = SubscriptionSerializer(updated_subscription).data
+
+            return build_api_response(
+                data=updated_subscription_data,
+                status_code=status.HTTP_200_OK,
+            )
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
+
+    @extend_schema(
+        summary="Частичное обновление данных подписки",
+        description=(
+            "Частично обновляет данные подписки по его UUID. "
+            "Позволяет отправлять только те поля, которые необходимо изменить."
+        ),
+        request=SubscriptionSerializer,
+        responses={
+            200: ApiResponse[SubscriptionSerializer],
+            400: ApiResponse[None],
+            404: ApiResponse[None],
+            500: ApiResponse[None],
+        },
+        tags=["Subscriptions"],
+        operation_id="partial_update_subscriptions",
+    )
+    def patch(self, request: Request, subscription_uuid: uuid.UUID) -> Response:
+        container = get_container()
+        service: SubscriptionBaseService = container.resolve(SubscriptionBaseService)
+
+        try:
+            serializer = SubscriptionSerializer(
+                data=request.data,
+                partial=False,
+            )
+            serializer.is_valid(raise_exception=True)
+
+            tariff_obj = serializer.validated_data.get("tariff")
+            end_date = serializer.validated_data.get("end_date")
+
+            updated_subscription = service.partial_update_subscription(
+                sub_uuid=subscription_uuid,
+                tariff=tariff_obj,
+                end_date=end_date,
+            )
+
+            updated_subscription_data = SubscriptionSerializer(updated_subscription).data
+
+            return build_api_response(
+                data=updated_subscription_data,
+                status_code=status.HTTP_200_OK,
+            )
+
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
+
+    @extend_schema(
+        summary="Мягкое удаление подписки",
+        description="Помечает подписки как удаленного (soft delete) по его UUID, делая его неактивным.",
+        responses={
+            204: None,
+            404: ApiResponse[None],
+            500: ApiResponse[None],
+        },
+        tags=["Subscriptions"],
+        operation_id="soft_delete_subscription",
+    )
+    def delete(self, request: Request, subscription_uuid: uuid.UUID) -> Response:
+        container = get_container()
+        service: SubscriptionBaseService = container.resolve(SubscriptionBaseService)
+
+        try:
+            service.soft_delete_subscription(sub_id=subscription_uuid)
+            return build_api_response(
+                status_code=status.HTTP_200_OK,
+            )
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )
