@@ -1,6 +1,7 @@
 import uuid
 from typing import (
     Iterable,
+    Optional,
 )
 
 from django.db.models import Q
@@ -10,9 +11,14 @@ from core.api.schemas.pagination import PaginationIn
 from core.api.v1.products.schemas.filters import OrderFilter
 from core.apps.products.models import Order
 from core.apps.products.services.base_order_service import OrderBaseService
+from django.db import transaction
 
-
-from core.apps.common.exceptions.orders_exceptions.order_exc import OrderCreationError
+from core.apps.common.exceptions.orders_exceptions.order_exc import (
+    OrderCreationError,
+    OrderDeleteError,
+    OrderNotFoundException,
+    OrderUpdateError,
+)
 
 
 class OrderService(OrderBaseService):
@@ -81,3 +87,52 @@ class OrderService(OrderBaseService):
 
         # def soft_delete_order(self, order_id: uuid.UUID) -> Order:
         #     raise NotImplementedError("Метод soft_delete_order не реализован")
+
+    def get_order_by_id(
+        self,
+        order_id: uuid.UUID,
+        user_id: uuid.UUID | None = None,
+    ) -> Optional[Order]:
+
+        query = self._build_query_orders(user_id=user_id)
+
+        final_query = query & Q(id=order_id)
+
+        order = Order.objects.filter(final_query).first()
+
+        if order is None:
+            raise OrderNotFoundException(order_id=order_id)
+
+        return order
+
+    @transaction.atomic
+    def update_order(self, order_id: uuid.UUID, data: dict) -> Order:
+        try:
+            order = self.get_order_by_id(order_id=order_id)
+
+            if "description" in data:
+                order.description = data["description"]
+
+            order.full_clean()
+            order.save()
+            return order
+
+        except IntegrityError as e:
+            raise OrderUpdateError(detail=f"Ошибка базы данных при полном обновлении заказа: {e}")
+        except Exception as e:
+            raise OrderUpdateError(detail=f"Неизвестная ошибка при полном обновлении заказа: {e}")
+
+    @transaction.atomic
+    def soft_delete_order(self, order_id: uuid.UUID) -> Order:
+        try:
+            order: Order = self.get_order_by_id(order_id=order_id)
+
+            order.is_deleted = True
+
+            order.full_clean()
+            order.save()
+            return order
+        except IntegrityError as e:
+            raise OrderDeleteError(detail=f"Ошибка базы данных при мягком удалении заказа: {e}")
+        except Exception as e:
+            raise OrderDeleteError(detail=f"Неизвестная ошибка при мягком удалении заказа: {e}")

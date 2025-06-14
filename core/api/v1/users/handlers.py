@@ -36,6 +36,7 @@ from core.project.containers import get_container
 from core.project.permissions import IsUserOwnerOrAdmin
 
 
+@extend_schema(tags=["Admin"])
 class UserListCreateView(APIView):
     permission_classes = [IsAdminUser]
 
@@ -70,7 +71,6 @@ class UserListCreateView(APIView):
         responses={
             200: ApiResponse[ListResponsePayload[UserSerializer]],
         },
-        tags=["Users"],
         operation_id="list_all_users",
     )
     def get(
@@ -130,7 +130,6 @@ class UserListCreateView(APIView):
             400: ApiResponse[None],
             500: ApiResponse[None],
         },
-        tags=["Users"],
         operation_id="create_user",
     )
     def post(
@@ -399,6 +398,7 @@ class UserDetailActionsView(APIView):
             )
 
 
+@extend_schema(tags=["Admin"])
 class UserHardDeleteView(APIView):
     permission_classes = [IsAdminUser]
 
@@ -413,7 +413,6 @@ class UserHardDeleteView(APIView):
             404: ApiResponse[None],
             500: ApiResponse[None],
         },
-        tags=["Users"],
         operation_id="hard_delete_user",
     )
     def delete(self, request: Request, user_uuid: UUID) -> Response:
@@ -443,6 +442,7 @@ class UserHardDeleteView(APIView):
             )
 
 
+@extend_schema(tags=["Admin"])
 class ArchivedUserListView(APIView):
     permission_classes = [IsAdminUser]
 
@@ -477,7 +477,6 @@ class ArchivedUserListView(APIView):
         responses={
             200: ApiResponse[ListResponsePayload[UserSerializer]],
         },
-        tags=["Users"],
         operation_id="list_all_archived_users",  # Изменено operation_id
     )
     def get(
@@ -527,53 +526,3 @@ class ArchivedUserListView(APIView):
             message="Список пользователей успешно получен",
             status_code=status.HTTP_200_OK,
         )
-
-
-# class UserRetriveByEmailView(generics.RetrieveAPIView):
-#     @extend_schema(
-#         summary="Получить пользователя по Email",
-#         description="Получает детальную информацию о пользователе, используя его адрес электронной почты.",
-#         parameters=[
-#             OpenApiParameter(
-#                 name="user_email",
-#                 type={"type": "string", "format": "email"},
-#                 location=OpenApiParameter.PATH,
-#                 description="Адрес электронной почты пользователя.",
-#                 required=True,
-#             ),
-#         ],
-#         responses={
-#             200: ApiResponse[UserSerializer],
-#         },
-#         tags=["Users"],
-#         operation_id="retrieve_user_by_email",
-#     )
-#     def get(
-#         self,
-#         request: Request,
-#         user_email: str,
-#     ) -> Response:
-#         container = get_container()
-#         service: BaseUserService = container.resolve(BaseUserService)
-
-#         try:
-#             user = service.get_user_by_email(user_email=user_email)
-#             user_serialize_data = UserSerializer(user).data
-
-#             return build_api_response(
-#                 data=user_serialize_data,
-#                 message="Пользователь успешно получен",
-#                 status_code=status.HTTP_200_OK,
-#             )
-#         except ServiceException as e:
-#             return build_api_response(
-#                 message=e.detail,
-#                 status_code=e.status_code,
-#                 errors=[{"detail": str(e)}],
-#             )
-#         except Exception as e:
-#             return build_api_response(
-#                 message=f"Непредвиденная ошибка при обработке запроса: {e}",
-#                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-#                 errors=[{"detail": str(e)}],
-#             )

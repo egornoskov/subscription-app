@@ -32,9 +32,21 @@ from core.apps.common.exceptions.tariff_custom_exceptions.tariff_exc import Tari
 from core.apps.tariff.serializers import TariffSerializer
 from core.apps.tariff.services.tariff_base_service import TariffBaseService
 from core.project.containers import get_container
+from core.project.permissions import IsAdminUser, IsUserOwnerOrAdmin
 
 
 class TariffListCreateView(APIView):
+
+    def get_permissions(self):
+        """
+        Возвращает список разрешений в зависимости от HTTP-метода запроса.
+        """
+        if self.request.method in ["GET"]:
+            return [IsUserOwnerOrAdmin()]
+        elif self.request.method in ["POST"]:
+            return [IsAdminUser()]
+        return super().get_permissions()
+
     @extend_schema(
         summary="Получить все тарифы подписок",
         description="Получает список всех тарифов подписок.",
@@ -126,7 +138,7 @@ class TariffListCreateView(APIView):
             400: ApiResponse[None],
             500: ApiResponse[None],
         },
-        tags=["Tariffs"],
+        tags=["Admin"],
         operation_id="create_tariff",
     )
     def post(
@@ -168,6 +180,17 @@ class TariffListCreateView(APIView):
 
 
 class TariffDetailActionsView(APIView):
+
+    def get_permissions(self):
+        """
+        Возвращает список разрешений в зависимости от HTTP-метода запроса.
+        """
+        if self.request.method in ["PUT", "PATCH", "GET"]:
+            return [IsUserOwnerOrAdmin()]
+        elif self.request.method in ["DELETE"]:
+            return [IsAdminUser()]
+        return super().get_permissions()
+
     @extend_schema(
         summary="Получить тариф по UUID",
         description="Получает детальную информацию о тарифе, используя его UUID.",
@@ -337,7 +360,7 @@ class TariffDetailActionsView(APIView):
             404: ApiResponse[None],
             500: ApiResponse[None],
         },
-        tags=["Tariffs"],
+        tags=["Admin"],
         operation_id="soft_delete_tariff",
     )
     def delete(
@@ -369,7 +392,10 @@ class TariffDetailActionsView(APIView):
             )
 
 
+@extend_schema(tags=["Admin"])
 class TariffArchiveListView(APIView):
+    permission_classes = [IsAdminUser]
+
     @extend_schema(
         summary="Получить архив тарифов",
         description="Получает список архивных тарифов.",
@@ -401,7 +427,6 @@ class TariffArchiveListView(APIView):
         responses={
             200: ApiResponse[ListResponsePayload[TariffSerializer]],
         },
-        tags=["Tariffs"],
         operation_id="list_all_tariffs_archive",
     )
     def get(

@@ -61,3 +61,16 @@ class AdminOrderSerializer(UserOrderSerializer):
     class Meta(UserOrderSerializer.Meta):
         fields = UserOrderSerializer.Meta.fields + ("user_details",)
         read_only_fields = UserOrderSerializer.Meta.read_only_fields + ("user_details",)
+
+
+class OrderUpdateSerializer(serializers.Serializer):
+    """
+    Сериализатор для обновления поля 'description' заказа.
+    """
+
+    description = serializers.CharField(
+        required=False,
+        allow_null=True,
+        allow_blank=True,
+        max_length=500,
+    )

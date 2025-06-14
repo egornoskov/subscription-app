@@ -5,6 +5,7 @@ from abc import (
 )
 from typing import (
     Iterable,
+    Optional,
 )
 
 from core.api.schemas.pagination import PaginationIn
@@ -23,13 +24,13 @@ class OrderBaseService(ABC):
     ) -> Order:
         pass
 
-    # @abstractmethod
-    # def get_order_by_id(self, order_id: uuid.UUID) -> Optional[Order]:
-    #     pass
+    @abstractmethod
+    def get_order_by_id(self, order_id: uuid.UUID, user_id: uuid.UUID) -> Optional[Order]:
+        pass
 
-    # @abstractmethod
-    # def soft_delete_order(self, order_id: uuid.UUID) -> Order:
-    #     pass
+    @abstractmethod
+    def soft_delete_order(self, order_id: uuid.UUID) -> Order:
+        pass
 
     # @abstractmethod
     # def hard_delete_order(self, order_id: uuid.UUID) -> None:

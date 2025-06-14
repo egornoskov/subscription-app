@@ -30,7 +30,7 @@ class RegisterUserView(APIView):
             400: ApiResponse[None],
             500: ApiResponse[None],
         },
-        tags=["Register"],
+        tags=["v1"],
         operation_id="register_user",
     )
     def post(
