@@ -1,4 +1,3 @@
-from django.utils import timezone
 import uuid
 from decimal import Decimal
 from typing import (
@@ -7,6 +6,7 @@ from typing import (
 )
 
 from django.db.models import Q
+from django.utils import timezone
 from psycopg2 import IntegrityError
 
 from core.api.schemas.pagination import PaginationIn

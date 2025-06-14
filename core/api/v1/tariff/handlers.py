@@ -23,7 +23,10 @@ from core.api.schemas.response_schemas import (
 )
 from core.api.utils.response_builder import build_api_response
 from core.api.v1.tariff.schemas.filters import TariffFilter
-from core.api.v1.tariff.schemas.schemas import TariffCreateSchema, TariffUpdateSchema
+from core.api.v1.tariff.schemas.schemas import (
+    TariffCreateSchema,
+    TariffUpdateSchema,
+)
 from core.apps.common.exceptions.base_exception import ServiceException
 from core.apps.common.exceptions.tariff_custom_exceptions.tariff_exc import TariffNotFoundError
 from core.apps.tariff.serializers import TariffSerializer

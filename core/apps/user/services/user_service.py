@@ -1,7 +1,10 @@
 import uuid
 from typing import Iterable
 
-from django.db.models import Q, Prefetch
+from django.db.models import (
+    Prefetch,
+    Q,
+)
 from django.utils import timezone
 from psycopg2 import IntegrityError
 

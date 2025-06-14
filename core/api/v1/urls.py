@@ -1,12 +1,24 @@
+# project_name/urls.py (или где у вас этот urlpatterns)
+
 from django.urls import (
     include,
     path,
 )
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+)
 
+from core.api.v1.handlers import RegisterUserView
 
 app_name = "v1"
 
 urlpatterns = [
+    path("v1/register/", RegisterUserView.as_view(), name="register"),
+    path("v1/login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("v1/login/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("v1/login/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("v1/users/", include("core.api.v1.users.urls")),
     path("v1/tariff/", include("core.api.v1.tariff.urls")),
     path("v1/subscriptions/", include("core.api.v1.subscriptions.urls")),

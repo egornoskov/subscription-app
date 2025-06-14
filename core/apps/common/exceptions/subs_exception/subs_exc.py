@@ -1,6 +1,8 @@
 import uuid
-from core.apps.common.exceptions.base_exception import ServiceException
+
 from rest_framework import status
+
+from core.apps.common.exceptions.base_exception import ServiceException
 
 
 class SubscriptionCreationError(ServiceException):

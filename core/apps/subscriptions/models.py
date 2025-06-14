@@ -27,7 +27,7 @@ class Subscription(TimedBaseModel):
     end_date = models.DateField()
 
     is_active = models.BooleanField(
-        default=True,
+        default=False,
     )
 
     class Meta:

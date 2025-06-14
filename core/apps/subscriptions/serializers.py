@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from core.apps.tariff.models import Tariff
 from core.apps.subscriptions.models import Subscription
+from core.apps.tariff.models import Tariff
 from core.apps.tariff.serializers import TariffSerializer
 
 

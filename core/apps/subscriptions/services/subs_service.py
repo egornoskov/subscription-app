@@ -1,14 +1,18 @@
 import datetime
-from typing import Iterable, Optional
 import uuid
-from django.utils import timezone
-from dateutil.relativedelta import relativedelta
+from typing import (
+    Iterable,
+    Optional,
+)
 
+from dateutil.relativedelta import relativedelta
+from django.db.models import Q
+from django.utils import timezone
 from psycopg2 import IntegrityError
+
 from core.api.schemas.pagination import PaginationIn
 from core.api.v1.subscriptions.schemas.filters import SubscriptionFilter
-from core.apps.common.exceptions.subs_exception.subs_exc import (
-    # SubscriptionActiveDeleteError,
+from core.apps.common.exceptions.subs_exception.subs_exc import (  # SubscriptionActiveDeleteError,
     SubscriptionCreationError,
     SubscriptionDeleteError,
     SubscriptionNotFoundException,
@@ -16,15 +20,15 @@ from core.apps.common.exceptions.subs_exception.subs_exc import (
 )
 from core.apps.subscriptions.models import Subscription
 from core.apps.subscriptions.services.base_service import SubscriptionBaseService
-
-from django.db.models import Q
-
 from core.apps.tariff.models import Tariff
 
 
 class SubscriptionService(SubscriptionBaseService):
 
-    def _build_query_subs(self, filters: SubscriptionFilter | None = None) -> Q:
+    def _build_query_subs(
+        self,
+        filters: SubscriptionFilter | None = None,
+    ) -> Q:
         query = Q()
 
         if filters and filters.search is not None:

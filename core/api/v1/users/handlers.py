@@ -31,10 +31,14 @@ from core.apps.common.exceptions.user_custom_exceptions.user_exc import UserNotF
 from core.apps.user.models import User
 from core.apps.user.serializers import UserSerializer
 from core.apps.user.services.base_user_service import BaseUserService
+from rest_framework.permissions import IsAdminUser
 from core.project.containers import get_container
+from core.project.permissions import IsUserOwnerOrAdmin
 
 
 class UserListCreateView(APIView):
+    permission_classes = [IsAdminUser]
+
     @extend_schema(
         summary="Получить всех активных пользователей",
         description="Получает список всех пользователей.",
@@ -73,6 +77,11 @@ class UserListCreateView(APIView):
         self,
         request: Request,
     ) -> Response:
+        print("--- DEBUG USER STATUS (GET request) ---")
+        print(f"User: {request.user}")
+        print(f"Is Authenticated: {request.user.is_authenticated}")
+        print(f"Is Staff: {request.user.is_staff}")
+        print("---------------------------------------")
         try:
             filters = UserFilter.model_validate(request.query_params.dict())
             pagination_in = PaginationIn.model_validate(request.query_params.dict())
@@ -172,6 +181,16 @@ class UserListCreateView(APIView):
 
 
 class UserDetailActionsView(APIView):
+    def get_permissions(self):
+        """
+        Возвращает список разрешений в зависимости от HTTP-метода запроса.
+        """
+        if self.request.method in ["PUT", "PATCH"]:
+            return [IsUserOwnerOrAdmin()]
+        elif self.request.method in ["GET", "DELETE"]:
+            return [IsAdminUser()]
+        return super().get_permissions()
+
     @extend_schema(
         summary="Получить пользователя по UUID",
         description="Получает детальную информацию о пользователе, используя его UUID.",
@@ -386,6 +405,8 @@ class UserDetailActionsView(APIView):
 
 
 class UserHardDeleteView(APIView):
+    permission_classes = [IsAdminUser]
+
     @extend_schema(
         summary="Полное удаление пользователя",
         description=(
@@ -427,7 +448,9 @@ class UserHardDeleteView(APIView):
             )
 
 
-class ArchivedUserListView(APIView):  # Переименован класс
+class ArchivedUserListView(APIView):
+    permission_classes = [IsAdminUser]
+
     @extend_schema(
         summary="Получить всех архивных пользователей",  # Изменено описание для ясности
         description="Получает список всех архивных пользователей.",  # Изменено описание

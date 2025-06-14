@@ -1,5 +1,9 @@
 from uuid import UUID
-from pydantic import BaseModel, Field
+
+from pydantic import (
+    BaseModel,
+    Field,
+)
 
 
 class SubscriptionCreate(BaseModel):
@@ -18,4 +22,3 @@ class SubscriptionCreate(BaseModel):
 
     class Config:
         from_attributes = True
-

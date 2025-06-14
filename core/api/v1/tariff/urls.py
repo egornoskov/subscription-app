@@ -1,9 +1,9 @@
 from django.urls import path
 
 from core.api.v1.tariff.handlers import (
-    TariffListCreateView,
-    TariffDetailActionsView,
     TariffArchiveListView,
+    TariffDetailActionsView,
+    TariffListCreateView,
 )
 
 

@@ -1,6 +1,9 @@
 from django.urls import path
 
-from core.api.v1.subscriptions.handlers import SubscriptionsListCreateView, SubscriptionDetailActionsView
+from core.api.v1.subscriptions.handlers import (
+    SubscriptionDetailActionsView,
+    SubscriptionsListCreateView,
+)
 
 
 app_name = "subscriptions"

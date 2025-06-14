@@ -1,3 +1,4 @@
+from datetime import timezone
 import uuid
 
 from django.contrib.auth.models import (
@@ -42,8 +43,14 @@ class User(AbstractUser, TimedBaseModel):
     )
 
     is_active = models.BooleanField(
-        default=True,
+        default=False,
         verbose_name="Активен",
+    )
+    telegram_id = models.BigIntegerField(
+        unique=True,
+        verbose_name="ID в Telegram",
+        blank=True,
+        null=True,
     )
 
     phone_regex = RegexValidator(
@@ -86,6 +93,12 @@ class User(AbstractUser, TimedBaseModel):
 
     objects = CustomUserManager()
 
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+        ordering = ["-id"]
+        db_table = "users"
+
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
@@ -93,8 +106,12 @@ class User(AbstractUser, TimedBaseModel):
     def __str__(self):
         return self.full_name
 
-    class Meta:
-        verbose_name = "Пользователь"
-        verbose_name_plural = "Пользователи"
-        ordering = ["-id"]
-        db_table = "users"
+    @property
+    def has_active_subscription(self) -> bool:
+        """
+        Проверяет, есть ли у пользователя действующая активная подписка.
+        """
+        return self.user_subscription.filter(
+            is_active=True,
+            end_date__gte=timezone.now().date(),
+        ).exists()
