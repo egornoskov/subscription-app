@@ -13,7 +13,11 @@ from core.apps.user.serializers import UserSerializer, UserRegistrationSerialize
 from core.apps.user.services.base_user_service import BaseUserService
 from core.project.containers import get_container
 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
+
+@method_decorator(csrf_exempt, name="dispatch")
 class RegisterUserView(APIView):
     permission_classes = [AllowAny]
 

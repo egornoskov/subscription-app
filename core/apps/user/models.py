@@ -1,4 +1,4 @@
-from datetime import timezone
+from django.utils import timezone
 import uuid
 
 from django.contrib.auth.models import (
@@ -113,5 +113,6 @@ class User(AbstractUser, TimedBaseModel):
         """
         return self.user_subscription.filter(
             is_active=True,
-            end_date__gte=timezone.now().date(),
+            end_date__gte=timezone.now(),
+            is_deleted=False,
         ).exists()

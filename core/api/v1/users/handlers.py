@@ -77,11 +77,6 @@ class UserListCreateView(APIView):
         self,
         request: Request,
     ) -> Response:
-        print("--- DEBUG USER STATUS (GET request) ---")
-        print(f"User: {request.user}")
-        print(f"Is Authenticated: {request.user.is_authenticated}")
-        print(f"Is Staff: {request.user.is_staff}")
-        print("---------------------------------------")
         try:
             filters = UserFilter.model_validate(request.query_params.dict())
             pagination_in = PaginationIn.model_validate(request.query_params.dict())

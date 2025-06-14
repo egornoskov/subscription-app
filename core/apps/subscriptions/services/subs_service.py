@@ -28,15 +28,26 @@ class SubscriptionService(SubscriptionBaseService):
     def _build_query_subs(
         self,
         filters: SubscriptionFilter | None = None,
+        user_id: uuid.UUID | None = None,
+        is_admin: bool = False,
     ) -> Q:
         query = Q()
+
+        if user_id and not is_admin:
+            query &= Q(user_id=user_id)
 
         if filters and filters.search is not None:
             query &= Q(tariff__name__icontains=filters.search)
         return query
 
-    def get_subscription_list(self, filters: SubscriptionFilter, pagination_in: PaginationIn) -> Iterable[Subscription]:
-        query = self._build_query_subs(filters)
+    def get_subscription_list(
+        self,
+        filters: SubscriptionFilter,
+        pagination_in: PaginationIn,
+        user_id: uuid.UUID | None = None,
+        is_admin: bool = False,
+    ) -> Iterable[Subscription]:
+        query = self._build_query_subs(filters, user_id, is_admin)
 
         queryset = Subscription.objects.filter(query).select_related("user", "tariff")
 
@@ -44,8 +55,13 @@ class SubscriptionService(SubscriptionBaseService):
 
         return subscriptions
 
-    def get_subscription_count(self, filters: SubscriptionFilter) -> int:
-        query = self._build_query_subs(filters)
+    def get_subscription_count(
+        self,
+        filters: SubscriptionFilter,
+        user_id: uuid.UUID | None = None,
+        is_admin: bool = False,
+    ) -> int:
+        query = self._build_query_subs(filters, user_id, is_admin)
         return Subscription.objects.filter(query).count()
 
     def create_subscription(

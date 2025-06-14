@@ -22,7 +22,7 @@ class OrderService(OrderBaseService):
         user_id: uuid.UUID | None = None,
         is_admin: bool = False,
     ) -> Q:
-        query = Q()
+        query = Q(is_deleted=False)
 
         if user_id and not is_admin:
             query &= Q(user_id=user_id)
@@ -58,7 +58,11 @@ class OrderService(OrderBaseService):
     ) -> Iterable[Order]:
         query = self._build_query_orders(filters, user_id, is_admin)
 
-        queryset = Order.objects.filter(query).select_related("product", "user")
+        if is_admin:
+            queryset = Order.objects.filter(query).select_related("product", "user")
+        else:
+
+            queryset = Order.objects.filter(query).select_related("product")
 
         orders = queryset[pagination_in.offset : pagination_in.offset + pagination_in.limit]
         return orders

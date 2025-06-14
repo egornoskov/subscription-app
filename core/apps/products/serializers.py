@@ -4,16 +4,11 @@ from core.apps.products.models import Order
 from core.apps.subscriptions.serializers import SubscriptionSerializer
 from core.apps.user.serializers import UserSerializer
 from core.apps.subscriptions.models import Subscription
-from core.apps.user.models import User
 
 
 class UserOrderSerializer(serializers.ModelSerializer):
     subscription_details = SubscriptionSerializer(
         source="subscription",
-        read_only=True,
-    )
-    user_details = UserSerializer(
-        source="user",
         read_only=True,
     )
 
@@ -36,7 +31,6 @@ class UserOrderSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "subscription_details",
-            "user_details",
             "subscription",
             "description",
             "status",
@@ -45,16 +39,19 @@ class UserOrderSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             "id",
-            "user_details",
             "created_at",
             "updated_at",
         )
 
 
 class AdminOrderSerializer(UserOrderSerializer):
-    user = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all(),
-        write_only=True,
+    subscription_details = SubscriptionSerializer(
+        source="subscription",
+        read_only=True,
+    )
+    user_details = UserSerializer(
+        source="user",
+        read_only=True,
     )
     status = serializers.ChoiceField(
         choices=Order.status.field.choices,
@@ -62,5 +59,5 @@ class AdminOrderSerializer(UserOrderSerializer):
     )
 
     class Meta(UserOrderSerializer.Meta):
-        fields = UserOrderSerializer.Meta.fields + ("user",)
-        read_only_fields = tuple(f for f in UserOrderSerializer.Meta.read_only_fields if f != "user_details")
+        fields = UserOrderSerializer.Meta.fields + ("user_details",)
+        read_only_fields = UserOrderSerializer.Meta.read_only_fields + ("user_details",)

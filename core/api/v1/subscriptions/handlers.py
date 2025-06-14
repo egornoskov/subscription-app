@@ -29,8 +29,12 @@ from core.apps.subscriptions.serializers import SubscriptionSerializer
 from core.apps.subscriptions.services.base_service import SubscriptionBaseService
 from core.project.containers import get_container
 
+from core.project.permissions import IsAccountActivated
+
 
 class SubscriptionsListCreateView(APIView):
+    permission_classes = [IsAccountActivated]
+
     @extend_schema(
         summary="Получить все подписки",
         description="Получает список всех подписок.",
@@ -69,6 +73,12 @@ class SubscriptionsListCreateView(APIView):
         container = get_container()
         service: SubscriptionBaseService = container.resolve(SubscriptionBaseService)
 
+        if not request.user or not request.user.is_authenticated:
+            return build_api_response(
+                message="Требуется аутентификация.",
+                status_code=status.HTTP_401_UNAUTHORIZED,
+            )
+
         try:
             filters = SubscriptionFilter.model_validate(
                 request.query_params.dict(),
@@ -89,12 +99,19 @@ class SubscriptionsListCreateView(APIView):
                 errors=[{"detail": str(e)}],
             )
 
+        authenticated_user_id = request.user.id
+        is_admin_user = request.user.is_staff
+
         subscriptions = service.get_subscription_list(
+            user_id=authenticated_user_id,
+            is_admin=is_admin_user,
             filters=filters,
             pagination_in=pagination_in,
         )
 
         subscriptions_count = service.get_subscription_count(
+            user_id=authenticated_user_id,
+            is_admin=is_admin_user,
             filters=filters,
         )
 

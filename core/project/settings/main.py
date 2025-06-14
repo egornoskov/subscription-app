@@ -124,6 +124,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
         "core.project.permissions.IsAccountActivated",
+        "core.project.permissions.IsActiveSubscription",
     ],
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
@@ -153,17 +154,19 @@ SIMPLE_JWT = {
     "TOKEN_TYPE_CLAIM": "token_type",
     "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
     "JTI_CLAIM": "jti",
-    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=30),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "SUBS API",
+    "TITLE": "Your Project API",
     "DESCRIPTION": "Описание вашего API",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
-    "POSTPROCESSING_HOOKS": [],
+    "SWAGGER_UI_SETTINGS": {
+        "persistAuthorization": True,
+        "deepLinking": True,
+        "displayRequestDuration": True,
+    },
     "COMPONENT_SPLIT_REQUEST": True,
-    "COMPONENT_SPLIT_RESPONSE": True,
-    "SCHEMA_PATH_PREFIX": "api/",
 }

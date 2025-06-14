@@ -37,11 +37,22 @@ class SubscriptionBaseService(ABC):
     #     pass
 
     @abstractmethod
-    def get_subscription_list(self, filters: SubscriptionFilter, pagination_in: PaginationIn) -> Iterable[Subscription]:
+    def get_subscription_list(
+        self,
+        filters: SubscriptionFilter,
+        pagination_in: PaginationIn,
+        user_id: uuid.UUID | None = None,
+        is_admin: bool = False,
+    ) -> Iterable[Subscription]:
         pass
 
     @abstractmethod
-    def get_subscription_count(self, filters: SubscriptionFilter) -> int:
+    def get_subscription_count(
+        self,
+        filters: SubscriptionFilter,
+        user_id: uuid.UUID | None = None,
+        is_admin: bool = False,
+    ) -> int:
         pass
 
     # @abstractmethod
