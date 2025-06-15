@@ -12,13 +12,16 @@ from psycopg2 import IntegrityError
 from core.api.schemas.pagination import PaginationIn
 from core.api.v1.tariff.schemas.filters import TariffFilter
 from core.api.v1.tariff.schemas.schemas import TariffUpdateSchema
+from core.apps.common.exceptions.base_exception import ServiceException
 from core.apps.common.exceptions.tariff_custom_exceptions.tariff_exc import (
     EmptyTariffDataError,
+    TariffActiveDeleteError,
     TariffCreationError,
     TariffDeleteError,
     TariffNotFoundError,
     TariffUpdateError,
 )
+from django.db import transaction
 from core.apps.tariff.models import Tariff
 from core.apps.tariff.services.tariff_base_service import TariffBaseService
 
@@ -150,6 +153,7 @@ class TariffService(TariffBaseService):
         except Exception as e:
             raise TariffCreationError(detail=f"Неизвестная ошибка при создании тарифа: {e}")
 
+    @transaction.atomic
     def update_tariff(self, tariff_uuid: uuid.UUID, data_to_update: TariffUpdateSchema) -> Tariff:
         """Полностью обновляет существующий тариф по его UUID.
 
@@ -180,6 +184,7 @@ class TariffService(TariffBaseService):
         except Exception as e:
             raise TariffUpdateError(detail=f"Неизвестная ошибка при полном обновлении тарифа: {e}")
 
+    @transaction.atomic
     def partial_update_tariff(self, tariff_uuid: uuid.UUID, data_to_update: TariffUpdateSchema) -> Tariff:
         """Частично обновляет существующий тариф по его UUID.
 
@@ -216,6 +221,7 @@ class TariffService(TariffBaseService):
         except Exception as e:
             raise TariffUpdateError(detail=f"Неизвестная ошибка при частичном обновлении тарифа: {e}")
 
+    @transaction.atomic
     def soft_delete_tariff(self, tariff_uuid: uuid.UUID) -> Tariff:
         """Мягко удаляет тариф по его UUID.
 
@@ -241,8 +247,24 @@ class TariffService(TariffBaseService):
             tariff.save()
             return tariff
         except IntegrityError as e:
-            # IntegrityError здесь маловероятна, если get_tariff_by_id не вызывает ее
-            # но обработка остается на случай непредвиденных сценариев
             raise TariffDeleteError(detail=f"Ошибка базы данных при мягком удалении тарифа: {e}")
         except Exception as e:
             raise TariffDeleteError(detail=f"Неизвестная ошибка при мягком удалении тарифа: {e}")
+
+    def hard_delete_tariff(self, tariff_uuid: uuid.UUID) -> None:
+        try:
+            query = self._build_tariff_query()
+            tariff = Tariff.objects.unfiltered().filter(id=tariff_uuid).filter(query).first()
+
+            if not tariff:
+                raise TariffNotFoundError(user_id=tariff_uuid)
+
+            if tariff.is_deleted is False:
+                raise TariffActiveDeleteError(tariff_id=tariff_uuid)
+
+            tariff.hard_delete()
+            return None
+        except ServiceException as e:
+            raise e
+        except Exception as e:
+            raise TariffDeleteError(detail=f"Неизвестная ошибка при полном удалении пользователя: {e}")

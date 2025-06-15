@@ -32,7 +32,8 @@ from core.apps.common.exceptions.tariff_custom_exceptions.tariff_exc import Tari
 from core.apps.tariff.serializers import TariffSerializer
 from core.apps.tariff.services.tariff_base_service import TariffBaseService
 from core.project.containers import get_container
-from core.project.permissions import IsAdminUser, IsUserOwnerOrAdmin
+from core.project.permissions import IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 
 
 class TariffListCreateView(APIView):
@@ -42,7 +43,7 @@ class TariffListCreateView(APIView):
         Возвращает список разрешений в зависимости от HTTP-метода запроса.
         """
         if self.request.method in ["GET"]:
-            return [IsUserOwnerOrAdmin()]
+            return [IsAuthenticated()]
         elif self.request.method in ["POST"]:
             return [IsAdminUser()]
         return super().get_permissions()
@@ -185,9 +186,13 @@ class TariffDetailActionsView(APIView):
         """
         Возвращает список разрешений в зависимости от HTTP-метода запроса.
         """
-        if self.request.method in ["PUT", "PATCH", "GET"]:
-            return [IsUserOwnerOrAdmin()]
-        elif self.request.method in ["DELETE"]:
+        if self.request.method in ["GET"]:
+            return [IsAuthenticated()]
+        elif self.request.method in [
+            "DELETE",
+            "PUT",
+            "PATCH",
+        ]:
             return [IsAdminUser()]
         return super().get_permissions()
 
@@ -356,7 +361,7 @@ class TariffDetailActionsView(APIView):
         summary="Мягкое удаление тарифа",
         description="Помечает тарифа как удаленного (soft delete) по его UUID, делая его неактивным.",
         responses={
-            204: None,
+            200: TariffSerializer,
             404: ApiResponse[None],
             500: ApiResponse[None],
         },
@@ -476,3 +481,47 @@ class TariffArchiveListView(APIView):
             ),
             status_code=status.HTTP_200_OK,
         )
+
+
+@extend_schema(tags=["Admin"])
+class HardDeleteTariffView(APIView):
+    permission_classes = [IsAdminUser]
+
+    @extend_schema(
+        summary="Полное удаление тарифа",
+        description=(
+            "Полностью и безвозвратно удаляет тарифа из базы данных по его UUID. "
+            "Возможно только для тарифов, уже помеченных как удаленные (soft-deleted)."
+        ),
+        responses={
+            204: None,  # Изменено на 204 No Content, как для удаления
+            404: ApiResponse[None],
+            500: ApiResponse[None],
+        },
+        operation_id="hard_delete_tariff",
+    )
+    def delete(
+        self,
+        request: Request,
+        tariff_uuid: uuid.UUID,
+    ) -> Response:
+        container = get_container()
+        service: TariffBaseService = container.resolve(TariffBaseService)
+
+        try:
+            service.hard_delete_tariff(tariff_uuid=tariff_uuid)
+            return build_api_response(
+                status_code=status.HTTP_204_OK,
+            )
+        except ServiceException as e:
+            return build_api_response(
+                message=e.detail,
+                status_code=e.status_code,
+                errors=[{"detail": str(e)}],
+            )
+        except Exception as e:
+            return build_api_response(
+                message=f"Непредвиденная ошибка при обработке запроса: {e}",
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                errors=[{"detail": str(e)}],
+            )

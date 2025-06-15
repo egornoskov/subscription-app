@@ -26,7 +26,7 @@ from core.api.schemas.response_schemas import (
     ApiResponse,
     ListResponsePayload,
 )
-from core.project.permissions import HasActiveSubscription, IsResourceOwner
+from core.project.permissions import HasActiveSubscription, IsAdminUser, IsResourceOwner
 from core.apps.common.exceptions.base_exception import ServiceException
 from core.api.utils.response_builder import build_api_response
 from core.project.containers import get_container
@@ -209,11 +209,22 @@ class OrderListCreateView(APIView):
 
 @extend_schema(tags=["Orders"])
 class OrderDetailActionView(APIView):
-    permission_classes = [
-        IsAuthenticated,
-        HasActiveSubscription,
-        IsResourceOwner,
-    ]
+
+    def get_permissions(self):
+        """
+        Возвращает список разрешений в зависимости от HTTP-метода запроса.
+        """
+        if self.request.method in [
+            "GET",
+            "PUT",
+            "PATCH",
+        ]:
+            return [IsAuthenticated(), HasActiveSubscription(), IsResourceOwner()]
+        elif self.request.method in [
+            "DELETE",
+        ]:
+            return [IsAdminUser()]
+        return super().get_permissions()
 
     def get_order_object(self, order_id: uuid.UUID) -> Order:
         container = get_container()
@@ -399,6 +410,7 @@ class OrderDetailActionView(APIView):
             404: ApiResponse[None],
             500: ApiResponse[None],
         },
+        tags=['Admin'],
         operation_id="soft_delete_order_by_id",
     )
     def delete(self, request: Request, order_id: uuid.UUID) -> Response:

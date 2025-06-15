@@ -33,9 +33,9 @@ class TariffBaseService(ABC):
     def soft_delete_tariff(self, tariff_uuid: uuid.UUID) -> Tariff:
         pass
 
-    # @abstractmethod
-    # def hard_delete_tariff(self, tariff_uuid: uuid.UUID) -> None:
-    #     pass
+    @abstractmethod
+    def hard_delete_tariff(self, tariff_uuid: uuid.UUID) -> None:
+        pass
 
     @abstractmethod
     def get_tariff_list(self, filters: TariffFilter, pagination_in: PaginationIn) -> Iterator[Tariff]:

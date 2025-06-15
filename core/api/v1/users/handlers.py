@@ -1,6 +1,5 @@
 from typing import Iterable
 from uuid import UUID
-
 from drf_spectacular.utils import (
     extend_schema,
     OpenApiParameter,
@@ -179,9 +178,9 @@ class UserDetailActionsView(APIView):
         """
         Возвращает список разрешений в зависимости от HTTP-метода запроса.
         """
-        if self.request.method in ["PUT", "PATCH"]:
+        if self.request.method in ["PUT", "PATCH", "GET"]:
             return [IsUserOwnerOrAdmin()]
-        elif self.request.method in ["GET", "DELETE"]:
+        elif self.request.method in ["DELETE"]:
             return [IsAdminUser()]
         return super().get_permissions()
 
@@ -421,7 +420,11 @@ class UserHardDeleteView(APIView):
 
         try:
             service.hard_delete_user(user_id=user_uuid)
-            return Response(status=status.HTTP_204_NO_CONTENT)  # Изменено на 204 No Content
+            return build_api_response(
+                message="Пользователь успешно удален",
+                status_code=status.HTTP_204_NO_CONTENT,
+            )
+
         except UserNotFoundException as e:
             return build_api_response(
                 message=e.detail,

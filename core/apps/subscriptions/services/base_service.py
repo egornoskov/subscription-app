@@ -25,16 +25,16 @@ class SubscriptionBaseService(ABC):
         pass
 
     @abstractmethod
-    def get_subscription_by_id(self, sub_id: uuid.UUID) -> Optional[Subscription]:
+    def get_subscription_by_id(self, sub_id: uuid.UUID, user_id: uuid.UUID) -> Optional[Subscription]:
         pass
 
     @abstractmethod
     def soft_delete_subscription(self, sub_id: uuid.UUID) -> Subscription:
         pass
 
-    # @abstractmethod
-    # def hard_delete_tariff(self, tariff_uuid: uuid.UUID) -> None:
-    #     pass
+    @abstractmethod
+    def hard_delete_subscription(self, sub_id: uuid.UUID) -> None:
+        pass
 
     @abstractmethod
     def get_subscription_list(
@@ -55,12 +55,12 @@ class SubscriptionBaseService(ABC):
     ) -> int:
         pass
 
-    # @abstractmethod
-    # def get_subscription_list_archive(
-    #     self, filters: SubscriptionFilter, pagination_in: PaginationIn
-    # ) -> Iterable[Subscription]:
-    #     pass
+    @abstractmethod
+    def get_subscription_list_archive(
+        self, filters: SubscriptionFilter, pagination_in: PaginationIn
+    ) -> Iterable[Subscription]:
+        pass
 
-    # @abstractmethod
-    # def get_subscription_count_archive(self, filters: SubscriptionFilter) -> int:
-    #     pass
+    @abstractmethod
+    def get_subscription_count_archive(self, filters: SubscriptionFilter) -> int:
+        pass

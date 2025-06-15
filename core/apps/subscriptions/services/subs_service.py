@@ -4,6 +4,7 @@ from typing import (
     Iterable,
     Optional,
 )
+from django.db import transaction
 
 from dateutil.relativedelta import relativedelta
 from django.db.models import Q
@@ -12,7 +13,7 @@ from psycopg2 import IntegrityError
 
 from core.api.schemas.pagination import PaginationIn
 from core.api.v1.subscriptions.schemas.filters import SubscriptionFilter
-from core.apps.common.exceptions.subs_exception.subs_exc import (  # SubscriptionActiveDeleteError,
+from core.apps.common.exceptions.subs_exception.subs_exc import (
     SubscriptionCreationError,
     SubscriptionDeleteError,
     SubscriptionNotFoundException,
@@ -49,7 +50,10 @@ class SubscriptionService(SubscriptionBaseService):
     ) -> Iterable[Subscription]:
         query = self._build_query_subs(filters, user_id, is_admin)
 
-        queryset = Subscription.objects.filter(query).select_related("user", "tariff")
+        if is_admin:
+            queryset = Subscription.objects.filter(query).select_related("user", "tariff")
+        else:
+            queryset = Subscription.objects.filter(query).select_related("tariff")
 
         subscriptions = queryset[pagination_in.offset : pagination_in.offset + pagination_in.limit]
 
@@ -104,9 +108,13 @@ class SubscriptionService(SubscriptionBaseService):
         except Exception as e:
             raise SubscriptionCreationError(detail=f"Непредвиденная ошибка при создании подписки: {str(e)}")
 
-    def get_subscription_by_id(self, sub_id: uuid.UUID) -> Optional[Subscription]:
+    def get_subscription_by_id(
+        self,
+        sub_id: uuid.UUID,
+        user_id: uuid.UUID | None = None,
+    ) -> Optional[Subscription]:
 
-        query = self._build_query_subs()
+        query = self._build_query_subs(user_id=user_id)
 
         subscription = Subscription.objects.filter(id=sub_id).filter(query).first()
 
@@ -115,6 +123,7 @@ class SubscriptionService(SubscriptionBaseService):
 
         return subscription
 
+    @transaction.atomic
     def update_subscription(self, sub_uuid: uuid.UUID, tariff: Tariff, end_date: datetime.date) -> Subscription:
         try:
             sub = self.get_subscription_by_id(sub_uuid)
@@ -131,6 +140,7 @@ class SubscriptionService(SubscriptionBaseService):
         except Exception as e:
             raise SubscriptionUpdateError(detail=f"Неизвестная ошибка при полном обновлении тарифа: {e}")
 
+    @transaction.atomic
     def partial_update_subscription(
         self,
         sub_uuid: uuid.UUID,
@@ -154,6 +164,7 @@ class SubscriptionService(SubscriptionBaseService):
         except Exception as e:
             raise SubscriptionUpdateError(detail=f"Неизвестная ошибка при полном обновлении тарифа: {e}")
 
+    @transaction.atomic
     def soft_delete_subscription(self, sub_id: uuid.UUID) -> Subscription:
         try:
             subscritpion: Subscription = self.get_subscription_by_id(sub_id=sub_id)
@@ -170,12 +181,38 @@ class SubscriptionService(SubscriptionBaseService):
         except Exception as e:
             raise SubscriptionDeleteError(detail=f"Неизвестная ошибка при мягком удалении тарифа: {e}")
 
-    # @abstractmethod
-    # def get_subscription_list_archive(
-    #     self, filters: SubscriptionFilter, pagination_in: PaginationIn
-    # ) -> Iterable[Subscription]:
-    #     pass
+    def hard_delete_subscription(self, sub_id: uuid.UUID) -> Subscription:
+        try:
+            subscription = self.get_subscription_by_id(sub_id=sub_id)
 
-    # @abstractmethod
-    # def get_subscription_count_archive(self, filters: SubscriptionFilter) -> int:
-    #     pass
+            subscription.delete()
+            return subscription
+        except Exception as e:
+            raise SubscriptionDeleteError(detail=f"Неизвестная ошибка при мягком удалении тарифа: {e}")
+
+    def get_subscription_list_archive(
+        self, filters: SubscriptionFilter, pagination_in: PaginationIn
+    ) -> Iterable[Subscription]:
+        query = self._build_user_query(filters)
+        queryset = Subscription.objects.unfiltered().filter(
+            query,
+            is_deleted=True,
+            is_active=False,
+        )
+        combined_query = queryset.select_related("user", "tariff")
+
+        subscriptions = combined_query[pagination_in.offset : pagination_in.offset + pagination_in.limit]
+
+        return subscriptions
+
+    def get_subscription_count_archive(self, filters: SubscriptionFilter) -> int:
+        query = self._build_user_query(filters)
+        return (
+            Subscription.objects.unfiltered()
+            .filter(
+                query,
+                is_deleted=True,
+                is_active=False,
+            )
+            .count()
+        )

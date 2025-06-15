@@ -27,7 +27,10 @@ from core.apps.user.services.base_user_service import BaseUserService
 
 
 class UserService(BaseUserService):
-    def _build_user_query(self, filters: UserFilter | None = None) -> Q:
+    def _build_user_query(
+        self,
+        filters: UserFilter | None = None,
+    ) -> Q:
         """
         Формирует объект Q для фильтрации пользователей на основе заданных фильтров.
 
@@ -339,7 +342,7 @@ class UserService(BaseUserService):
 
             user.hard_delete()
             return None
-        except ServiceException as e:  # Перехватываем свои ServiceException и перебрасываем, чтобы не потерять детали
+        except ServiceException as e:
             raise e
         except Exception as e:
             raise UserDeleteError(detail=f"Неизвестная ошибка при полном удалении пользователя: {e}")

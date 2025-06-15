@@ -432,3 +432,373 @@ DEBUG 2025-06-14 23:51:25,821 subscription_middleware 969 281473488779864 Пол
 DEBUG 2025-06-14 23:51:25,887 subscription_middleware 969 281473488779864 Пользователь 'test.user@example.com' (ID: 8f1d7077-2d0b-43ea-822e-6fa91af66888) аутентифицирован через JWT в мидлваре.
 DEBUG 2025-06-14 23:51:25,887 subscription_middleware 969 281473488779864 Для пути '/api/v1/orders/' разрешено имя URL: 'v1:orders:order-list-create'
 DEBUG 2025-06-14 23:51:25,890 subscription_middleware 969 281473488779864 Запрос к 'v1:orders:order-list-create' разрешен, у пользователя есть активная подписка.
+INFO 2025-06-15 16:33:35,183 subscription_middleware 13 281473606277816 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 16:34:19,379 subscription_middleware 13 281473578408536 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 16:34:19,382 subscription_middleware 13 281473578408536 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 16:34:19,382 subscription_middleware 13 281473578408536 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 16:34:19,382 subscription_middleware 13 281473578408536 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 16:34:19,443 subscription_middleware 13 281473578408536 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 16:34:19,443 subscription_middleware 13 281473578408536 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 16:34:19,443 subscription_middleware 13 281473578408536 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 16:34:19,443 subscription_middleware 13 281473578408536 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+INFO 2025-06-15 16:35:34,874 subscription_middleware 28 281473720240824 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:35:38,259 subscription_middleware 30 281473548843704 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:47:37,750 subscription_middleware 84 281472794274488 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:47:40,182 subscription_middleware 86 281472812587704 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:48:58,074 subscription_middleware 88 281473562303160 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 16:49:04,208 subscription_middleware 88 281473533057624 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 16:49:04,225 subscription_middleware 88 281473533057624 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 16:49:04,232 subscription_middleware 88 281473533057624 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 16:49:04,232 subscription_middleware 88 281473533057624 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 16:49:04,351 subscription_middleware 88 281473533057624 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 16:49:04,351 subscription_middleware 88 281473533057624 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 16:49:04,352 subscription_middleware 88 281473533057624 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 16:49:04,352 subscription_middleware 88 281473533057624 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+INFO 2025-06-15 16:51:54,494 subscription_middleware 91 281472832723640 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:51:59,959 subscription_middleware 93 281472952249016 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:52:15,767 subscription_middleware 95 281472996358840 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:52:18,209 subscription_middleware 97 281473397529272 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:52:20,641 subscription_middleware 99 281472913361592 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:52:31,303 subscription_middleware 101 281473004808888 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:52:40,883 subscription_middleware 103 281473759771320 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:52:54,657 subscription_middleware 105 281473435155128 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:53:33,091 subscription_middleware 115 281473546209976 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:53:36,452 subscription_middleware 117 281472878566072 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 16:53:56,432 subscription_middleware 119 281473259883192 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:00:21,158 subscription_middleware 201 281473041947320 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:00:32,728 subscription_middleware 207 281473659763384 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:01:18,419 subscription_middleware 223 281473231473336 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:01:21,942 subscription_middleware 225 281473523878584 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:01:25,653 subscription_middleware 227 281473074490040 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:01:34,626 subscription_middleware 231 281473562143416 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:01:49,366 subscription_middleware 233 281472792062648 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:01:52,918 subscription_middleware 235 281472971119288 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:02:15,903 subscription_middleware 237 281473481730744 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:02:40,043 subscription_middleware 239 281472887020216 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:02:42,496 subscription_middleware 241 281473009932984 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:02:50,987 subscription_middleware 245 281473560877752 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 17:02:51,045 subscription_middleware 245 281473533864536 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:02:51,046 subscription_middleware 245 281473533864536 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:02:51,046 subscription_middleware 245 281473533864536 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:02:51,046 subscription_middleware 245 281473533864536 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:02:51,175 subscription_middleware 245 281473533864536 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:02:51,175 subscription_middleware 245 281473533864536 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:02:51,175 subscription_middleware 245 281473533864536 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:02:51,176 subscription_middleware 245 281473533864536 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:02:51,250 subscription_middleware 245 281473533864536 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:02:51,250 subscription_middleware 245 281473533864536 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:02:51,250 subscription_middleware 245 281473533864536 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:02:51,250 subscription_middleware 245 281473533864536 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:02:52,111 subscription_middleware 245 281473533864536 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:02:52,111 subscription_middleware 245 281473533864536 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:02:52,112 subscription_middleware 245 281473533864536 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:02:52,112 subscription_middleware 245 281473533864536 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:02:52,150 subscription_middleware 245 281473533864536 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:02:52,150 subscription_middleware 245 281473533864536 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:02:52,150 subscription_middleware 245 281473533864536 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:02:52,151 subscription_middleware 245 281473533864536 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:02:52,200 subscription_middleware 245 281473533864536 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:02:52,200 subscription_middleware 245 281473533864536 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:02:52,200 subscription_middleware 245 281473533864536 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:02:52,200 subscription_middleware 245 281473533864536 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:03:06,359 subscription_middleware 245 281473533864536 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:03:06,361 subscription_middleware 245 281473533864536 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:03:06,361 subscription_middleware 245 281473533864536 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:03:06,361 subscription_middleware 245 281473533864536 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:03:06,397 subscription_middleware 245 281473533864536 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:03:06,398 subscription_middleware 245 281473533864536 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:03:06,398 subscription_middleware 245 281473533864536 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:03:06,398 subscription_middleware 245 281473533864536 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:03:06,466 subscription_middleware 245 281473533864536 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:03:06,467 subscription_middleware 245 281473533864536 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:03:06,467 subscription_middleware 245 281473533864536 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:03:06,467 subscription_middleware 245 281473533864536 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+INFO 2025-06-15 17:03:15,072 subscription_middleware 249 281473021680312 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 17:03:15,615 subscription_middleware 249 281472996461144 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:03:15,617 subscription_middleware 249 281472996461144 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:03:15,617 subscription_middleware 249 281472996461144 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:03:15,617 subscription_middleware 249 281472996461144 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:03:15,691 subscription_middleware 249 281472996461144 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:03:15,692 subscription_middleware 249 281472996461144 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:03:15,692 subscription_middleware 249 281472996461144 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:03:15,693 subscription_middleware 249 281472996461144 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+INFO 2025-06-15 17:03:20,689 subscription_middleware 253 281473708223160 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 17:04:01,513 subscription_middleware 253 281473685912152 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:04:01,518 subscription_middleware 253 281473685912152 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:04:01,518 subscription_middleware 253 281473685912152 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:04:01,518 subscription_middleware 253 281473685912152 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:04:01,576 subscription_middleware 253 281473685912152 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:04:01,576 subscription_middleware 253 281473685912152 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:04:01,576 subscription_middleware 253 281473685912152 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:04:01,577 subscription_middleware 253 281473685912152 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:04:01,688 subscription_middleware 253 281473685912152 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:04:01,688 subscription_middleware 253 281473685912152 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:04:01,688 subscription_middleware 253 281473685912152 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:04:01,689 subscription_middleware 253 281473685912152 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+INFO 2025-06-15 17:04:53,688 subscription_middleware 256 281473600539320 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:05:19,601 subscription_middleware 258 281473538689720 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:05:28,648 subscription_middleware 262 281473017043640 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:06:09,292 subscription_middleware 264 281472801577656 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 17:06:10,258 subscription_middleware 264 281472775748184 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:06:10,280 subscription_middleware 264 281472775748184 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:06:10,283 subscription_middleware 264 281472775748184 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:06:10,289 subscription_middleware 264 281472775748184 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:06:10,359 subscription_middleware 264 281472775748184 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:06:10,360 subscription_middleware 264 281472775748184 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:06:10,360 subscription_middleware 264 281472775748184 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:06:10,360 subscription_middleware 264 281472775748184 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:06:10,440 subscription_middleware 264 281472775748184 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:06:10,440 subscription_middleware 264 281472775748184 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:06:10,440 subscription_middleware 264 281472775748184 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:06:10,441 subscription_middleware 264 281472775748184 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:06:45,626 subscription_middleware 264 281472773638744 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:06:45,628 subscription_middleware 264 281472773638744 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:06:45,629 subscription_middleware 264 281472773638744 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:06:45,629 subscription_middleware 264 281472773638744 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:06:45,681 subscription_middleware 264 281472773638744 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:06:45,682 subscription_middleware 264 281472773638744 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:06:45,682 subscription_middleware 264 281472773638744 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:06:45,682 subscription_middleware 264 281472773638744 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:06:45,857 subscription_middleware 264 281472773638744 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:06:45,857 subscription_middleware 264 281472773638744 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:06:45,857 subscription_middleware 264 281472773638744 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:06:45,857 subscription_middleware 264 281472773638744 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+INFO 2025-06-15 17:07:00,153 subscription_middleware 272 281472806197944 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 17:07:00,317 subscription_middleware 272 281472783088216 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:07:00,318 subscription_middleware 272 281472783088216 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:07:00,318 subscription_middleware 272 281472783088216 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:07:00,318 subscription_middleware 272 281472783088216 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:07:00,396 subscription_middleware 272 281472783088216 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:07:00,397 subscription_middleware 272 281472783088216 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:07:00,397 subscription_middleware 272 281472783088216 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:07:00,397 subscription_middleware 272 281472783088216 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+INFO 2025-06-15 17:07:39,553 subscription_middleware 275 281473798601400 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 17:07:44,241 subscription_middleware 275 281473781029464 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:07:44,244 subscription_middleware 275 281473781029464 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:07:44,245 subscription_middleware 275 281473781029464 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:07:44,245 subscription_middleware 275 281473781029464 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:07:44,314 subscription_middleware 275 281473781029464 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:07:44,314 subscription_middleware 275 281473781029464 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:07:44,315 subscription_middleware 275 281473781029464 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:07:44,315 subscription_middleware 275 281473781029464 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:07:44,397 subscription_middleware 275 281473781029464 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:07:44,397 subscription_middleware 275 281473781029464 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:07:44,397 subscription_middleware 275 281473781029464 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:07:44,397 subscription_middleware 275 281473781029464 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:07:52,812 subscription_middleware 275 281473781029464 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:07:52,815 subscription_middleware 275 281473781029464 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:07:52,815 subscription_middleware 275 281473781029464 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:07:52,815 subscription_middleware 275 281473781029464 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:07:52,869 subscription_middleware 275 281473781029464 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:07:52,870 subscription_middleware 275 281473781029464 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:07:52,870 subscription_middleware 275 281473781029464 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:07:52,870 subscription_middleware 275 281473781029464 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:07:52,959 subscription_middleware 275 281473781029464 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:07:52,959 subscription_middleware 275 281473781029464 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:07:52,959 subscription_middleware 275 281473781029464 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:07:52,959 subscription_middleware 275 281473781029464 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+INFO 2025-06-15 17:07:54,425 subscription_middleware 279 281473006422712 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 17:07:55,254 subscription_middleware 279 281472986712664 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:07:55,255 subscription_middleware 279 281472986712664 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:07:55,255 subscription_middleware 279 281472986712664 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:07:55,256 subscription_middleware 279 281472986712664 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:07:55,325 subscription_middleware 279 281472986712664 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:07:55,326 subscription_middleware 279 281472986712664 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:07:55,326 subscription_middleware 279 281472986712664 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:07:55,326 subscription_middleware 279 281472986712664 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:07:55,393 subscription_middleware 279 281472986712664 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:07:55,393 subscription_middleware 279 281472986712664 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:07:55,394 subscription_middleware 279 281472986712664 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:07:55,394 subscription_middleware 279 281472986712664 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:07:56,054 subscription_middleware 279 281472986712664 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:07:56,055 subscription_middleware 279 281472986712664 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:07:56,055 subscription_middleware 279 281472986712664 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:07:56,056 subscription_middleware 279 281472986712664 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:07:56,091 subscription_middleware 279 281472986712664 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:07:56,091 subscription_middleware 279 281472986712664 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:07:56,092 subscription_middleware 279 281472986712664 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:07:56,092 subscription_middleware 279 281472986712664 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:07:56,159 subscription_middleware 279 281472986712664 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:07:56,160 subscription_middleware 279 281472986712664 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:07:56,160 subscription_middleware 279 281472986712664 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:07:56,160 subscription_middleware 279 281472986712664 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+INFO 2025-06-15 17:09:24,743 subscription_middleware 282 281473303956152 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:10:03,039 subscription_middleware 284 281473625397944 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:10:22,000 subscription_middleware 286 281473212181176 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:10:24,332 subscription_middleware 288 281472883591864 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:10:32,204 subscription_middleware 290 281473249446584 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:10:35,584 subscription_middleware 292 281473268914872 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:10:41,033 subscription_middleware 294 281473266830008 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 17:10:44,728 subscription_middleware 294 281473238985304 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:10:44,732 subscription_middleware 294 281473238985304 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:10:44,732 subscription_middleware 294 281473238985304 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:10:44,732 subscription_middleware 294 281473238985304 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:10:44,870 subscription_middleware 294 281473238985304 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:10:44,873 subscription_middleware 294 281473238985304 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:10:44,874 subscription_middleware 294 281473238985304 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:10:44,875 subscription_middleware 294 281473238985304 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+INFO 2025-06-15 17:10:46,545 subscription_middleware 297 281473799043768 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:10:53,197 subscription_middleware 299 281473252367032 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 17:10:54,044 subscription_middleware 299 281473227147864 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:10:54,045 subscription_middleware 299 281473227147864 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:10:54,046 subscription_middleware 299 281473227147864 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:10:54,046 subscription_middleware 299 281473227147864 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:10:54,160 subscription_middleware 299 281473227147864 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:10:54,161 subscription_middleware 299 281473227147864 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:10:54,161 subscription_middleware 299 281473227147864 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:10:54,161 subscription_middleware 299 281473227147864 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+INFO 2025-06-15 17:13:15,131 subscription_middleware 302 281473669040824 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:13:17,563 subscription_middleware 304 281473015442104 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:13:30,443 subscription_middleware 308 281473590188728 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:13:35,883 subscription_middleware 310 281473149323960 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:16:27,195 subscription_middleware 312 281473460533944 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:16:29,506 subscription_middleware 314 281473096186552 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:16:41,213 subscription_middleware 316 281473075718840 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:17:44,132 subscription_middleware 318 281473749424824 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:17:55,682 subscription_middleware 320 281473189960376 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:17:59,068 subscription_middleware 322 281473584720568 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:18:05,558 subscription_middleware 324 281472864393912 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:18:17,266 subscription_middleware 326 281473491307192 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:18:21,664 subscription_middleware 328 281473450179256 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:18:31,313 subscription_middleware 330 281473586399928 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:18:35,779 subscription_middleware 332 281473197832888 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:18:38,147 subscription_middleware 334 281473178540728 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:19:03,137 subscription_middleware 336 281473000573624 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:19:06,719 subscription_middleware 338 281473171888824 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:19:10,168 subscription_middleware 340 281473571216056 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:19:31,118 subscription_middleware 342 281473178647224 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:19:35,989 subscription_middleware 346 281473791367864 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:19:46,567 subscription_middleware 348 281473128823480 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:20:05,181 subscription_middleware 350 281473104186040 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:20:20,421 subscription_middleware 354 281473801419448 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:21:14,778 subscription_middleware 356 281472828742328 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:21:21,366 subscription_middleware 360 281472796338872 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:23:22,885 subscription_middleware 362 281473119935160 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:23:25,327 subscription_middleware 364 281472862689976 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:23:27,787 subscription_middleware 366 281472881396408 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:24:11,554 subscription_middleware 368 281473797995192 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:25:51,857 subscription_middleware 370 281473162660536 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:25:55,228 subscription_middleware 372 281473501924024 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:26:03,879 subscription_middleware 374 281473189579448 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:26:08,230 subscription_middleware 376 281473037273784 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:26:51,127 subscription_middleware 378 281472928844472 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:26:58,633 subscription_middleware 380 281473368074936 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:27:09,690 subscription_middleware 384 281473817205432 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:27:26,085 subscription_middleware 388 281473622563512 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:27:28,439 subscription_middleware 390 281473145154232 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:27:55,698 subscription_middleware 392 281473487682232 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:28:03,180 subscription_middleware 394 281473363073720 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:28:06,542 subscription_middleware 396 281473681291960 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:28:12,062 subscription_middleware 398 281473675991736 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:28:14,539 subscription_middleware 400 281472932813496 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:28:17,500 subscription_middleware 402 281472879336120 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:30:41,380 subscription_middleware 408 281473417038520 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:30:44,754 subscription_middleware 410 281473500224184 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:30:47,195 subscription_middleware 412 281473559657144 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:30:51,770 subscription_middleware 414 281473127852728 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:30:54,461 subscription_middleware 416 281473727859384 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:30:59,035 subscription_middleware 418 281472842984120 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:31:01,583 subscription_middleware 420 281473428261560 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:31:04,102 subscription_middleware 422 281473463466680 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:31:44,350 subscription_middleware 424 281473268431544 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:32:07,419 subscription_middleware 426 281473405119160 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:32:47,794 subscription_middleware 428 281473177963192 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:33:18,048 subscription_middleware 430 281472819813048 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:33:23,619 subscription_middleware 432 281473748687544 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:33:26,134 subscription_middleware 434 281473570871992 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:33:30,628 subscription_middleware 436 281472767007416 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:33:35,163 subscription_middleware 438 281473505708728 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:34:04,454 subscription_middleware 440 281473273023160 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:34:07,795 subscription_middleware 442 281473013766840 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:34:13,305 subscription_middleware 444 281473097489080 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:34:31,316 subscription_middleware 446 281473320041144 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:34:34,117 subscription_middleware 448 281473666886328 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:35:14,791 subscription_middleware 450 281473346927288 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:35:46,187 subscription_middleware 452 281473316698808 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:35:48,549 subscription_middleware 454 281473532418744 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:35:56,181 subscription_middleware 456 281473706568376 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:35:58,501 subscription_middleware 458 281472837442232 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:36:16,412 subscription_middleware 460 281473770486456 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:36:23,084 subscription_middleware 462 281473724635832 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:36:25,545 subscription_middleware 464 281473676696248 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:36:29,984 subscription_middleware 466 281473022380728 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:37:03,242 subscription_middleware 468 281473448368824 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:37:39,610 subscription_middleware 470 281472805411512 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:38:26,310 subscription_middleware 472 281473401604792 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:38:29,738 subscription_middleware 474 281473556355768 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:38:37,387 subscription_middleware 476 281472766794424 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:38:39,793 subscription_middleware 478 281472818858680 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:39:11,236 subscription_middleware 480 281473275468472 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:39:14,698 subscription_middleware 482 281473821776568 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:39:17,069 subscription_middleware 484 281473038232248 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:39:19,447 subscription_middleware 486 281473249991352 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:39:21,831 subscription_middleware 488 281473820883640 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:39:25,419 subscription_middleware 490 281473417620152 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:39:29,924 subscription_middleware 492 281472917142200 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:39:35,542 subscription_middleware 494 281472967871160 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:40:21,578 subscription_middleware 496 281473082665656 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:41:53,208 subscription_middleware 514 281473201937080 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:41:56,640 subscription_middleware 516 281473343261368 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:42:47,521 subscription_middleware 520 281473425869496 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:42:52,101 subscription_middleware 522 281473699531448 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:43:07,878 subscription_middleware 524 281473670970040 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:43:25,011 subscription_middleware 528 281472861854392 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:43:27,525 subscription_middleware 530 281473686948536 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:43:32,081 subscription_middleware 532 281473364282040 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:43:59,312 subscription_middleware 534 281473695914680 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:44:07,943 subscription_middleware 536 281472779594424 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:44:23,009 subscription_middleware 540 281473679395512 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:44:28,468 subscription_middleware 542 281473533381304 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:45:03,331 subscription_middleware 546 281472837614264 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:45:06,670 subscription_middleware 548 281472919161528 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:45:11,087 subscription_middleware 550 281473584052920 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:46:12,430 subscription_middleware 570 281473561311928 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:46:39,195 subscription_middleware 574 281472996149944 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:46:45,830 subscription_middleware 576 281472879270584 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:49:01,448 subscription_middleware 600 281473024121528 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:49:13,267 subscription_middleware 602 281472798558904 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:49:18,992 subscription_middleware 604 281473243597496 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:49:22,564 subscription_middleware 606 281472975801016 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:49:28,250 subscription_middleware 608 281473170258616 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:49:34,845 subscription_middleware 610 281473100630712 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:49:38,883 subscription_middleware 612 281472782867128 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:50:23,215 subscription_middleware 628 281473092270776 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:50:25,749 subscription_middleware 630 281472803101368 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:50:33,397 subscription_middleware 632 281473059015352 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:50:38,865 subscription_middleware 634 281473740536504 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:51:09,040 subscription_middleware 636 281473100040888 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:51:17,651 subscription_middleware 638 281473807035064 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:51:25,151 subscription_middleware 640 281473032161976 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:51:37,119 subscription_middleware 642 281473425435320 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:51:39,512 subscription_middleware 644 281472837954232 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:51:49,194 subscription_middleware 646 281473109375672 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:51:54,754 subscription_middleware 648 281473666431672 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:51:58,230 subscription_middleware 650 281472877480632 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:52:20,192 subscription_middleware 652 281473026431672 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:52:22,549 subscription_middleware 654 281473374395064 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:52:26,174 subscription_middleware 656 281473315617464 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:52:52,321 subscription_middleware 658 281472859728568 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:52:56,787 subscription_middleware 660 281473819433656 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:53:42,235 subscription_middleware 662 281473247984312 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:53:45,884 subscription_middleware 664 281472868125368 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:53:49,269 subscription_middleware 666 281473231272632 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:54:04,672 subscription_middleware 672 281473023986360 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:54:10,623 subscription_middleware 676 281473162160824 SubscriptionMiddleware инициализирован.
+INFO 2025-06-15 17:54:13,743 subscription_middleware 678 281472825572024 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 17:54:15,220 subscription_middleware 678 281472799054424 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:54:15,225 subscription_middleware 678 281472799054424 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:54:15,225 subscription_middleware 678 281472799054424 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:54:15,225 subscription_middleware 678 281472799054424 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:54:15,376 subscription_middleware 678 281472799054424 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:54:15,377 subscription_middleware 678 281472799054424 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:54:15,377 subscription_middleware 678 281472799054424 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:54:15,378 subscription_middleware 678 281472799054424 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
+INFO 2025-06-15 17:55:12,066 subscription_middleware 683 281473727580856 SubscriptionMiddleware инициализирован.
+DEBUG 2025-06-15 17:55:19,040 subscription_middleware 683 281473701091928 Получен запрос для пути: /api/docs
+DEBUG 2025-06-15 17:55:19,045 subscription_middleware 683 281473701091928 Для пути '/api/docs' разрешено имя URL: 'swagger-ui'
+DEBUG 2025-06-15 17:55:19,046 subscription_middleware 683 281473701091928 Имя URL 'swagger-ui' совпало с точным паттерном 'swagger-ui'.
+INFO 2025-06-15 17:55:19,046 subscription_middleware 683 281473701091928 Запрос к 'swagger-ui' разрешен без аутентификации/подписки (по белому списку).
+DEBUG 2025-06-15 17:55:19,122 subscription_middleware 683 281473701091928 Получен запрос для пути: /api/schema/
+DEBUG 2025-06-15 17:55:19,123 subscription_middleware 683 281473701091928 Для пути '/api/schema/' разрешено имя URL: 'schema'
+DEBUG 2025-06-15 17:55:19,123 subscription_middleware 683 281473701091928 Имя URL 'schema' совпало с точным паттерном 'schema'.
+INFO 2025-06-15 17:55:19,123 subscription_middleware 683 281473701091928 Запрос к 'schema' разрешен без аутентификации/подписки (по белому списку).
