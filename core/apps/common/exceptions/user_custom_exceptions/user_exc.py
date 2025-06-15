@@ -78,3 +78,15 @@ class UserUpdateError(ServiceException):
 
     def __init__(self, detail=None, code=None):
         super().__init__(detail=detail or self.default_detail, code=code)
+
+
+class UserExistsError(Exception):  # Или BaseException
+    """Исключение: Пользователь уже существует или его данные конфликтуют."""
+
+    def __init__(self, message="User already exists or Telegram ID conflict.", phone=None):
+        super().__init__(message)
+        self.phone = phone
+        if phone:
+            self.message = f"User with phone number {phone} is already linked to a different Telegram account."
+        else:
+            self.message = message

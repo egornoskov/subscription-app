@@ -1,5 +1,6 @@
 # core/permissions.py
 
+from django.conf import settings
 from rest_framework import permissions
 from uuid import UUID as PyUUID  # Для работы с UUID из URL
 
@@ -108,3 +109,14 @@ class HasActiveSubscription(permissions.BasePermission):
             return False
 
         return True
+
+
+class IsBotApiKeyAuthenticated(permissions.BasePermission):
+    """
+    Пользователь (или в данном случае бот) должен быть аутентифицирован
+    с помощью специального API-ключа в заголовке 'X-Bot-Api-Key'.
+    """
+
+    def has_permission(self, request, view):
+        bot_api_key = request.headers.get("X-Bot-Api-Key")
+        return bot_api_key == settings.BOT_API_KEY

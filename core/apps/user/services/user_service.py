@@ -8,6 +8,8 @@ from django.db.models import (
 from django.utils import timezone
 from psycopg2 import IntegrityError
 
+from django.db import transaction
+
 from core.api.schemas.pagination import PaginationIn
 from core.api.v1.users.schemas.filters import UserFilter
 from core.api.v1.users.schemas.user_schemas import UserUpdateIn
@@ -18,6 +20,7 @@ from core.apps.common.exceptions.user_custom_exceptions.user_exc import (
     UserCreationError,
     UserDeleteError,
     UserEmailNotFoundException,
+    UserExistsError,
     UserNotFoundException,
     UserUpdateError,
 )
@@ -346,3 +349,39 @@ class UserService(BaseUserService):
             raise e
         except Exception as e:
             raise UserDeleteError(detail=f"Неизвестная ошибка при полном удалении пользователя: {e}")
+
+    def get_user_by_phone(self, phone_number: str) -> User:
+        """
+        Получает пользователя по номеру телефона.
+        Поднимает UserNotFoundException, если пользователь не найден.
+        """
+        try:
+            return User.objects.get(phone_number=phone_number)
+        except User.DoesNotExist:
+            raise UserNotFoundException(f"User with phone number {phone_number} not found.")
+
+    def activate_user_and_set_telegram_id(self, phone_number: str, telegram_id: int) -> bool:
+        """
+        Находит пользователя по номеру телефона, устанавливает ему telegram_id,
+        и активирует аккаунт (is_active=True).
+        Возвращает True, если пользователь был активирован, False если уже был активен.
+        Поднимает UserNotFoundException, если пользователь не найден.
+        """
+        with transaction.atomic():
+            user = self.get_user_by_phone(phone_number)
+            if user.telegram_id and user.telegram_id != telegram_id:
+                raise UserExistsError(phone=phone_number)
+
+            user.telegram_id = telegram_id
+
+            was_inactive = not user.is_active
+            if was_inactive:
+                user.is_active = True
+
+            update_fields = ["telegram_id"]
+            if was_inactive:
+                update_fields.append("is_active")
+
+            user.save(update_fields=update_fields)
+
+            return was_inactive
