@@ -183,7 +183,9 @@ class OrderListCreateView(APIView):
             else:
                 serializer = UserOrderSerializer(order)
 
-            send_order_creation_telegram_message.delay(user=order.user)
+            user = order.user
+
+            send_order_creation_telegram_message.delay(telegram_id=user.telegram_id)
 
             return build_api_response(
                 message="Заказ успешно создан",

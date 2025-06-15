@@ -4,15 +4,11 @@ from telegram import Bot
 from telegram.error import TelegramError
 from django.conf import settings
 
-from core.apps.user.models import User
-
 TELEGRAM_BOT_TOKEN = settings.TELEGRAM_BOT_TOKEN
 
 
 @shared_task
-def send_order_creation_telegram_message(user: User):
-
-    telegram_id = user.telegram_id
+def send_order_creation_telegram_message(telegram_id: str):
 
     async def _send_message():
         bot = Bot(token=TELEGRAM_BOT_TOKEN)
