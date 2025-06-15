@@ -8,6 +8,25 @@ services:
       - subscriptions_postgres_data:/var/lib/postgresql/data
     env_file:
       - ../.env
+    networks:
+      - my_shared_network
+
+  redis:
+    image: redis:7.0-alpine
+    container_name: subscriptions_redis_broker
+    ports:
+      - "6379:6379"
+    volumes:
+      - subscriptions_redis_data:/data
+    restart: always
+    networks:
+      - my_shared_network
 
 volumes:
   subscriptions_postgres_data:
+  subscriptions_redis_data:
+
+networks:
+  my_shared_network:
+    external: true
+    name: network_for_subscriptions

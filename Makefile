@@ -7,6 +7,14 @@ ENV = --env-file .env
 APP_FILE = docker_compose/app.yaml
 APP_CONTAINER = subscriptions_main_app
 MANAGEPY = python manage.py
+BOT_FILE = docker_compose/tg_bot.yaml
+BOT_CONTAINER = subscriptions_telegram_bot
+
+NETWORK_NAME = network_for_subscriptions
+
+.PHONY: network
+network:
+	@docker network inspect ${NETWORK_NAME} >/dev/null 2>&1 || docker network create ${NETWORK_NAME}
 
 
 .PHONY: storages
@@ -72,3 +80,19 @@ linters:
 reload:
 	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} down
 	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} ${ENV} up --build -d
+
+.PHONY: bot
+bot:
+	${DC} -f ${BOT_FILE} ${ENV} up --build -d
+
+.PHONY: bot-down
+bot-down:
+	${DC} -f ${BOT_FILE} down
+
+.PHONY: bot-logs
+bot-logs:
+	${EXEC} ${BOT_CONTAINER} -f
+
+.PHONY: clean-network
+clean-network:
+	-docker network rm ${NETWORK_NAME}	||	true

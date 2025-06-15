@@ -18,6 +18,7 @@ from core.apps.products.serializers import (
     AdminOrderSerializer,
 )
 
+from core.apps.products.tasks import send_order_creation_telegram_message
 from core.api.schemas.pagination import (
     PaginationIn,
     PaginationOut,
@@ -171,7 +172,7 @@ class OrderListCreateView(APIView):
                     status_code=status.HTTP_400_BAD_REQUEST,
                 )
 
-            order = service.create_order(
+            order: Order = service.create_order(
                 user_id=order_user_id,
                 product_id=parsed_data.product_id,
                 description=parsed_data.description,
@@ -181,6 +182,8 @@ class OrderListCreateView(APIView):
                 serializer = AdminOrderSerializer(order)
             else:
                 serializer = UserOrderSerializer(order)
+
+            send_order_creation_telegram_message.delay(user=order.user)
 
             return build_api_response(
                 message="Заказ успешно создан",
@@ -410,7 +413,7 @@ class OrderDetailActionView(APIView):
             404: ApiResponse[None],
             500: ApiResponse[None],
         },
-        tags=['Admin'],
+        tags=["Admin"],
         operation_id="soft_delete_order_by_id",
     )
     def delete(self, request: Request, order_id: uuid.UUID) -> Response:

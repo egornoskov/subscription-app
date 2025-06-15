@@ -11,5 +11,26 @@ services:
       - ../.env
     depends_on:
       - postgres
+      - redis
     volumes:
       - ..:/project/
+    networks:
+      - my_shared_network
+
+
+  celery_worker:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: subscriptions_celery_worker
+    command: poetry run celery -A core.project worker -l info
+    env_file:
+      - ../.env
+    volumes:
+      - ..:/project/
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - my_shared_network
+
