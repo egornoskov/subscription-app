@@ -24,6 +24,8 @@ dependencies = [
     "redis (>=6.2.0,<7.0.0)",
     "requests (>=2.32.4,<3.0.0)",
     "python-telegram-bot (>=22.1,<23.0)",
+    "flower (==1.2.0)",
+    "tzdata (>=2025.2,<2026.0)",
 ]
 [tool.poetry.group.dev.dependencies]
 isort = "^6.0.1"

@@ -170,7 +170,7 @@ class SubscriptionsListCreateView(APIView):
             serializer = SubscriptionSerializer(subscription)
 
             return build_api_response(
-                message="Заказ успешно создан",
+                message="Подписка успешно создана",
                 status_code=status.HTTP_201_CREATED,
                 data=serializer.data,
             )

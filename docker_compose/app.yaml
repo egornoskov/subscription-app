@@ -17,7 +17,6 @@ services:
     networks:
       - my_shared_network
 
-
   celery_worker:
     build:
       context: ..
@@ -34,3 +33,18 @@ services:
     networks:
       - my_shared_network
 
+  flower:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: subscriptions_flower
+    command: celery -A core.project:celery_app flower --port=5555
+    ports:
+      - "5555:5555"
+    env_file:
+      - ../.env
+    depends_on:
+      - redis
+      - celery_worker
+    networks:
+      - my_shared_network
