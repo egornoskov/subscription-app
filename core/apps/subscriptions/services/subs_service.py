@@ -4,9 +4,9 @@ from typing import (
     Iterable,
     Optional,
 )
-from django.db import transaction
 
 from dateutil.relativedelta import relativedelta
+from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 from psycopg2 import IntegrityError

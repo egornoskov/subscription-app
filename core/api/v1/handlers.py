@@ -1,21 +1,25 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.exceptions import ValidationError as DRFValidationError
+from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from rest_framework.exceptions import ValidationError as DRFValidationError
 
 from core.api.schemas.response_schemas import ApiResponse
 from core.api.utils.response_builder import build_api_response
-from drf_spectacular.utils import extend_schema
 from core.apps.common.exceptions.base_exception import ServiceException
-from core.apps.user.serializers import UserSerializer, UserRegistrationSerializer
+from core.apps.user.serializers import (
+    UserRegistrationSerializer,
+    UserSerializer,
+)
 from core.apps.user.services.base_user_service import BaseUserService
 from core.project.containers import get_container
-# from core.project.permissions import IsBotApiKeyAuthenticated
 
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
+
+# from core.project.permissions import IsBotApiKeyAuthenticated
 
 
 @method_decorator(csrf_exempt, name="dispatch")

@@ -1,5 +1,6 @@
 from typing import Iterable
 from uuid import UUID
+
 from drf_spectacular.utils import (
     extend_schema,
     OpenApiParameter,
@@ -7,6 +8,7 @@ from drf_spectacular.utils import (
 )
 from pydantic import ValidationError
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -30,7 +32,6 @@ from core.apps.common.exceptions.user_custom_exceptions.user_exc import UserNotF
 from core.apps.user.models import User
 from core.apps.user.serializers import UserSerializer
 from core.apps.user.services.base_user_service import BaseUserService
-from rest_framework.permissions import IsAdminUser
 from core.project.containers import get_container
 from core.project.permissions import IsUserOwnerOrAdmin
 

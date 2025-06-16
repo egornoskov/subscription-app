@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
 from core.apps.products.models import Order
+from core.apps.subscriptions.models import Subscription
 from core.apps.subscriptions.serializers import SubscriptionSerializer
 from core.apps.user.serializers import UserSerializer
-from core.apps.subscriptions.models import Subscription
 
 
 class UserOrderSerializer(serializers.ModelSerializer):

@@ -1,10 +1,17 @@
 import logging
-from django.http import JsonResponse
-from rest_framework.status import HTTP_403_FORBIDDEN
-from django.urls import resolve, Resolver404
+
 from django.contrib.auth.models import AnonymousUser
+from django.http import JsonResponse
+from django.urls import (
+    resolve,
+    Resolver404,
+)
+from rest_framework.status import HTTP_403_FORBIDDEN
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework_simplejwt.exceptions import (
+    InvalidToken,
+    TokenError,
+)
 
 
 logger = logging.getLogger("subscription_middleware")

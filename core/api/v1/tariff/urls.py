@@ -1,10 +1,10 @@
 from django.urls import path
 
 from core.api.v1.tariff.handlers import (
+    HardDeleteTariffView,
     TariffArchiveListView,
     TariffDetailActionsView,
     TariffListCreateView,
-    HardDeleteTariffView,
 )
 
 

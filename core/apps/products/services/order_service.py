@@ -4,21 +4,22 @@ from typing import (
     Optional,
 )
 
+from django.db import (
+    IntegrityError,
+    transaction,
+)
 from django.db.models import Q
-from django.db import IntegrityError
 
 from core.api.schemas.pagination import PaginationIn
 from core.api.v1.products.schemas.filters import OrderFilter
-from core.apps.products.models import Order
-from core.apps.products.services.base_order_service import OrderBaseService
-from django.db import transaction
-
 from core.apps.common.exceptions.orders_exceptions.order_exc import (
     OrderCreationError,
     OrderDeleteError,
     OrderNotFoundException,
     OrderUpdateError,
 )
+from core.apps.products.models import Order
+from core.apps.products.services.base_order_service import OrderBaseService
 
 
 class OrderService(OrderBaseService):

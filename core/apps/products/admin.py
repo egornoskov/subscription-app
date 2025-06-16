@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import Order, Product
+
+from .models import (
+    Order,
+    Product,
+)
 
 
 @admin.register(Product)

@@ -1,14 +1,13 @@
 import uuid
 from typing import Iterable
 
+from django.db import transaction
 from django.db.models import (
     Prefetch,
     Q,
 )
 from django.utils import timezone
 from psycopg2 import IntegrityError
-
-from django.db import transaction
 
 from core.api.schemas.pagination import PaginationIn
 from core.api.v1.users.schemas.filters import UserFilter

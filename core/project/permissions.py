@@ -1,8 +1,9 @@
 # core/permissions.py
 
+from uuid import UUID as PyUUID  # Для работы с UUID из URL
+
 from django.conf import settings
 from rest_framework import permissions
-from uuid import UUID as PyUUID  # Для работы с UUID из URL
 
 
 class IsAdminUser(permissions.BasePermission):

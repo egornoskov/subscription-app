@@ -9,6 +9,7 @@ from pydantic import ValidationError
 from rest_framework import (
     status,
 )
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -33,7 +34,6 @@ from core.apps.tariff.serializers import TariffSerializer
 from core.apps.tariff.services.tariff_base_service import TariffBaseService
 from core.project.containers import get_container
 from core.project.permissions import IsAdminUser
-from rest_framework.permissions import IsAuthenticated
 
 
 class TariffListCreateView(APIView):

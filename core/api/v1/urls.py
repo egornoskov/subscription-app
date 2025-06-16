@@ -10,6 +10,7 @@ from rest_framework_simplejwt.views import (
 
 from core.api.v1.handlers import RegisterUserView
 
+
 app_name = "v1"
 
 urlpatterns = [

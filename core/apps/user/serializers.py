@@ -1,8 +1,9 @@
 # core/apps/user/serializers.py
 
 from rest_framework import serializers
-from core.apps.user.models import User
+
 from core.apps.subscriptions.serializers import SubscriptionSerializer  # Убедитесь, что этот импорт присутствует
+from core.apps.user.models import User
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):

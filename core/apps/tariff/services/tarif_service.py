@@ -5,6 +5,7 @@ from typing import (
     Iterator,
 )
 
+from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 from psycopg2 import IntegrityError
@@ -21,7 +22,6 @@ from core.apps.common.exceptions.tariff_custom_exceptions.tariff_exc import (
     TariffNotFoundError,
     TariffUpdateError,
 )
-from django.db import transaction
 from core.apps.tariff.models import Tariff
 from core.apps.tariff.services.tariff_base_service import TariffBaseService
 

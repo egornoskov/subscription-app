@@ -10,6 +10,7 @@ from pydantic import ValidationError
 from rest_framework import (
     status,
 )
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -31,9 +32,10 @@ from core.apps.subscriptions.models import Subscription
 from core.apps.subscriptions.serializers import SubscriptionSerializer
 from core.apps.subscriptions.services.base_service import SubscriptionBaseService
 from core.project.containers import get_container
-from rest_framework.permissions import IsAuthenticated
-
-from core.project.permissions import IsAccountActivated, IsAdminUser
+from core.project.permissions import (
+    IsAccountActivated,
+    IsAdminUser,
+)
 
 
 class SubscriptionsListCreateView(APIView):

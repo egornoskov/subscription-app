@@ -1,5 +1,6 @@
-from core.apps.common.exceptions.base_exception import ServiceException
 from rest_framework import status
+
+from core.apps.common.exceptions.base_exception import ServiceException
 
 
 class OrderCreationError(ServiceException):
@@ -35,4 +36,3 @@ class OrderDeleteError(ServiceException):
 
     def __init__(self, detail=None, code=None):
         super().__init__(detail=detail or self.default_detail, code=code)
-

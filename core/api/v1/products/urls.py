@@ -1,7 +1,9 @@
 from django.urls import path
 
-
-from core.api.v1.products.handlers import OrderListCreateView, OrderDetailActionView
+from core.api.v1.products.handlers import (
+    OrderDetailActionView,
+    OrderListCreateView,
+)
 
 
 app_name = "orders"

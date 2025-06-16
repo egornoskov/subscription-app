@@ -1,4 +1,5 @@
 import uuid
+
 from django.db import models
 
 from core.apps.common.models import TimedBaseModel
