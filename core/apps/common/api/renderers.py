@@ -1,5 +1,3 @@
-# core/common/api/renderers.py
-
 from typing import (
     Any,
     Dict,

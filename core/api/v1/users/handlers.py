@@ -409,7 +409,7 @@ class UserHardDeleteView(APIView):
             "Возможно только для пользователей, уже помеченных как удаленные (soft-deleted)."
         ),
         responses={
-            204: None,  # Изменено на 204 No Content, как для удаления
+            204: None,
             404: ApiResponse[None],
             500: ApiResponse[None],
         },
@@ -451,8 +451,8 @@ class ArchivedUserListView(APIView):
     permission_classes = [IsAdminUser]
 
     @extend_schema(
-        summary="Получить всех архивных пользователей",  # Изменено описание для ясности
-        description="Получает список всех архивных пользователей.",  # Изменено описание
+        summary="Получить всех архивных пользователей",
+        description="Получает список всех архивных пользователей.",
         parameters=[
             OpenApiParameter(
                 name="search",
@@ -481,7 +481,7 @@ class ArchivedUserListView(APIView):
         responses={
             200: ApiResponse[ListResponsePayload[UserSerializer]],
         },
-        operation_id="list_all_archived_users",  # Изменено operation_id
+        operation_id="list_all_archived_users",
     )
     def get(
         self,

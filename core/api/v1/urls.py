@@ -19,11 +19,6 @@ urlpatterns = [
         RegisterUserView.as_view(),
         name="register",
     ),
-    # path(
-    #     "v1/activate-telegram-user/",
-    #     ActivateUserAPIView.as_view(),
-    #     name="activate-telegram-user",
-    # ),
     path(
         "v1/login/",
         TokenObtainPairView.as_view(),

@@ -80,7 +80,7 @@ class UserUpdateError(ServiceException):
         super().__init__(detail=detail or self.default_detail, code=code)
 
 
-class UserExistsError(Exception):  # Или BaseException
+class UserExistsError(Exception):
     """Исключение: Пользователь уже существует или его данные конфликтуют."""
 
     def __init__(self, message="User already exists or Telegram ID conflict.", phone=None):

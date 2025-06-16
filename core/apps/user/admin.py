@@ -14,17 +14,16 @@ class CustomUserCreationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Делаем email, first_name, last_name обязательными
         self.fields["email"].required = True
         self.fields["first_name"].required = True
         self.fields["last_name"].required = True
-        self.fields["phone"].required = False  # Если phone обязательное, установи True
+        self.fields["phone"].required = False
 
 
 class SubscriptionInline(admin.TabularInline):
     model = Subscription
-    extra = 1  # Количество пустых строк для добавления подписок
-    fields = ("tariff", "start_date", "end_date")  # Поля для отображения
+    extra = 1
+    fields = ("tariff", "start_date", "end_date")
     verbose_name = "Подписка"
     verbose_name_plural = "Подписки"
 
@@ -32,7 +31,7 @@ class SubscriptionInline(admin.TabularInline):
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     inlines = (SubscriptionInline,)
-    add_form = CustomUserCreationForm  # Кастомная форма для создания
+    add_form = CustomUserCreationForm
     list_display = ("email", "first_name", "last_name", "phone", "is_staff", "subscriptions_overview", "is_active")
     list_filter = ("is_staff", "is_superuser", "is_active", "groups")
 
@@ -65,7 +64,7 @@ class UserAdmin(BaseUserAdmin):
 
 class SubscriptionInline(admin.TabularInline):
     model = Subscription
-    extra = 1  # Количество пустых строк для добавления подписок
-    fields = ("tariff", "start_date", "end_date")  # Поля для отображения
+    extra = 1
+    fields = ("tariff", "start_date", "end_date")
     verbose_name = "Подписка"
     verbose_name_plural = "Подписки"

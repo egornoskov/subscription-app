@@ -19,9 +19,6 @@ from core.apps.user.services.base_user_service import BaseUserService
 from core.project.containers import get_container
 
 
-# from core.project.permissions import IsBotApiKeyAuthenticated
-
-
 @method_decorator(csrf_exempt, name="dispatch")
 class RegisterUserView(APIView):
     permission_classes = [AllowAny]

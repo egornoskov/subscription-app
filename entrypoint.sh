@@ -1,14 +1,12 @@
 #!/bin/sh
 
 
-# Функция для ожидания доступности порта
 wait_for_port() {
   local host="$1"
   local port="$2"
   local timeout=10
   local start_time=$(date +%s)
 
-  # Попробовать использовать nc, если установлен
   local nc_command="nc"
   type nc >/dev/null 2>&1 || nc_command="ncat"
 
@@ -24,8 +22,6 @@ wait_for_port() {
   done
 }
 
-# Ожидание доступности порта PostgreSQL
 wait_for_port "postgres" 5432
-# В entrypoint.sh перед runserver
-# Запуск приложения напрямую
+
 python /project/manage.py runserver 0.0.0.0:8000

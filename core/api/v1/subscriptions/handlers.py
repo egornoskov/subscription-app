@@ -436,7 +436,7 @@ class HardDeleteSubscriptionView(APIView):
             "Возможно только для подписок, уже помеченных как удаленные (soft-deleted)."
         ),
         responses={
-            204: None,  # Изменено на 204 No Content, как для удаления
+            204: None,
             404: ApiResponse[None],
             500: ApiResponse[None],
         },

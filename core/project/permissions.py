@@ -1,5 +1,3 @@
-# core/permissions.py
-
 from uuid import UUID as PyUUID  # Для работы с UUID из URL
 
 from django.conf import settings

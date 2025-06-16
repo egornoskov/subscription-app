@@ -16,7 +16,6 @@ def send_order_creation_telegram_message(telegram_id: int):
     try:
         message_text = "✅ Ваш заказ успешно создан!"
 
-        # Удаляем parse_mode
         payload = {"chat_id": telegram_id, "text": message_text}
 
         response = requests.post(TELEGRAM_API_URL + "sendMessage", json=payload)

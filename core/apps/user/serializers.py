@@ -1,8 +1,6 @@
-# core/apps/user/serializers.py
-
 from rest_framework import serializers
 
-from core.apps.subscriptions.serializers import SubscriptionSerializer  # Убедитесь, что этот импорт присутствует
+from core.apps.subscriptions.serializers import SubscriptionSerializer
 from core.apps.user.models import User
 
 
@@ -64,7 +62,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     subscriptions_details = SubscriptionSerializer(
-        source="user_subscriptions_details",  # Возвращаем оригинальное значение
+        source="user_subscriptions_details",
         many=True,
         read_only=True,
     )
