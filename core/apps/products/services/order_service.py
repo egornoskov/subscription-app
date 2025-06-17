@@ -83,12 +83,6 @@ class OrderService(OrderBaseService):
         query = self._build_query_orders(filters, user_id, is_admin)
         return Order.objects.filter(query).count()
 
-        # def get_order_by_id(self, order_id: uuid.UUID) -> Optional[Order]:
-        #     raise NotImplementedError("Метод get_order_by_id не реализован")
-
-        # def soft_delete_order(self, order_id: uuid.UUID) -> Order:
-        #     raise NotImplementedError("Метод soft_delete_order не реализован")
-
     def get_order_by_id(
         self,
         order_id: uuid.UUID,

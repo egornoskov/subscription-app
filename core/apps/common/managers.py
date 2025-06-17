@@ -3,8 +3,6 @@ from django.utils import timezone
 
 
 class GetOrNoneQuerySet(models.QuerySet):
-    """Custom QuerySet that supports get_or_none()"""
-
     def get_or_none(self, **kwargs):
         try:
             return self.get(**kwargs)
@@ -13,8 +11,6 @@ class GetOrNoneQuerySet(models.QuerySet):
 
 
 class GetOrNoneManager(models.Manager):
-    """Adds get_or_none method to objects"""
-
     def get_queryset(self):
         return GetOrNoneQuerySet(self.model)
 

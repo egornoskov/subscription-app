@@ -1,4 +1,4 @@
-from uuid import UUID as PyUUID  # Для работы с UUID из URL
+from uuid import UUID as PyUUID
 
 from django.conf import settings
 from rest_framework import permissions

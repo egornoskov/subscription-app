@@ -144,7 +144,7 @@ class SubscriptionService(SubscriptionBaseService):
     def partial_update_subscription(
         self,
         sub_uuid: uuid.UUID,
-        tariff: Optional[Tariff] = None,  # <-- Примет None
+        tariff: Optional[Tariff] = None,
         end_date: Optional[datetime.date] = None,
     ) -> Subscription:
         subscription = self.get_subscription_by_id(sub_uuid)

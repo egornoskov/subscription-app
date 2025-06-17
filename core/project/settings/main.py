@@ -4,48 +4,44 @@ from pathlib import Path
 import environ
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Базовые пути
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 env = environ.Env()
 environ.Env.read_env(BASE_DIR / ".env")
 
 
+# Основные настройки
 SECRET_KEY = env("DJANGO_SECRET_KEY")
-
 BOT_API_KEY = env("BOT_API_KEY")
-
 BOT_WEB_SERVER_PORT = env("BOT_WEB_SERVER_PORT")
-
 BOT_WEB_SERVER_SECRET_KEY = env("BOT_WEB_SERVER_SECRET_KEY")
-
 TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN")
 
 DEBUG = False
-
 ALLOWED_HOSTS = []
 
 
-# Application definition
-
+# Определение приложений
 INSTALLED_APPS = [
-    # Django apps
+    # Приложения Django
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Third-party apps
+    # Сторонние приложения
     "rest_framework",
     "drf_spectacular",
     "rest_framework_simplejwt",
-    # First-party apps
+    # Собственные приложения
     "core.apps.user",
     "core.apps.tariff",
     "core.apps.subscriptions",
     "core.apps.products",
 ]
 
+# Настройки Middleware
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -60,6 +56,8 @@ MIDDLEWARE = [
 X_FRAME_OPTIONS = "SAMEORIGIN"
 ROOT_URLCONF = "core.project.urls"
 
+
+# Настройки шаблонов
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -78,6 +76,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.project.wsgi.application"
 
 
+# Настройки базы данных
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -90,6 +89,7 @@ DATABASES = {
 }
 
 
+# Валидаторы паролей
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -106,23 +106,24 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Язык и время
 LANGUAGE_CODE = "ru"
-
 TIME_ZONE = "Europe/Moscow"
-
 USE_I18N = True
-
 USE_TZ = True
 
 
+# Статические файлы
 STATIC_URL = "/static/"
 STATIC_ROOT = str(BASE_DIR / "static")
 
 
+# Настройки пользователя
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "user.User"
 
 
+# Настройки Django REST Framework
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -139,6 +140,7 @@ REST_FRAMEWORK = {
     ],
 }
 
+# Настройки Simple JWT
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
@@ -165,9 +167,10 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 }
 
+# Настройки DRF Spectacular (Swagger/OpenAPI)
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Your Project API",
-    "DESCRIPTION": "Описание вашего API",
+    "TITLE": "API subs",
+    "DESCRIPTION": "subs, orders, customUser, custom pagination, jwt",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     "SWAGGER_UI_SETTINGS": {
@@ -179,6 +182,7 @@ SPECTACULAR_SETTINGS = {
 }
 
 
+# Настройки Celery
 CELERY_BROKER_URL = env("REDIS_BROKER_URL", default="redis://redis:6379/0")
 CELERY_RESULT_BACKEND = env("REDIS_RESULT_BACKEND", default="redis://redis:6379/0")
 

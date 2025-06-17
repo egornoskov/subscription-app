@@ -17,3 +17,4 @@ static/.gitkeep
 logs/*
 .DS_Store
 static
+.python-version
