@@ -1,0 +1,21 @@
+
+services:
+  telegram_bot:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: subscriptions_telegram_bot
+    env_file:
+      - ../.env
+    ports:
+      - "${BOT_WEB_SERVER_PORT}:8000"
+    restart: always
+    entrypoint: ["/project/entrybot.sh"]
+    command: ["poetry", "run", "python", "telegram_bot/bot_main.py"]
+    networks:
+      - my_shared_network
+
+networks:
+  my_shared_network:
+    external: true
+    name: network_for_subscriptions

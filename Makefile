@@ -17,6 +17,11 @@ network:
 	@docker network inspect ${NETWORK_NAME} >/dev/null 2>&1 || docker network create ${NETWORK_NAME}
 
 
+.PHONY: clean-network
+clean-network:
+	-docker network rm ${NETWORK_NAME}	||	true
+
+
 .PHONY: storages
 storages:
 	${DC} -f ${STORAGES_FILE} ${ENV} up -d
@@ -35,7 +40,7 @@ database:
 
 .PHONY: app
 app:
-	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} ${ENV} up --build -d
+	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} ${ENV}  up --build -d
 
 .PHONY: logs
 logs:
@@ -73,6 +78,8 @@ show:
 reload:
 	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} down
 	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} ${ENV} up --build -d
+	${DC} -f ${BOT_FILE} down
+	${DC} -f ${BOT_FILE} ${ENV} up --build -d
 
 .PHONY: bot
 bot:
@@ -82,10 +89,29 @@ bot:
 bot-down:
 	${DC} -f ${BOT_FILE} down
 
+.PHONY: bot-shell
+bot-shell:
+	${EXEC} ${BOT_CONTAINER} bash
+
 .PHONY: bot-logs
 bot-logs:
-	${EXEC} ${BOT_CONTAINER} -f
+	${LOGS} ${BOT_CONTAINER} -f
 
-.PHONY: clean-network
-clean-network:
-	-docker network rm ${NETWORK_NAME}	||	true
+.PHONY: all
+all: network
+	@echo "Starting all services (App, Storages, Bot)..."
+	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} -f ${BOT_FILE} ${ENV} up --build -d
+
+.PHONY: down-all
+down-all:
+	@echo "Stopping all services (App, Storages, Bot)..."
+	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} -f ${BOT_FILE} down
+
+.PHONY: restart-all
+restart-all: down-all up-all
+	@echo "Restarting all services (App, Storages, Bot)..."
+
+.PHONY: logs-all
+logs-all:
+	@echo "Showing combined logs for all services..."
+	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} -f ${BOT_FILE} logs -f

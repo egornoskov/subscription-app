@@ -18,7 +18,7 @@ dependencies = [
     "punq (>=0.7.0,<0.8.0)",
     "python-dateutil (>=2.9.0.post0,<3.0.0)",
     "djangorestframework-simplejwt (>=5.5.0,<6.0.0)",
-    "asyncpg (>=0.30.0,<0.31.0)",
+    "asyncpg (==0.30.0)",
     "httpx (>=0.28.1,<0.29.0)",
     "celery (>=5.5.3,<6.0.0)",
     "redis (>=6.2.0,<7.0.0)",
@@ -26,6 +26,10 @@ dependencies = [
     "python-telegram-bot (>=22.1,<23.0)",
     "flower (==1.2.0)",
     "tzdata (>=2025.2,<2026.0)",
+    "aiogram (==3.20.0.post0)",
+    "aiohttp (==3.11.0)",
+    "sqlalchemy (==2.0.41)",
+    "sqlalchemy[asyncio] (>=2.0.41,<3.0.0)",
 ]
 [tool.poetry.group.dev.dependencies]
 isort = "^6.0.1"

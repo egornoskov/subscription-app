@@ -3,7 +3,7 @@ FROM python:3.12.1-alpine
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONOPTIMIZE=1
 
-WORKDIR /app
+WORKDIR /project
 
 RUN apk update && \
     apk add --no-cache python3-dev gcc musl-dev libpq-dev nmap
@@ -19,8 +19,10 @@ RUN poetry config virtualenvs.create false && \
 
 COPY . .
 
-ENV PYTHONPATH=/app
+ENV PYTHONPATH=/project
 
 COPY ./entrypoint.sh ./entrypoint.sh
+COPY ./entrybot.sh ./entrybot.sh
 
 RUN chmod +x ./entrypoint.sh
+RUN chmod +x ./entrybot.sh
