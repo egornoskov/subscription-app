@@ -55,8 +55,6 @@ class SubscriptionMiddleware:
                     f"User '{authenticated_user.email}' (ID: {authenticated_user.id}) authenticated via JWT in middleware."
                 )
             else:
-                # Если authenticate вернул None, значит токен отсутствовал или был не в том формате,
-                # но не вызвал исключения. Пользователь пока остается AnonymousUser.
                 request.user = AnonymousUser()
         except (InvalidToken, TokenError) as e:
             logger.warning(f"JWT authentication error in middleware for '{request.path}': {e}")
