@@ -89,17 +89,19 @@
   ```
 
 - Создайте .env файл:
-DJANGO_SECRET_KEY=your_keu
-POSTGRES_DB=your_db
-POSTGRES_USER=your_user
-POSTGRES_PASSWORD=your_pswd
-POSTGRES_HOST=your_host
-POSTGRES_PORT=your_port
-DJANGO_PORT=your_port_for_django
-TELEGRAM_BOT_TOKEN=your_token
-BOT_API_KEY=your_api_key
-BOT_WEB_SERVER_PORT=your_bot_port
-BOT_WEB_SERVER_SECRET_KEY=your_web_server
+```
+- DJANGO_SECRET_KEY=your_keu
+- POSTGRES_DB=your_db
+- POSTGRES_USER=your_user
+- POSTGRES_PASSWORD=your_pswd
+- POSTGRES_HOST=your_host
+- POSTGRES_PORT=your_port
+- DJANGO_PORT=your_port_for_django
+- TELEGRAM_BOT_TOKEN=your_token
+- BOT_API_KEY=your_api_key
+- BOT_WEB_SERVER_PORT=your_bot_port
+- BOT_WEB_SERVER_SECRET_KEY=your_web_server
+```
 
 
 - Создайте файл core/project/settings/local.py со следующим содержимым:
