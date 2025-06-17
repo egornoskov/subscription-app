@@ -36,7 +36,6 @@ from core.apps.products.services.order_service import OrderBaseService
 from core.apps.products.tasks import send_order_creation_telegram_message
 from core.project.containers import get_container
 from core.project.permissions import (
-    HasActiveSubscription,
     IsAdminUser,
     IsResourceOwner,
 )
@@ -44,7 +43,7 @@ from core.project.permissions import (
 
 @extend_schema(tags=["Orders"])
 class OrderListCreateView(APIView):
-    permission_classes = [IsAuthenticated, HasActiveSubscription]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         summary="Получить все заказы",
@@ -232,7 +231,7 @@ class OrderDetailActionView(APIView):
             "PUT",
             "PATCH",
         ]:
-            return [IsAuthenticated(), HasActiveSubscription(), IsResourceOwner()]
+            return [IsAuthenticated(), IsResourceOwner()]
         elif self.request.method in [
             "DELETE",
         ]:
